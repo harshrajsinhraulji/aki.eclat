@@ -1,0 +1,427 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   AKI'S WORLD — DESIGN SYSTEM
+   All tokens, grain, keyframes, base resets
+───────────────────────────────────────────── */
+
+@theme {
+  /* ── Colour Palette ── */
+  --color-pink-pale: #FFF0F5;
+  --color-pink-blush: #FFD6E7;
+  --color-pink-hot: #FF1493;
+  --color-pink-deep: #C2185B;
+  --color-pink-rose: #AD1457;
+  --color-cream: #FFFAF6;
+  --color-gold: #C9A465;
+  --color-text-primary: #1A0A12;
+  --color-text-mid: #6B2D4A;
+  --color-text-soft: #A8627A;
+
+  /* ── Typography ── */
+  --font-bodoni: var(--font-bodoni-moda);
+  --font-figtree: var(--font-figtree);
+  --font-instrument: var(--font-instrument-serif);
+
+  /* ── Spacing ── */
+  --spacing-section-y: 120px;
+  --spacing-section-y-mobile: 72px;
+  --spacing-card: 32px;
+  --spacing-card-mobile: 24px;
+  --spacing-content-max: 1280px;
+
+  /* ── Radius ── */
+  --radius-card: 20px;
+  --radius-button: 100px;
+  --radius-image: 16px;
+  --radius-pill: 100px;
+
+  /* ── Shadows (pink-tinted, never grey) ── */
+  --shadow-sm: 0 4px 16px rgba(255, 20, 147, 0.1);
+  --shadow-md: 0 8px 32px rgba(255, 20, 147, 0.16);
+  --shadow-lg: 0 20px 60px rgba(255, 20, 147, 0.22);
+  --shadow-magnetic: 0 32px 80px rgba(194, 24, 91, 0.28);
+
+  /* ── Easing ── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+/* ─────────────────────────────────────────────
+   GRAIN TEXTURE — Applied globally
+   Makes screens feel physical. Like paper.
+───────────────────────────────────────────── */
+
+:root {
+  --grain-opacity: 0.022;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
+/* ─────────────────────────────────────────────
+   BASE RESETS
+───────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  cursor: none;
+  scroll-behavior: auto; /* Lenis handles this */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: #FFF0F5;
+  color: #1A0A12;
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+/* Bringhurst: eliminate widows/orphans globally */
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Mobile: restore default cursor */
+@media (pointer: coarse) {
+  html {
+    cursor: auto;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   CUSTOM SCROLLBAR
+───────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF0F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #FF1493, #C2185B);
+  border-radius: 100px;
+}
+
+/* ─────────────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────────────── */
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(44px);
+    opacity: 0;
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.25);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+@keyframes vinyl-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bow-pendulum {
+  0%, 100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes breath {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+@keyframes line-extend {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up-letter {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   UTILITY CLASSES
+───────────────────────────────────────────── */
+
+.section-padding {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+}
+
+.content-max {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (max-width: 768px) {
+  .content-max {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* Text gradient utility */
+.text-gradient-pink {
+  background: linear-gradient(180deg, #FF1493 0%, #C2185B 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Overflow clip for letter reveals */
+.clip-overflow {
+  overflow: hidden;
+  display: inline-block;
+}
+
+/* Selection colour */
+::selection {
+  background: rgba(255, 20, 147, 0.18);
+  color: #1A0A12;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid #FF1493;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─────────────────────────────────────────────
+   TICKER PAUSE ON HOVER
+───────────────────────────────────────────── */
+
+.ticker-track:hover .ticker-inner {
+  animation-play-state: paused;
+}
+
+/* ─────────────────────────────────────────────
+   VINYL PLAYER ANIMATIONS
+───────────────────────────────────────────── */
+
+.vinyl-spinning {
+  animation: vinyl-spin 2s linear infinite;
+}
+
+.vinyl-paused {
+  animation: vinyl-spin 2s linear infinite;
+  animation-play-state: paused;
+}
+
+/* ─────────────────────────────────────────────
+   SCROLL PROGRESS FILL
+───────────────────────────────────────────── */
+
+.progress-fill {
+  background: linear-gradient(to bottom, #FF1493, #C2185B);
+  transition: height 0.1s linear;
+}
+
+/* ─────────────────────────────────────────────
+   GLOBAL INTERACTIVE CURSOR HOOK
+───────────────────────────────────────────── */
+
+[data-hover] {
+  cursor: none;
+}
+
+/* ─────────────────────────────────────────────
+   INPUT RANGE CUSTOM STYLING
+───────────────────────────────────────────── */
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  background: rgba(255, 20, 147, 0.2);
+  border-radius: 100px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: #FF1493;
+  border-radius: 50%;
+  margin-top: -3.5px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 3px;
+  background: rgba(255, 20, 147, 0.2);
+  border-radius: 100px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  background: #FF1493;
+  border-radius: 50%;
+  border: none;
+}
+
+/* ─────────────────────────────────────────────
+   FIREFOX SCROLLBAR
+───────────────────────────────────────────── */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #FF1493 #FFF0F5;
+}
+
+/* ─────────────────────────────────────────────
+   PREFERS-REDUCED-MOTION
+   Full experience, zero motion.
+───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Framer Motion respects this via its own check,
+     but we belt-and-braces via CSS */
+  [style*="animation"],
+  [style*="transition"] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   CLIP PATH ANIMATION SUPPORT
+   Used by Universe card wipe entrance
+───────────────────────────────────────────── */
+
+@supports not (clip-path: inset(0)) {
+  /* Fallback: instant reveal */
+  .card-enter {
+    clip-path: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   DESKTOP-ONLY ELEMENTS
+───────────────────────────────────────────── */
+
+.desktop-only {
+  display: block;
+}
+
+@media (pointer: coarse) {
+  .desktop-only {
+    display: none;
+  }
+}

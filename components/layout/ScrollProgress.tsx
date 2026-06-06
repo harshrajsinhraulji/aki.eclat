@@ -12,6 +12,15 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BowSvg } from '@/components/ui/BowSvg'
 
+function StarburstSvg({ size = 14, color = '#C9A465' }: { size?: number; color?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ filter: 'drop-shadow(0 0 3px rgba(201,164,101,0.5))' }} aria-hidden>
+      <polygon points="12,3 17,14 7,14" />
+      <polygon points="12,19 17,8 7,8" />
+    </svg>
+  )
+}
+
 export function ScrollProgress() {
   const [progress, setProgress] = useState(0)
   const [showBow, setShowBow] = useState(false)
@@ -32,6 +41,7 @@ export function ScrollProgress() {
 
   return (
     <div
+      className="scroll-progress-bar"
       style={{
         position: 'fixed',
         right: 0,
@@ -41,8 +51,6 @@ export function ScrollProgress() {
         zIndex: 50,
         pointerEvents: 'none',
         background: 'rgba(255, 20, 147, 0.08)',
-        // Hide on mobile via JS — safer than Tailwind classes
-        display: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : 'block',
       }}
       aria-hidden
     >
@@ -60,17 +68,27 @@ export function ScrollProgress() {
       <AnimatePresence>
         {showBow && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
+            initial={{ opacity: 0, scale: 0.5, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 10 }}
+            transition={{ type: 'spring', stiffness: 350, damping: 14 }}
             style={{
               position: 'absolute',
-              bottom: '-6px',
-              right: '1px',
-              transform: 'translateX(50%)',
+              bottom: '12px',
+              right: '-8px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '4px',
+              pointerEvents: 'none',
             }}
           >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+            >
+              <StarburstSvg size={14} color="#C9A465" />
+            </motion.div>
             <BowSvg size={16} color="#C2185B" />
           </motion.div>
         )}

@@ -28,6 +28,9 @@ const ArtWords = dynamic(() =>
 const PlushieGang = dynamic(() =>
   import('@/components/sections/PlushieGang').then((m) => ({ default: m.PlushieGang }))
 )
+const ConfessionsTeaser = dynamic(() =>
+  import('@/components/sections/ConfessionsTeaser').then((m) => ({ default: m.ConfessionsTeaser }))
+)
 const LetsTalk = dynamic(() =>
   import('@/components/sections/LetsTalk').then((m) => ({ default: m.LetsTalk }))
 )
@@ -38,12 +41,17 @@ export default function HomePage() {
       {/* Phase 1 — Hero: eagerly rendered, above fold */}
       <Hero />
 
-      {/* Phase 2 — Below fold: code-split into separate chunks */}
+      {/* Phase 2 — Below fold: correct narrative flow
+          Blush world: Hero → About → [dark: Universe] → Closet → Art → Plushies
+          Dark peaks:  Confessions → Contact
+          Blush close: Footer (in layout-client)
+      */}
       <Coconut />
       <Universe />
       <InfiniteCloset />
       <ArtWords />
       <PlushieGang />
+      <ConfessionsTeaser />
       <LetsTalk />
     </>
   )

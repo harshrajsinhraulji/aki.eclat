@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "cms": {
+      ".read": true,
+      ".write": false
+    }
+  }
+}

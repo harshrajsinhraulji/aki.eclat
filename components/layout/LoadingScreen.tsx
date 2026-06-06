@@ -37,9 +37,10 @@ export function LoadingScreen({ onComplete }: LoadingScreenProps) {
     }
 
     const hasVisited = sessionStorage.getItem('aki-visited')
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    if (hasVisited) {
-      // Returning visitor — skip loading screen immediately
+    if (hasVisited || prefersReducedMotion) {
+      // Returning visitor or prefers-reduced-motion — skip loading screen immediately
       complete()
       return
     }

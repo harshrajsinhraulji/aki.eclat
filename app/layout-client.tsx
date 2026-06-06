@@ -14,6 +14,7 @@
 import { useCallback } from 'react'
 import { useLenis } from '@/hooks/useLenis'
 import { LoadingScreen } from '@/components/layout/LoadingScreen'
+import { AmbientDust } from '@/components/layout/AmbientDust'
 import { CustomCursor } from '@/components/layout/CustomCursor'
 import { CursorTrail } from '@/components/layout/CursorTrail'
 import { ObsessionsTicker } from '@/components/layout/ObsessionsTicker'
@@ -22,6 +23,15 @@ import { VisitorCounter } from '@/components/layout/VisitorCounter'
 import { ScrollProgress } from '@/components/layout/ScrollProgress'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { AdminPanel } from '@/components/admin/AdminPanel'
+import { AnehEasterEgg } from '@/components/ui/AnehEasterEgg'
+import { KeyboardNav } from '@/components/ui/KeyboardNav'
+import { DarkSectionSpotlight } from '@/components/ui/DarkSectionSpotlight'
+import { SectionNavDots } from '@/components/layout/SectionNavDots'
+import { BackToTop } from '@/components/layout/BackToTop'
+import { KeyboardToast } from '@/components/ui/KeyboardToast'
+import { GhostCursor } from '@/components/layout/GhostCursor'
+import { GodlyEasterEggs } from '@/components/ui/GodlyEasterEggs'
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   useLenis()
@@ -36,6 +46,9 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
       {/* Loading screen — fixed overlay, purely cosmetic, never gates content */}
       <LoadingScreen onComplete={handleLoadComplete} />
 
+      {/* The Void Dust - Ambient background particles */}
+      <AmbientDust />
+
       {/* Global persistent UI elements */}
       <CustomCursor />
       <CursorTrail />
@@ -44,11 +57,30 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
       <VinylPlayer />
       <VisitorCounter />
       <Navbar />
+      {/* Easter egg: type 'aneh' anywhere → bow rain 🎀 */}
+      <AnehEasterEgg />
+      {/* Arrow key navigation between sections */}
+      <KeyboardNav />
+      {/* Cursor spotlight on dark sections */}
+      <DarkSectionSpotlight />
+      {/* #53 Section nav dots — desktop only */}
+      <SectionNavDots />
+      {/* #59 Back to top */}
+      <BackToTop />
+      {/* #39 Keyboard shortcut legend — press '?' to reveal */}
+      <KeyboardToast />
+
+      {/* The £250k Upgrades: Ghost Cursor & Console/Konami Easter Eggs */}
+      <GhostCursor />
+      <GodlyEasterEggs />
 
       {/* Page content — always visible, no opacity gate */}
       <main style={{ minHeight: '100dvh' }}>
         {children}
       </main>
+
+      <AdminPanel />
+
 
       <Footer />
     </>

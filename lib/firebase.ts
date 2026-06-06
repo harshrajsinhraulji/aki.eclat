@@ -11,6 +11,7 @@
  */
 
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app'
+import { initializeAppCheck, ReCaptchaV3Provider, type AppCheck } from 'firebase/app-check'
 import { getDatabase, type Database } from 'firebase/database'
 import { getFirestore, type Firestore } from 'firebase/firestore'
 
@@ -34,6 +35,7 @@ const hasDatabaseUrl = Boolean(firebaseConfig.databaseURL)
 let app: FirebaseApp | null = null
 let database: Database | null = null
 let firestore: Firestore | null = null
+let appCheck: AppCheck | null = null
 
 if (hasConfig) {
   try {
@@ -44,6 +46,14 @@ if (hasConfig) {
     }
 
     firestore = getFirestore(app)
+
+    // Security: App Check
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+      appCheck = initializeAppCheck(app, {
+        provider: new ReCaptchaV3Provider(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY),
+        isTokenAutoRefreshEnabled: true
+      })
+    }
   } catch (e) {
     // Log to console in dev only — never crash the app
     if (process.env.NODE_ENV === 'development') {
@@ -52,5 +62,5 @@ if (hasConfig) {
   }
 }
 
-export { app, database, firestore }
+export { app, database, firestore, appCheck }
 export default app

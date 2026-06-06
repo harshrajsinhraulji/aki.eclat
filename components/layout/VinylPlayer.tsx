@@ -2,35 +2,35 @@
 
 /**
  * components/layout/VinylPlayer.tsx
- * Fixed bottom-left. Glassmorphic luxury music player.
  *
- * Desktop: 272px pill with vinyl, track info, play/pause, volume
- * Mobile:  44px circle — tap to expand full pill, tap again to play
- *
- * Audio: /audio/drinkee-preview.mp3 — never autoplays
- * Vinyl SVG spins only when playing
- * On hover: ColomboTime slides up above
+ * Glassmorphism luxury music player.
+ * Light background redesign:
+ * — Background: rgba(255,255,255,0.85) glass
+ * — Border: 1px solid rgba(255,20,147,0.12)
+ * — SVG vinyl record replaces "N" avatar
+ * — Deep rose play/pause button
+ * — Custom pink volume slider
+ * — NEVER auto-plays
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ColomboTime } from './ColomboTime'
 import { nowPlaying } from '@/lib/data'
+import { useTheme } from '@/lib/ThemeContext'
 
 export function VinylPlayer() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const [volume, setVolume] = useState(0.7)
   const [isMobileExpanded, setIsMobileExpanded] = useState(false)
-  const isMobile = useRef(false)
   const [isMobileState, setIsMobileState] = useState(false)
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    const update = (matches: boolean) => {
-      isMobile.current = matches
-      setIsMobileState(matches)
-    }
+    const update = (matches: boolean) => setIsMobileState(matches)
     const mq = window.matchMedia('(max-width: 768px)')
     update(mq.matches)
     const handler = (e: MediaQueryListEvent) => update(e.matches)
@@ -41,7 +41,6 @@ export function VinylPlayer() {
   const togglePlay = useCallback(() => {
     const audio = audioRef.current
     if (!audio) return
-
     if (isPlaying) {
       audio.pause()
       setIsPlaying(false)
@@ -60,38 +59,67 @@ export function VinylPlayer() {
     if (audioRef.current) audioRef.current.volume = v
   }, [])
 
+  // Derived style tokens based on dark/light
+  const bgStyle = isDark ? 'rgba(10,3,6,0.85)' : 'rgba(255,255,255,0.85)'
+  const borderStyle = isDark ? '1px solid rgba(255,20,147,0.18)' : '1px solid rgba(255,20,147,0.12)'
+  const shadowStyle = isDark
+    ? '0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2)'
+    : '0 8px 32px rgba(255,20,147,0.10), 0 2px 8px rgba(0,0,0,0.04)'
+  const titleColor = isDark ? 'rgba(255,240,245,0.92)' : '#2D1A2E'
+  const artistColor = isDark ? 'rgba(255,182,217,0.65)' : '#8B5A7A'
+
   const playerPill = (
     <motion.div
       data-hover="player"
-      whileHover={{ boxShadow: '0 8px 32px rgba(255, 20, 147, 0.22)' }}
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 1.9, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{
+        boxShadow: isDark
+          ? '0 12px 40px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3)'
+          : '0 12px 40px rgba(255,20,147,0.18), 0 4px 12px rgba(0,0,0,0.06)',
+        borderColor: 'rgba(255,20,147,0.25)',
+      }}
       style={{
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
-        padding: '0 14px 0 6px',
-        width: '272px',
-        height: '52px',
-        borderRadius: '26px',
-        background: 'rgba(255, 255, 255, 0.92)',
-        backdropFilter: 'blur(24px) saturate(180%)',
-        border: '1px solid rgba(255, 20, 147, 0.14)',
-        boxShadow: '0 4px 20px rgba(255, 20, 147, 0.1)',
+        padding: '0 14px 0 8px',
+        width: '280px',
+        height: '56px',
+        borderRadius: '28px',
+        background: bgStyle,
+        backdropFilter: 'blur(20px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+        border: borderStyle,
+        boxShadow: shadowStyle,
+        transition: 'background 350ms ease, border-color 350ms ease, box-shadow 350ms ease',
       }}
     >
-      <div style={{ flexShrink: 0 }}>
-        <VinylSvg size={40} spinning={isPlaying} />
-      </div>
+      {/* SVG Vinyl Record — click to open Spotify */}
+      <a
+        href="https://open.spotify.com/track/6KnFJGCqVYxp7Q8BjVpCg"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Listen on Spotify"
+        style={{ flexShrink: 0, display: 'block', cursor: 'pointer' }}
+        aria-label="Listen on Spotify"
+      >
+        <VinylSvg size={38} spinning={isPlaying} />
+      </a>
 
-      <div style={{ flex: 1, minWidth: 0, lineHeight: 1.3 }}>
+      {/* Track info */}
+      <div style={{ flex: 1, minWidth: 0, lineHeight: 1.35 }}>
         <div
           style={{
             fontFamily: 'var(--font-figtree)',
-            fontWeight: 500,
+            fontWeight: 400,
             fontSize: '12px',
-            color: '#1A0A12',
+            color: titleColor,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
+            transition: 'color 350ms ease',
           }}
         >
           {nowPlaying.title}
@@ -101,28 +129,22 @@ export function VinylPlayer() {
             fontFamily: 'var(--font-figtree)',
             fontWeight: 300,
             fontSize: '10px',
-            color: '#A8627A',
+            color: artistColor,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
+            transition: 'color 350ms ease',
           }}
         >
           {nowPlaying.artist}
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+      {/* Controls */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
         <PlayPauseButton playing={isPlaying} onClick={togglePlay} />
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={handleVolume}
-          aria-label="Volume"
-          style={{ width: '44px' }}
-        />
+        {isPlaying && <WaveformBars />}
+        <VolumeSlider value={volume} onChange={handleVolume} />
       </div>
     </motion.div>
   )
@@ -131,26 +153,35 @@ export function VinylPlayer() {
     <div
       style={{
         position: 'fixed',
-        bottom: '24px',
-        left: '24px',
+        bottom: 'max(24px, env(safe-area-inset-bottom, 24px))',
+        left: 'clamp(24px, 3vw, 48px)',
         zIndex: 500,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: '8px',
+        maxWidth: 'calc(100vw - 48px)',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Hidden audio element */}
+      {/* Hidden audio element — NEVER auto-plays */}
       <audio ref={audioRef} src={nowPlaying.audioSrc} loop preload="none" />
 
       {/* Colombo time — slides up above on hover (desktop) */}
       {!isMobileState && <ColomboTime visible={isHovered} />}
 
-      {/* Mobile: circle toggle + expanded pill above */}
+      {/* Mobile: circle toggle + expanded pill */}
       {isMobileState ? (
-        <div style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'flex-start', gap: '8px' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column-reverse',
+            alignItems: 'flex-start',
+            gap: '8px',
+          }}
+        >
+          {/* Mobile collapsed: 44px spinning vinyl circle */}
           <motion.button
             onClick={() => {
               if (!isMobileExpanded) {
@@ -162,24 +193,26 @@ export function VinylPlayer() {
             onDoubleClick={() => setIsMobileExpanded(false)}
             whileTap={{ scale: 0.92 }}
             style={{
-              width: '48px',
-              height: '48px',
+              width: '44px',
+              height: '44px',
               borderRadius: '50%',
-              border: 'none',
-              background: 'rgba(255,255,255,0.95)',
+              border: borderStyle,
+              background: bgStyle,
               backdropFilter: 'blur(20px)',
-              boxShadow: '0 4px 16px rgba(255,20,147,0.18)',
+              boxShadow: shadowStyle,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               padding: 0,
+              transition: 'background 350ms ease, border-color 350ms ease, box-shadow 350ms ease',
             }}
             aria-label="Music player"
           >
-            <VinylSvg size={34} spinning={isPlaying} />
+            <VinylSvg size={32} spinning={isPlaying} />
           </motion.button>
 
+          {/* Mobile expanded pill */}
           <AnimatePresence>
             {isMobileExpanded && (
               <motion.div
@@ -194,18 +227,35 @@ export function VinylPlayer() {
                   padding: '0 14px 0 8px',
                   height: '48px',
                   borderRadius: '100px',
-                  background: 'rgba(255,255,255,0.97)',
-                  backdropFilter: 'blur(24px)',
-                  border: '1px solid rgba(255,20,147,0.14)',
-                  boxShadow: '0 4px 16px rgba(255,20,147,0.12)',
+                  background: isDark ? 'rgba(10,3,6,0.92)' : 'rgba(255,255,255,0.92)',
+                  backdropFilter: 'blur(20px)',
+                  border: borderStyle,
+                  boxShadow: shadowStyle,
+                  transition: 'background 350ms ease, border-color 350ms ease, box-shadow 350ms ease',
                 }}
               >
                 <VinylSvg size={30} spinning={isPlaying} />
                 <div style={{ lineHeight: 1.2 }}>
-                  <div style={{ fontFamily: 'var(--font-figtree)', fontWeight: 500, fontSize: '11px', color: '#1A0A12' }}>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-figtree)',
+                      fontWeight: 400,
+                      fontSize: '11px',
+                      color: titleColor,
+                      transition: 'color 350ms ease',
+                    }}
+                  >
                     {nowPlaying.title}
                   </div>
-                  <div style={{ fontFamily: 'var(--font-figtree)', fontWeight: 300, fontSize: '10px', color: '#A8627A' }}>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-figtree)',
+                      fontWeight: 300,
+                      fontSize: '10px',
+                      color: artistColor,
+                      transition: 'color 350ms ease',
+                    }}
+                  >
                     {nowPlaying.artist}
                   </div>
                 </div>
@@ -221,29 +271,59 @@ export function VinylPlayer() {
   )
 }
 
-/* ── Vinyl Record SVG ── */
+/* \u2500\u2500 Waveform Bars \u2014 3 oscillating bars when music is playing \u2500\u2500 */
+function WaveformBars() {
+  return (
+    <div
+      aria-hidden
+      style={{ display: 'flex', alignItems: 'center', gap: '2px', height: '16px' }}
+    >
+      <div className="waveform-bar-1" style={{ width: '2px', background: '#C2185B', borderRadius: '1px' }} />
+      <div className="waveform-bar-2" style={{ width: '2px', background: '#C2185B', borderRadius: '1px' }} />
+      <div className="waveform-bar-3" style={{ width: '2px', background: '#C2185B', borderRadius: '1px' }} />
+    </div>
+  )
+}
+
+/* \u2500\u2500 SVG Vinyl Record \u2500\u2500 */
 function VinylSvg({ size, spinning }: { size: number; spinning: boolean }) {
   return (
     <div
       className={spinning ? 'vinyl-spinning' : 'vinyl-paused'}
-      style={{ width: size, height: size, borderRadius: '50%', flexShrink: 0 }}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        flexShrink: 0,
+        /* Glow ring pulses when playing */
+        boxShadow: spinning
+          ? '0 0 0 2px rgba(194,24,91,0.15), 0 0 14px rgba(194,24,91,0.18)'
+          : 'none',
+        transition: 'box-shadow 0.5s ease',
+      }}
     >
       <svg width={size} height={size} viewBox="0 0 40 40" fill="none" aria-hidden>
-        <circle cx="20" cy="20" r="20" fill="#1A0A12" />
-        <circle cx="20" cy="20" r="17" stroke="#3D1A2A" strokeWidth="0.6" fill="none" />
-        <circle cx="20" cy="20" r="14" stroke="#3D1A2A" strokeWidth="0.6" fill="none" />
-        <circle cx="20" cy="20" r="11" stroke="#3D1A2A" strokeWidth="0.6" fill="none" />
-        <circle cx="20" cy="20" r="8.5" stroke="#3D1A2A" strokeWidth="0.6" fill="none" />
-        <circle cx="20" cy="20" r="6" fill="#C2185B" />
-        <circle cx="20" cy="20" r="4.5" fill="#AD1457" />
-        <circle cx="20" cy="20" r="1.5" fill="#FF1493" />
-        <ellipse cx="14" cy="13" rx="3" ry="2" fill="white" opacity="0.07" />
+        {/* Outer disc — dark warm tone */}
+        <circle cx="20" cy="20" r="20" fill="#2D1A2E" />
+        {/* Groove rings — monochrome at low opacity, physical texture */}
+        <circle cx="20" cy="20" r="17.5" stroke="rgba(255,255,255,0.12)" strokeWidth="0.7" fill="none" />
+        <circle cx="20" cy="20" r="15" stroke="rgba(255,255,255,0.10)" strokeWidth="0.6" fill="none" />
+        <circle cx="20" cy="20" r="12.5" stroke="rgba(255,255,255,0.09)" strokeWidth="0.6" fill="none" />
+        <circle cx="20" cy="20" r="10" stroke="rgba(255,255,255,0.08)" strokeWidth="0.6" fill="none" />
+        <circle cx="20" cy="20" r="7.5" stroke="rgba(255,255,255,0.07)" strokeWidth="0.6" fill="none" />
+        {/* Centre label — rose pink */}
+        <circle cx="20" cy="20" r="5.5" fill="#C2185B" />
+        <circle cx="20" cy="20" r="4" fill="#AD1457" />
+        {/* Centre spindle hole */}
+        <circle cx="20" cy="20" r="1.5" fill="#2D1A2E" />
+        {/* Specular highlight — makes it feel like a physical object */}
+        <ellipse cx="13" cy="12" rx="3.5" ry="2" fill="white" opacity="0.08" />
       </svg>
     </div>
   )
 }
 
-/* ── Play/Pause Button ── */
+/* ── Deep Rose Play/Pause Button ── */
 function PlayPauseButton({ playing, onClick }: { playing: boolean; onClick: () => void }) {
   return (
     <motion.button
@@ -256,7 +336,7 @@ function PlayPauseButton({ playing, onClick }: { playing: boolean; onClick: () =
         height: '28px',
         borderRadius: '50%',
         border: 'none',
-        background: playing ? 'rgba(255,20,147,0.1)' : 'transparent',
+        background: playing ? 'rgba(194,24,91,0.12)' : 'transparent',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -279,5 +359,31 @@ function PlayPauseButton({ playing, onClick }: { playing: boolean; onClick: () =
         </svg>
       )}
     </motion.button>
+  )
+}
+
+/* ── Custom Volume Slider — pink track + hot pink thumb ── */
+function VolumeSlider({
+  value,
+  onChange,
+}: {
+  value: number
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}) {
+  return (
+    <input
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      value={value}
+      onChange={onChange}
+      aria-label="Volume"
+      style={{
+        width: '44px',
+        cursor: 'pointer',
+        // Custom styling via globals.css input[type="range"] rules
+      }}
+    />
   )
 }

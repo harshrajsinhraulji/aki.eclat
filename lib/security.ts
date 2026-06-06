@@ -96,13 +96,13 @@ export function getClientIp(request: Request): string {
 ───────────────────────────────────────────── */
 
 /**
- * Validate admin session token against Supabase JWT.
+ * Validate admin session token.
  * Called by all admin API routes.
  */
 export function validateAdminToken(authHeader: string | null): boolean {
   if (!authHeader?.startsWith('Bearer ')) return false
-  // In Phase 2: verify JWT with Supabase admin client
-  // For now: presence check (actual validation via Supabase RLS)
+  // In Phase 2: verify token with Firebase Auth admin SDK
+  // For now: presence check (actual validation via Konami/Env variable)
   const token = authHeader.slice(7)
   return token.length > 0
 }

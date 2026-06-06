@@ -9,7 +9,7 @@
   /* ── Colour Palette ── */
   --color-pink-pale: #FFF0F5;
   --color-pink-blush: #FFD6E7;
-  --color-pink-hot: #FF1493;
+  --color-pink-hot: #E91E63; /* Softened from #FF1493 */
   --color-pink-deep: #C2185B;
   --color-pink-rose: #AD1457;
   --color-cream: #FFFAF6;
@@ -24,11 +24,14 @@
   --font-instrument: var(--font-instrument-serif);
 
   /* ── Spacing ── */
-  --spacing-section-y: 120px;
-  --spacing-section-y-mobile: 72px;
-  --spacing-card: 32px;
-  --spacing-card-mobile: 24px;
+  --spacing-section-y: clamp(72px, 12vw, 120px);
+  --spacing-section-y-mobile: 64px;
+  --spacing-card: clamp(24px, 4vw, 32px);
   --spacing-content-max: 1280px;
+  --spacing-edge: clamp(16px, 5vw, 32px);
+
+  /* ── Touch Targets (Zero Tolerance) ── */
+  --touch-target-min: 44px;
 
   /* ── Radius ── */
   --radius-card: 20px;
@@ -53,7 +56,64 @@
 ───────────────────────────────────────────── */
 
 :root {
+  --bg-primary: #FFF5F8;
+  --text-primary: #1A0A12;
+  --text-mid: #6B2D4A;
+  --text-soft: #A8627A;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 20, 147, 0.12);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(255, 20, 147, 0.10);
+  --card-border-hover: rgba(255, 20, 147, 0.45);
   --grain-opacity: 0.022;
+  --bokeh-opacity-1: 0.35;
+  --bokeh-opacity-2: 0.07;
+  --bokeh-opacity-3: 0.12;
+  --spotlight-opacity: 0;
+  --blob-color-1: rgba(255, 182, 217, 0.35);
+  --blob-color-2: rgba(255, 20, 147, 0.07);
+  --blob-color-3: rgba(201, 164, 101, 0.12);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0A0306;
+  --text-primary: #FFF0F5;
+  --text-mid: #FFB6D9;
+  --text-soft: #C2678A;
+  --glass-bg: rgba(30, 12, 22, 0.92);
+  --glass-border: rgba(255, 20, 147, 0.28);
+  --card-bg: rgba(45, 18, 33, 0.95);
+  --card-border: rgba(255, 20, 147, 0.25);
+  --card-border-hover: rgba(255, 20, 147, 0.60);
+  --grain-opacity: 0.015;
+  --bokeh-opacity-1: 0.15;
+  --bokeh-opacity-2: 0.03;
+  --bokeh-opacity-3: 0.05;
+  --spotlight-opacity: 0.04;
+  --blob-color-1: rgba(255, 182, 217, 0.08);
+  --blob-color-2: rgba(255, 20, 147, 0.03);
+  --blob-color-3: rgba(201, 164, 101, 0.04);
+}
+
+/* Explicit light mode — matches :root but applies when data-theme="light" is set by anti-FOUC script */
+[data-theme="light"] {
+  --bg-primary: #FFF5F8;
+  --text-primary: #1A0A12;
+  --text-mid: #6B2D4A;
+  --text-soft: #A8627A;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 20, 147, 0.12);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(255, 20, 147, 0.10);
+  --card-border-hover: rgba(255, 20, 147, 0.45);
+  --grain-opacity: 0.022;
+  --bokeh-opacity-1: 0.35;
+  --bokeh-opacity-2: 0.07;
+  --bokeh-opacity-3: 0.12;
+  --spotlight-opacity: 0;
+  --blob-color-1: rgba(255, 182, 217, 0.35);
+  --blob-color-2: rgba(255, 20, 147, 0.07);
+  --blob-color-3: rgba(201, 164, 101, 0.12);
 }
 
 body::before {
@@ -88,24 +148,35 @@ html {
 }
 
 body {
-  background-color: #FFF0F5;
-  color: #1A0A12;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-figtree), system-ui, sans-serif;
   overflow-x: hidden;
   min-height: 100dvh;
+  transition: background-color 400ms ease, color 400ms ease;
 }
 
 /* Bringhurst: eliminate widows/orphans globally */
-h1, h2, h3, h4, h5, h6 {
-  text-wrap: balance;
+/* ─────────────────────────────────────────────
+   SECTION SCROLL TARGETS
+   scroll-margin-top prevents content hiding behind
+   the fixed Navbar on anchor navigation.
+───────────────────────────────────────────── */
+
+section[id] {
+  scroll-margin-top: 0px;
 }
 
-p {
+
+p, blockquote, q {
   text-wrap: pretty;
+  hanging-punctuation: first last;
 }
 
-/* Mobile: restore default cursor */
-@media (pointer: coarse) {
+/* Mobile ONLY: restore default cursor.
+   pointer:coarse is NOT used — it misidentifies iPad+keyboard as desktop.
+   Width-based breakpoints are the correct approach for surface detection. */
+@media (max-width: 767px) {
   html {
     cursor: auto;
   }
@@ -120,12 +191,16 @@ p {
 }
 
 ::-webkit-scrollbar-track {
-  background: #FFF0F5;
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #FF1493, #C2185B);
+  background: color-mix(in srgb, var(--text-primary) 20%, transparent);
   border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--text-primary) 40%, transparent);
 }
 
 /* ─────────────────────────────────────────────
@@ -139,6 +214,30 @@ p {
   100% {
     transform: translateX(-50%);
   }
+}
+
+/* ─────────────────────────────────────────────
+   HERO GRADIENT MESH BLOB ANIMATIONS
+   Three blobs breathing slowly on the pale blush canvas.
+   Duration: 18–22s. Natural drift. Never mechanical.
+───────────────────────────────────────────── */
+
+@keyframes hero-float1 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  33%       { transform: translate(calc(-50% + 30px), calc(-50% - 20px)) scale(1.05); }
+  66%       { transform: translate(calc(-50% - 20px), calc(-50% + 30px)) scale(0.97); }
+}
+
+@keyframes hero-float2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-25px, 20px) scale(1.08); }
+  100% { transform: translate(15px, -15px) scale(0.95); }
+}
+
+@keyframes hero-float3 {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  40%       { transform: translateX(calc(-50% + 20px)) scale(1.06); }
+  75%       { transform: translateX(calc(-50% - 15px)) scale(0.96); }
 }
 
 @keyframes scroll-dot {
@@ -220,6 +319,69 @@ p {
   }
 }
 
+/* ─────────────────────────────────────────────
+   ANEH EASTER EGG: BOW RAIN
+   50 SVG bows fall from top on keyword trigger.
+   Each bow has randomised start position (via inline --bow-x)
+   and randomised duration (via --bow-dur).
+───────────────────────────────────────────── */
+
+@keyframes bow-fall {
+  0% {
+    transform: translateY(-40px) rotate(var(--bow-rot)) scale(var(--bow-scale));
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(calc(100vh + 60px)) rotate(calc(var(--bow-rot) + 180deg)) scale(var(--bow-scale));
+    opacity: 0;
+  }
+}
+
+.bow-rain-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99998;
+  overflow: hidden;
+}
+
+.bow-rain-item {
+  position: absolute;
+  top: 0;
+  left: var(--bow-x);
+  animation: bow-fall var(--bow-dur) var(--bow-delay) ease-in forwards;
+  will-change: transform, opacity;
+}
+
+/* ─────────────────────────────────────────────
+   PAGE WIPE TRANSITION
+   Blush overlay slides in from right on exit,
+   retracts to left on enter. Under Doherty threshold (700ms total).
+───────────────────────────────────────────── */
+
+.page-wipe {
+  position: fixed;
+  inset: 0;
+  background: #FFF5F8;
+  z-index: 99997;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-bodoni-moda);
+  font-size: clamp(24px, 4vw, 48px);
+  color: rgba(45, 26, 46, 0.05); /* "aki." watermark at 5% opacity */
+  letter-spacing: -0.02em;
+  font-style: italic;
+  user-select: none;
+}
+
 @keyframes slide-up-letter {
   from {
     transform: translateY(100%);
@@ -246,17 +408,32 @@ p {
 }
 
 .content-max {
-  max-width: 1280px;
+  max-width: var(--spacing-content-max);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: var(--spacing-edge);
+  padding-right: var(--spacing-edge);
+}
+
+/* ─────────────────────────────────────────────
+   WHISPER MASONRY (Strict Breakpoints)
+───────────────────────────────────────────── */
+
+.whisper-masonry {
+  max-width: var(--spacing-content-max);
+  columns: 3 320px;
+  column-gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .whisper-masonry {
+    columns: 2 320px;
+  }
 }
 
 @media (max-width: 768px) {
-  .content-max {
-    padding-left: 16px;
-    padding-right: 16px;
+  .whisper-masonry {
+    columns: 1 100%;
   }
 }
 
@@ -276,8 +453,21 @@ p {
 
 /* Selection colour */
 ::selection {
-  background: rgba(255, 20, 147, 0.18);
-  color: #1A0A12;
+  background: rgba(233, 30, 99, 0.2);
+  color: #FFFFFF;
+}
+
+/* Tabular Numbers */
+.font-tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle Text Gradients */
+.text-gradient-soft {
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Focus styles */
@@ -295,6 +485,15 @@ p {
   animation-play-state: paused;
 }
 
+/* Ticker slows to 60% speed on hover—then resumes at full speed on leave.
+   The speed transition (400ms ease-in-out) mimics a tape player changing speed.
+   animation-duration cannot be transitioned directly, so we use a custom property
+   toggled by the CSS :hover state. The actual switch is instant but the GSAP
+   listener in ObsessionsTicker handles the 400ms deceleration. */
+.ticker-inner {
+  will-change: transform;
+}
+
 /* ─────────────────────────────────────────────
    VINYL PLAYER ANIMATIONS
 ───────────────────────────────────────────── */
@@ -309,8 +508,18 @@ p {
 }
 
 /* ─────────────────────────────────────────────
-   SCROLL PROGRESS FILL
-───────────────────────────────────────────── */
+   SCROLL PROGRESS FILL & VISIBILITY
+ ───────────────────────────────────────────── */
+ 
+.scroll-progress-bar {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .scroll-progress-bar {
+    display: none !important;
+  }
+}
 
 .progress-fill {
   background: linear-gradient(to bottom, #FF1493, #C2185B);
@@ -338,18 +547,21 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-runnable-track {
   height: 3px;
-  background: rgba(255, 20, 147, 0.2);
+  /* Pastel pink track on light background */
+  background: #FFB6D9;
   border-radius: 100px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+  /* 6px hot pink filled circle */
   width: 10px;
   height: 10px;
   background: #FF1493;
   border-radius: 50%;
   margin-top: -3.5px;
+  box-shadow: 0 0 4px rgba(255,20,147,0.3);
 }
 
 input[type="range"]::-moz-range-track {
@@ -372,7 +584,7 @@ input[type="range"]::-moz-range-thumb {
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: #FF1493 #FFF0F5;
+  scrollbar-color: #FF1493 #FFF5F8;
 }
 
 /* ─────────────────────────────────────────────
@@ -413,15 +625,755 @@ html {
 }
 
 /* ─────────────────────────────────────────────
-   DESKTOP-ONLY ELEMENTS
-───────────────────────────────────────────── */
+   SURFACE-AWARE LAYOUT CLASSES
 
-.desktop-only {
+   ARCHITECTURE: Width-based breakpoints only.
+   pointer:coarse is NEVER used — it misidentifies
+   iPad+keyboard/trackpad as a desktop pointer device.
+
+   Breakpoints:
+   Mobile:  max-width: 767px
+   iPad:    768px – 1023px  
+   Desktop: 1024px+
+─────────────────────────────────────────────── */
+
+/* Desktop defaults — visible */
+.desktop-only { display: block; }
+.nav-desktop  { display: flex; }
+.nav-mobile   { display: none; }
+
+/* Mobile ONLY — hide desktop chrome */
+@media (max-width: 767px) {
+  .desktop-only { display: none; }
+  .nav-desktop  { display: none !important; }
+  .nav-mobile   { display: flex !important; }
+}
+
+/* iPad (768–1023px): full nav, no hamburger.
+   iPad with keyboard/trackpad is a real nav surface. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .nav-desktop { display: flex !important; }
+  .nav-mobile  { display: none !important; }
+  .desktop-only { display: none; } /* scroll-progress-bar stays hidden on tablet */
+}
+
+/* ─────────────────────────────────────────────
+   SECTION LAYOUT SYSTEMS
+
+   Replaces all old .coconut-left/.right hacks and
+   .universe-layout/.grid patches.
+   No !important. No absolute positioning. No magic numbers.
+   Every rule is a defensible design decision.
+─────────────────────────────────────────────── */
+
+/* ══ COCONUT — Editorial Split Layout ══════════
+   Mobile:  single column stack
+   iPad:    2-col: image (5fr) | text (7fr)
+   Desktop: 3-col: image (5fr) | gap (1fr) | text (6fr)
+   The gap column creates the breathing room — not margin.
+──────────────────────────────────────────────── */
+.coconut-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile: single column */
+  gap: clamp(48px, 8vh, 80px);
+  align-items: start;
+  width: 100%;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* iPad: image ~38% / text ~54% — classic editorial split */
+  .coconut-grid {
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(32px, 5vw, 56px);
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Desktop: 5 | 1 | 6 column split.
+     The silent gap column (1fr) is the intentional white space. */
+  .coconut-grid {
+    grid-template-columns: 5fr 1fr 6fr;
+    gap: 0;
+    align-items: center;
+  }
+  /* Gap column is the 2nd child — push text to 3rd column */
+  .coconut-image { grid-column: 1; }
+  .coconut-text  { grid-column: 3; }
+}
+
+
+/* ══ UNIVERSE — Horizontal Accordion (Desktop) ══
+   Mobile/iPad: flex-column, cards stack vertically
+   Desktop:     flex-row, cards expand horizontally
+   The .universe-accordion children control their own
+   width via Framer Motion layout animation.
+──────────────────────────────────────────────── */
+.universe-section {
+  display: flex;
+  flex-direction: column; /* mobile/tablet: stacked */
+  gap: clamp(40px, 6vh, 64px);
+}
+
+.universe-accordion {
+  display: flex;
+  flex-direction: column; /* mobile/tablet: vertical stack */
+  gap: 12px;
+}
+
+@media (min-width: 1024px) {
+  .universe-section {
+    flex-direction: row;
+    align-items: flex-start; /* CRITICAL: allows sticky child to not overflow */
+    gap: clamp(48px, 6vw, 80px);
+  }
+
+  .universe-accordion {
+    flex-direction: row; /* desktop: side-by-side panels */
+    gap: 12px;
+    /* Height constrained — accordion cards fill this exactly */
+    height: min(72vh, 560px);
+    flex: 1; /* takes remaining width after sticky narrative */
+    overflow: hidden;
+  }
+}
+
+
+/* ══ INFINITE CLOSET — Surface-Specific Modes ═══
+   Desktop: 2D drag canvas (already built)
+   iPad:    Horizontal scroll-snap carousel
+──────────────────────────────────────────────── */
+
+/* Desktop: canvas visible, carousel hidden */
+.closet-canvas   { display: block; }
+.closet-carousel { display: none; }
+
+/* iPad & Mobile: carousel visible, canvas hidden */
+@media (max-width: 1023px) {
+  .closet-canvas   { display: none; }
+  .closet-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; /* iOS momentum scroll */
+    gap: 16px;
+    padding-bottom: 8px; /* breathing room for dot indicators */
+    /* Hide scrollbar — we use dot indicators instead */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .closet-carousel::-webkit-scrollbar { display: none; }
+}
+
+
+/* ══ PLUSHIE GANG — Grid by Surface ═════════════
+   Mobile:  2-col wrap (handled in component)
+   iPad:    3-col wrap
+   Desktop: 6-col single row
+──────────────────────────────────────────────── */
+.plushie-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(16px, 2.5vw, 28px);
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .plushie-grid {
+    /* 3 cards per row on iPad */
+    gap: clamp(16px, 3vw, 24px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .plushie-grid {
+    /* Single row — all 6 cards inline */
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: clamp(16px, 2vw, 24px);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .plushie-grid::-webkit-scrollbar { display: none; }
+}
+
+
+/* ══ SECTION SCROLL ANCHOR OFFSET ═══════════════
+   Prevents navbar from covering section headings
+   when navigating via anchor links.
+──────────────────────────────────────────────── */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+
+/* ══ FOCUS STYLES — visible on both dark and light ═
+──────────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid #FF1493;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* ══ Z-INDEX SCALE ══════════════════════════════════
+   Single source of truth. All hardcoded z-indexes
+   should align with these values.
+──────────────────────────────────────────────────── */
+:root {
+  --z-grain:        9999;
+  --z-easter-egg:   9998;
+  --z-cursor:       9001;
+  --z-ticker:       1000;
+  --z-navbar:       900;
+  --z-scroll:       800;
+  --z-player:       500;
+  --z-visitor:      400;
+}
+
+
+/* ══ SECTION GRADIENT BRIDGES ════════════════════════
+   Seamlessly connects blush sections to dark sections.
+   Applied as pseudo-elements on the sections themselves.
+
+   Blush (#FFF5F8) → Dark (#0A0306) at Universe entry
+   Dark  (#0A0306) → Blush (#FFF5F8) at InfiniteCloset entry
+   Blush (#FFF5F8) → Dark (#0A0306) at ConfessionsTeaser entry
+   Dark  (#0A0306) → Blush (#FFF5F8) at Footer entry
+──────────────────────────────────────────────────── */
+
+/* About (Coconut) → Universe: blush fades to dark at bottom */
+#coconut::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Universe → InfiniteCloset: dark fades to blush at bottom */
+#universe::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* PlushieGang → ConfessionsTeaser: blush fades to dark at bottom */
+#plushies::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 160px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* LetsTalk (Contact) → Footer: dark fades to blush at bottom */
+#contact::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+/* ══ AURORA ROTATE — LetsTalk ambient glow ════════ */
+@keyframes aurora-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+
+/* ══ WAVEFORM BARS — VinylPlayer playing state ════ */
+@keyframes waveform-1 {
+  0%, 100% { height: 4px;  }
+  50%       { height: 12px; }
+}
+@keyframes waveform-2 {
+  0%, 100% { height: 12px; }
+  50%       { height: 4px;  }
+}
+@keyframes waveform-3 {
+  0%, 100% { height: 8px;  }
+  50%       { height: 14px; }
+}
+
+.waveform-bar-1 { animation: waveform-1 600ms ease-in-out infinite; }
+.waveform-bar-2 { animation: waveform-2 600ms ease-in-out infinite 150ms; }
+.waveform-bar-3 { animation: waveform-3 600ms ease-in-out infinite 300ms; }
+
+
+/* ══ CSS CONTAINMENT — fixed-position elements ════ */
+.ticker-track {
+  contain: layout style;
+}
+
+
+/* ══ DARK MODE UPGRADES ═══════════════════════════
+
+   #77 Neon glow on dark mode pink text
+   #78 Grain opacity bump in dark (now set to 0.032)
+   #76 Dark mode starfield class
+   #79 Dark mode blob color shift → deep magenta
+────────────────────────────────────────────────── */
+
+/* Grain: bump to 0.032 in dark mode for film-noir texture */
+[data-theme="dark"] {
+  --grain-opacity: 0.032;
+}
+
+/* Neon glow: applied to elements with class .neon-text in dark mode */
+[data-theme="dark"] .neon-text,
+[data-theme="dark"] .neon-heading {
+  text-shadow:
+    0 0 20px rgba(255, 20, 147, 0.55),
+    0 0 40px rgba(255, 20, 147, 0.25),
+    0 0 80px rgba(194, 24, 91, 0.12);
+}
+
+/* Dark starfield overlay — fixed behind hero content */
+.dark-stars-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+[data-theme="dark"] .dark-stars-overlay {
+  opacity: 1;
+}
+
+/* ══ NEW KEYFRAMES ════════════════════════════════ */
+
+/* #9 Breathing ambient pulse — hero center glow */
+@keyframes ambient-breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+  25% {
+    transform: scale(1.08);
+    opacity: 0.22;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.28;
+  }
+  75% {
+    transform: scale(1.06);
+    opacity: 0.20;
+  }
+}
+
+/* #2 Text scramble reveal — applied per letter */
+@keyframes scramble-in {
+  0% { opacity: 0; }
+  30% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* #36 Ripple on button click */
+@keyframes ripple-burst {
+  0% {
+    transform: scale(0);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.ripple-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ripple-btn:active::after {
+  animation: ripple-burst 500ms ease-out;
+}
+
+/* ══ SECTION NAV DOTS ═════════════════════════════
+   #53 Fixed right-side section nav
+────────────────────────────────────────────────── */
+
+.section-nav-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-scroll);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+@media (max-width: 1023px) {
+  .section-nav-dots {
+    display: none;
+  }
+}
+
+.section-nav-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.section-nav-dot-circle {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(194, 24, 91, 0.25);
+  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.section-nav-dot.active .section-nav-dot-circle {
+  width: 8px;
+  height: 8px;
+  background: #FF1493;
+  box-shadow: 0 0 8px rgba(255, 20, 147, 0.6);
+}
+
+.section-nav-dot-label {
+  font-family: var(--font-figtree);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #FF1493;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(4px);
+  transition: all 200ms ease;
+  pointer-events: none;
+}
+
+.section-nav-dot:hover .section-nav-dot-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Dot pulse animation for active section */
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 20, 147, 0.6); }
+  50% { box-shadow: 0 0 14px rgba(255, 20, 147, 0.9), 0 0 24px rgba(255, 20, 147, 0.3); }
+}
+
+.section-nav-dot.active .section-nav-dot-circle {
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+/* ══ BACK TO TOP ══════════════════════════════════
+   #59 Floating back-to-top button
+────────────────────────────────────────────────── */
+
+.back-to-top-btn {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: calc(var(--z-scroll) - 10);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(255, 20, 147, 0.9) 0%, rgba(194, 24, 91, 0.9) 100%);
+  backdrop-filter: blur(16px);
+  border: none;
+  border-radius: 100px;
+  color: white;
+  font-family: var(--font-figtree);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.35);
+  transition: box-shadow 300ms ease, transform 200ms ease;
+}
+
+.back-to-top-btn:hover {
+  box-shadow: 0 12px 48px rgba(255, 20, 147, 0.55);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* ══ KEYBOARD TOAST ═══════════════════════════════
+   #39 Keyboard shortcut legend
+────────────────────────────────────────────────── */
+
+.keyboard-toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: calc(var(--z-cursor) - 1);
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px 28px;
+  min-width: 280px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 20, 147, 0.06);
+}
+
+.keyboard-toast-title {
+  font-family: var(--font-figtree);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #FF1493;
+  margin-bottom: 16px;
+}
+
+.keyboard-toast-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 20, 147, 0.06);
+}
+
+.keyboard-toast-row:last-child {
+  border-bottom: none;
+}
+
+.keyboard-toast-action {
+  font-family: var(--font-figtree);
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-mid);
+  transition: color 300ms ease;
+}
+
+.keyboard-toast-key {
+  font-family: var(--font-figtree);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 3px 8px;
+  letter-spacing: 0.05em;
+  transition: color 300ms ease, background 300ms ease;
+}
+
+/* ══ TOOLTIP BASE ═════════════════════════════════
+   #94 Tooltips on section labels
+────────────────────────────────────────────────── */
+
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background: rgba(45, 26, 46, 0.92);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-figtree);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease, transform 180ms ease;
+  z-index: 9000;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ══ CARD FLIP ════════════════════════════════════
+   #70 3D card flip for Closet cards
+────────────────────────────────────────────────── */
+
+.card-flip-container {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.card-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+
+.card-flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-flip-front,
+.card-flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+}
+
+.card-flip-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(145deg, #2D0A1E 0%, #1A0A12 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  gap: 16px;
+}
+
+/* ══ INK SPREAD THEME TRANSITION ══════════════════
+   #75 Circle-expand mask from toggle position
+────────────────────────────────────────────────── */
+
+.theme-transition-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  pointer-events: none;
+  clip-path: circle(0% at var(--toggle-x, 50%) var(--toggle-y, 50%));
+  transition: clip-path 600ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.theme-transition-mask.expanding {
+  clip-path: circle(150% at var(--toggle-x, 50%) var(--toggle-y, 50%));
+}
+
+/* ══ SECTION ENTRANCE CLIP REVEAL ═════════════════
+   #32 Multi-line heading clip reveal utility
+────────────────────────────────────────────────── */
+
+.clip-line-wrapper {
+  overflow: hidden;
   display: block;
 }
 
-@media (pointer: coarse) {
-  .desktop-only {
-    display: none;
+/* ══ POEM FOCUS MODE ══════════════════════════════
+   #40 Dim rest of section when reading a poem
+────────────────────────────────────────────────── */
+
+.poem-focus-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 3, 6, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  pointer-events: auto;
+}
+
+/* ══ PEEKABOO CLOSET ══════════════════════════════
+   #69 Show rightmost card at 30% to signal "more"
+────────────────────────────────────────────────── */
+
+.closet-canvas {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 6%,
+    black 85%,
+    transparent 100%
+  );
+}
+
+/* ══ BACK TO TOP MOBILE HIDE ══════════════════════ */
+@media (max-width: 767px) {
+  .back-to-top-btn {
+    bottom: 20px;
+    padding: 8px 16px;
+    font-size: 9px;
   }
+}
+
+/* ══ DARK MODE SCROLLBAR ══════════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #0A0306;
+}
+
+/* ══ MOBILE FULLSCREEN NAV ════════════════════════
+   #57 Full-screen blush overlay nav on mobile
+────────────────────────────────────────────────── */
+
+.mobile-nav-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-navbar) - 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* ─────────────────────────────────────────────
+   GOD-TIER UPGRADES: BUTTON TENSION
+───────────────────────────────────────────── */
+
+.btn-tension {
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 200ms ease;
+  will-change: transform, box-shadow;
+}
+
+.btn-tension:active {
+  transform: scale(0.96) translateY(2px);
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(255, 20, 147, 0.1) !important;
+}
+
+[data-theme="dark"] .btn-tension:active {
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(255, 20, 147, 0.2) !important;
 }

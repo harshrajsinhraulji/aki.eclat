@@ -87,10 +87,10 @@ export const nowPlaying = {
 ───────────────────────────────────────────── */
 
 export const navLinks = [
-  { label: 'About', href: '#about' },
+  { label: 'About', href: '#coconut' },
   { label: 'Closet', href: '#closet' },
   { label: 'Art', href: '#art' },
-  { label: 'Stories', href: '#stories' },
+  { label: 'Gang', href: '#plushies' },
   { label: 'Spill', href: '/confessions' },
 ]
 
@@ -122,8 +122,42 @@ export const obsessions = [
 
 export const akiPhrases = [
   "I can't, aneh",
-  "aneh, I'm just a girl 🎀",
+  "aneh, I'm just a girl 🎠",
   "aneh, please",
   "I simply cannot, aneh",
   "aneh, no way",
 ]
+
+/* ─────────────────────────────────────────────
+   SOCIAL LINKS — Single source of truth.
+   Update here; components import from here.
+───────────────────────────────────────────── */
+
+export const socialLinks = [
+  {
+    label: 'Discord',
+    username: 'aki.eclat',
+    href: 'https://discord.gg/xZm4yztnrE',
+    symbol: '◇',
+  },
+  {
+    label: '7cups',
+    username: null, // TODO: fill in when Aki provides her 7cups ID
+    href: null,
+    symbol: '♡',
+  },
+]
+
+/* ─────────────────────────────────────────────
+   AKI META — Bio data for use across sections.
+───────────────────────────────────────────── */
+
+export const akiMeta = {
+  name: 'Aki',
+  handle: 'aki.eclat',
+  origin: 'Sri Lanka',
+  base: 'London',
+  study: 'Interior Design',
+  leagueRank: 'Diamond 1',
+}
+

@@ -2,13 +2,19 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { bodoniModa, figtree, instrumentSerif } from '@/lib/fonts'
 import { LayoutClient } from './layout-client'
+import { ThemeProvider } from '@/lib/ThemeContext'
 
 export const metadata: Metadata = {
-  title: "Aki's World — Interior Design · Psychology · Diamond 1",
+  metadataBase: new URL('https://aki-in-a-nutshell.web.app'),
+  title: {
+    default: "Aki's World — Interior Design · Psychology · Diamond 1",
+    template: "%s — Aki's World",
+  },
   description:
-    "Step into Aki's world. Sri Lankan blood, London upbringing. Interior design student, psychology devotee, Diamond 1 carry. aneh, I'm just a girl 🎀",
+    "Step into Aki's world. Sri Lankan blood, London soul. Interior design student, psychology devotee, Diamond 1 carry. aneh, I'm just a girl 🎀",
   keywords: [
     'Aki',
+    'aki.eclat',
     'interior design',
     'psychology',
     'personal website',
@@ -16,20 +22,43 @@ export const metadata: Metadata = {
     'London',
     'League of Legends',
     'Diamond 1',
+    'confessions',
   ],
   openGraph: {
     title: "Aki's World",
     description: "aneh, I'm just a girl 🎀",
     type: 'website',
+    url: 'https://aki-in-a-nutshell.web.app',
+    siteName: "Aki's World",
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: "Aki's World — AKI wordmark on deep pink",
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: "Aki's World",
     description: "aneh, I'm just a girl 🎀",
+    images: ['/og-image.png'],
+  },
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+    ],
+    shortcut: '/icon.png',
+    apple: '/icon.png',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 }
 
@@ -45,7 +74,43 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <LayoutClient>{children}</LayoutClient>
+        {/* Anti-FOUC: set data-theme synchronously before paint to prevent flash of wrong theme.
+            Must be the first thing in body so it runs before any CSS-dependent rendering. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('aki-theme');
+                  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var theme = saved || (prefersDark ? 'dark' : 'light');
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch(e) {
+                  document.documentElement.setAttribute('data-theme', 'light');
+                }
+              })()
+            `
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              'name': 'Aki',
+              'url': 'https://aki-in-a-nutshell.web.app',
+              'sameAs': [
+                'https://discord.com/users/aki.eclat',
+              ],
+              'jobTitle': 'Interior Designer & Cognitive Psychology Student',
+              'knowsAbout': ['Interior Design', 'Cognitive Psychology', 'League of Legends'],
+            }),
+          }}
+        />
+        <ThemeProvider>
+          <LayoutClient>{children}</LayoutClient>
+        </ThemeProvider>
       </body>
     </html>
   )

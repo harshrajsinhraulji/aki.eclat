@@ -86,9 +86,17 @@ export const durations = {
 ───────────────────────────────────────────── */
 
 export const easings = {
+  /** Things arriving — used for entering elements, expansions */
   outExpo: [0.16, 1, 0.3, 1] as [number, number, number, number],
+  /** Things arriving (alt, slightly softer — section entrances) */
+  outExpoAlt: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  /** Things moving through — scroll-linked, continuous */
   inOut: [0.87, 0, 0.13, 1] as [number, number, number, number],
   inOutQuart: [0.76, 0, 0.24, 1] as [number, number, number, number],
+  /** Things moving through (smooth) — background transitions */
+  inOutSmooth: [0.45, 0, 0.55, 1] as [number, number, number, number],
+  /** Things building to something — slight overshoot (1.04×) */
+  anticipation: [0.34, 1.56, 0.64, 1] as [number, number, number, number],
 } as const
 
 /* ─────────────────────────────────────────────
@@ -165,4 +173,16 @@ export const containerStagger = {
       staggerChildren: stagger.siblings,
     },
   },
+}
+
+/* ─────────────────────────────────────────────
+   REDUCED MOTION
+   Components can call this once (not in render) to
+   check if the user prefers reduced motion.
+   When true, skip all choreography — use instant fades.
+───────────────────────────────────────────── */
+
+export function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }

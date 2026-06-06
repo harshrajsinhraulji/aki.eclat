@@ -1,0 +1,12 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /confessions/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['text', 'createdAt'])
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() <= 1000;
+      allow update, delete: if true;
+    }
+  }
+}

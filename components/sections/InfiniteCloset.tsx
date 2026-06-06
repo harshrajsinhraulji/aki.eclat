@@ -85,13 +85,19 @@ export function InfiniteCloset() {
 
   // Track active index based on scroll position of carousel
   const carouselRef = useRef<HTMLDivElement>(null)
+  const prevIndexRef = useRef(0)
 
   useEffect(() => {
     const handleScroll = () => {
       if (!carouselRef.current) return
-      const { scrollLeft, clientWidth } = carouselRef.current
-      const newIndex = Math.round(scrollLeft / clientWidth)
-      setActiveIndex(Math.min(Math.max(newIndex, 0), items.length - 1))
+      const { scrollLeft } = carouselRef.current
+      const newIndex = Math.max(0, Math.min(items.length - 1, Math.round(scrollLeft / (CARD_W + CARD_GAP))))
+      setActiveIndex(newIndex)
+
+      if (newIndex !== prevIndexRef.current) {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(10)
+        prevIndexRef.current = newIndex
+      }
     }
     const current = carouselRef.current
     if (current) {

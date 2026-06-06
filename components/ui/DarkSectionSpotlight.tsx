@@ -27,7 +27,7 @@ export function DarkSectionSpotlight() {
     return () => window.removeEventListener('mousemove', onMove)
   }, [rawX, rawY])
 
-  if (theme !== 'dark') return null
+  if (theme !== 'midnight' && theme !== 'dusk') return null
 
   return (
     <motion.div

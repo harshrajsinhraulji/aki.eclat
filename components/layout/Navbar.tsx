@@ -28,7 +28,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
   const { theme, toggleTheme } = useTheme()
-  const isDark = theme === 'dark'
+  const isDark = theme === 'midnight' || theme === 'dusk'
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const lastScrollY = useRef(0)
@@ -435,6 +435,7 @@ function NavLink({
 
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme()
+  const isDark = theme === 'midnight' || theme === 'dusk'
 
   return (
     <button
@@ -449,16 +450,22 @@ function ThemeToggle() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: theme === 'light' ? '#8B5A7A' : '#FFB6D9',
+        color: theme === 'dawn' || theme === 'noon' ? '#8B5A7A' : '#FFB6D9',
         transition: 'color 300ms ease, background 300ms ease',
         pointerEvents: 'auto',
       }}
-      onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,20,147,0.08)'}
-      onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+      onMouseOver={(e) => {
+        e.currentTarget.style.background = isDark ? 'rgba(255,182,217,0.1)' : 'rgba(255,20,147,0.06)'
+        e.currentTarget.style.color = '#FF1493'
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.background = 'transparent'
+        e.currentTarget.style.color = theme === 'dawn' || theme === 'noon' ? '#8B5A7A' : '#FFB6D9'
+      }}
       aria-label="Toggle theme mode"
     >
       <AnimatePresence mode="wait" initial={false}>
-        {theme === 'light' ? (
+        {theme === 'dawn' || theme === 'noon' ? (
           <motion.svg
             key="moon"
             initial={{ rotate: -90, scale: 0, opacity: 0 }}

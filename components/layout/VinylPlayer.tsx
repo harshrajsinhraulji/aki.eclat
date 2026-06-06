@@ -26,7 +26,7 @@ export function VinylPlayer() {
   const [isMobileExpanded, setIsMobileExpanded] = useState(false)
   const [isMobileState, setIsMobileState] = useState(false)
   const { theme } = useTheme()
-  const isDark = theme === 'dark'
+  const isDark = theme === 'midnight' || theme === 'dusk'
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {

@@ -25,7 +25,7 @@ type TickerItem = { type: 'heart' | 'star'; text: string }
 export function ObsessionsTicker() {
   const [items, setItems] = useState<TickerItem[]>(fallbackItems as TickerItem[])
   const { theme } = useTheme()
-  const isDark = theme === 'dark'
+  const isDark = theme === 'midnight' || theme === 'dusk'
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null)
 
   useEffect(() => {

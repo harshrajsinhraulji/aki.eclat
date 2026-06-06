@@ -30,7 +30,7 @@ export function ConfessionsWall() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const { theme, toggleTheme } = useTheme()
-  const isDark = theme === 'dark'
+  const isDark = theme === 'midnight' || theme === 'dusk'
 
   useEffect(() => {
     if (!firestore) {

@@ -70,6 +70,7 @@ function WhisperCard({ text, author, index, mouseX, mouseY }: { text: string; au
           onDragEnd={(e, info) => {
             const distance = Math.hypot(info.offset.x, info.offset.y)
             if (distance > 150) {
+              if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([20, 10, 20])
               setIsRipped(true) // Ripped off the wall!
             }
           }}

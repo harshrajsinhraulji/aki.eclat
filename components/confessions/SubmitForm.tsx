@@ -25,7 +25,7 @@ export function SubmitForm({ isOpen, onClose }: SubmitFormProps) {
   const isHolding = useRef(false)
   const holdInterval = useRef<NodeJS.Timeout | null>(null)
   const { theme } = useTheme()
-  const isDark = theme === 'dark'
+  const isDark = theme === 'midnight' || theme === 'dusk'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -254,7 +254,11 @@ export function SubmitForm({ isOpen, onClose }: SubmitFormProps) {
                   animate={{
                     scale: holdProgress > 0 && holdProgress < 1
                       ? 1 + Math.sin(holdProgress * Math.PI * 10) * (0.02 + holdProgress * 0.05)
-                      : 1
+                      : isSubmitting ? 0.95 : 1,
+                    y: holdProgress > 0 ? 4 : 0,
+                    boxShadow: holdProgress > 0
+                      ? '0 2px 4px rgba(255,20,147,0.3) inset, 0 1px 2px rgba(0,0,0,0.2)'
+                      : (isSubmitting || !text.trim() ? 'none' : '0 12px 24px rgba(255,20,147,0.1)')
                   }}
                   transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                   style={{
@@ -270,7 +274,7 @@ export function SubmitForm({ isOpen, onClose }: SubmitFormProps) {
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     cursor: isSubmitting || !text.trim() ? 'not-allowed' : 'pointer',
-                    boxShadow: isSubmitting || !text.trim() ? 'none' : '0 12px 24px rgba(255,20,147,0.1)',
+
                     position: 'relative',
                     overflow: 'hidden',
                     willChange: 'transform',

@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
 
-type Theme = 'light' | 'dark'
+export type Theme = 'dawn' | 'noon' | 'dusk' | 'midnight'
 
 interface ThemeContextType {
   theme: Theme
@@ -12,7 +12,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light')
+  const [theme, setTheme] = useState<Theme>('noon')
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('aki-theme') as Theme | null
@@ -20,15 +20,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setTheme(savedTheme)
       document.documentElement.setAttribute('data-theme', savedTheme)
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      const defaultTheme = prefersDark ? 'dark' : 'light'
-      setTheme(defaultTheme)
-      document.documentElement.setAttribute('data-theme', defaultTheme)
+      const hour = new Date().getHours()
+      let currentTheme: Theme = 'midnight'
+      if (hour >= 5 && hour < 10) currentTheme = 'dawn'
+      else if (hour >= 10 && hour < 17) currentTheme = 'noon'
+      else if (hour >= 17 && hour < 20) currentTheme = 'dusk'
+      
+      setTheme(currentTheme)
+      document.documentElement.setAttribute('data-theme', currentTheme)
     }
   }, [])
 
   const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    const sequence: Theme[] = ['dawn', 'noon', 'dusk', 'midnight']
+    const nextIdx = (sequence.indexOf(theme) + 1) % sequence.length
+    const nextTheme = sequence[nextIdx]
     setTheme(nextTheme)
     localStorage.setItem('aki-theme', nextTheme)
     document.documentElement.setAttribute('data-theme', nextTheme)

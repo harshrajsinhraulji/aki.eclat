@@ -17,7 +17,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from 'framer-motion'
+import { motion, AnimatePresence, useMotionTemplate, useMotionValue, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { BowSvg } from '@/components/ui/BowSvg'
 import { easings, durations } from '@/lib/motion'
@@ -55,9 +55,9 @@ function VIPAccessPass() {
     <motion.div
       onClick={copy}
       onMouseMove={handleMouseMove}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      initial={{ opacity: 0, y: 40 }}
+      whileHover={{ scale: 1.02, y: -4, boxShadow: '0 40px 100px color-mix(in srgb, var(--text-primary) 15%, transparent)' }}
+      whileTap={{ scale: 0.96, y: 8, boxShadow: '0 8px 20px color-mix(in srgb, var(--text-primary) 15%, transparent) inset, 0 4px 10px color-mix(in srgb, var(--text-primary) 5%, transparent)' }}
+      initial={{ opacity: 0, y: 40, boxShadow: '0 32px 80px color-mix(in srgb, var(--text-primary) 10%, transparent)' }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: easings.outExpo }}
@@ -71,7 +71,6 @@ function VIPAccessPass() {
         position: 'relative',
         cursor: 'pointer',
         overflow: 'hidden',
-        boxShadow: '0 32px 80px color-mix(in srgb, var(--text-primary) 10%, transparent)',
         border: '1px solid color-mix(in srgb, var(--text-primary) 5%, transparent)',
       }}
     >
@@ -122,6 +121,14 @@ function VIPAccessPass() {
 
 export function LetsTalk() {
   const [isDesktop, setIsDesktop] = useState(false)
+
+  // Scroll Velocity Tracking
+  const { scrollY } = useScroll()
+  const scrollVelocity = useVelocity(scrollY)
+  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 })
+  const textBlur = useTransform(smoothVelocity, [-1000, 0, 1000], [6, 0, 6])
+  const textOpacity = useTransform(smoothVelocity, [-1000, 0, 1000], [0.3, 1, 0.3])
+  const textFilter = useMotionTemplate`blur(${textBlur}px)`
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)')
@@ -285,7 +292,9 @@ export function LetsTalk() {
             fontSize: '10px',
             letterSpacing: '0.16em',
             color: 'var(--text-soft)',
-            opacity: 0.7,
+            opacity: textOpacity,
+            filter: textFilter,
+            willChange: 'opacity, filter',
             textTransform: 'uppercase',
             textAlign: 'center',
             lineHeight: 2,

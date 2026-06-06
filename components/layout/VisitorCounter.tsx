@@ -22,7 +22,7 @@ import { useTheme } from '@/lib/ThemeContext'
 export function VisitorCounter() {
   const [count, setCount] = useState<number>(1)
   const { theme } = useTheme()
-  const isDark = theme === 'dark'
+  const isDark = theme === 'midnight' || theme === 'dusk'
 
   useEffect(() => {
     let mounted = true

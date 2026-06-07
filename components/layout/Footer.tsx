@@ -20,7 +20,7 @@
 import { motion } from 'framer-motion'
 import { BowSvg } from '@/components/ui/BowSvg'
 import { easings } from '@/lib/motion'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 
 const LOGOTYPE = 'aki.'
 
@@ -58,6 +58,54 @@ export function Footer() {
   const handleAnehDoubleClick = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
+
+  const [destructClicks, setDestructClicks] = useState(0)
+  const [destructing, setDestructing] = useState(false)
+  const destructTimeout = useRef<NodeJS.Timeout | null>(null)
+
+  const handleDestructClick = () => {
+    if (destructing) return
+    setDestructClicks((prev) => {
+      const next = prev + 1
+      if (next >= 5) {
+        setDestructing(true)
+        playTick() // Final click sound
+        
+        // Self Destruct Sequence
+        const elements = Array.from(document.querySelectorAll('section, header, footer, nav, .custom-cursor-wrapper, canvas'))
+        // reverse so we delete from bottom up
+        elements.reverse()
+        
+        let delay = 0
+        elements.forEach((el) => {
+          setTimeout(() => {
+            const htmlEl = el as HTMLElement
+            htmlEl.style.transition = 'all 0.4s cubic-bezier(0.8, 0, 0.2, 1)'
+            htmlEl.style.transform = 'scale(0.9) translateY(40px) rotateX(20deg)'
+            htmlEl.style.opacity = '0'
+            htmlEl.style.pointerEvents = 'none'
+          }, delay)
+          delay += 120
+        })
+        
+        setTimeout(() => {
+          document.documentElement.setAttribute('data-theme', 'midnight')
+          document.body.style.transition = 'background 1s ease'
+          document.body.style.background = '#0A0306'
+        }, delay)
+        
+        setTimeout(() => {
+          window.location.reload()
+        }, delay + 1500)
+      }
+      return next
+    })
+    
+    if (destructTimeout.current) clearTimeout(destructTimeout.current)
+    destructTimeout.current = setTimeout(() => {
+      setDestructClicks(0)
+    }, 2000)
+  }
 
   return (
     <footer
@@ -220,6 +268,25 @@ export function Footer() {
           </motion.span>
         </motion.p>
       </div>
+      {/* ── THE SELF DESTRUCT RED DOT ── */}
+      <button
+        onClick={handleDestructClick}
+        aria-label="Do not click"
+        style={{
+          position: 'absolute',
+          bottom: '8px',
+          right: '8px',
+          width: '4px',
+          height: '4px',
+          background: destructing ? '#ff0000' : 'rgba(255, 0, 0, 0.05)',
+          border: 'none',
+          borderRadius: '50%',
+          cursor: 'pointer',
+          padding: '12px', // Invisible hit area
+          backgroundClip: 'content-box',
+          zIndex: 50,
+        }}
+      />
     </footer>
   )
 }

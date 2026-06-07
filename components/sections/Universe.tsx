@@ -111,6 +111,11 @@ export function Universe() {
   const [expandedIndex, setExpandedIndex] = useState(0)
   const [isDesktop, setIsDesktop] = useState(false)
   const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [currentHour, setCurrentHour] = useState<number | null>(null)
+
+  useEffect(() => {
+    setCurrentHour(new Date().getHours())
+  }, [])
 
   /* Detect desktop vs tablet/mobile.
      We use a media query not pointer:coarse — iPad+keyboard is desktop-like
@@ -297,6 +302,7 @@ export function Universe() {
             isExpanded={expandedIndex === index}
             isAnyExpanded={true}
             isDesktop={isDesktop}
+            currentHour={currentHour}
             onActivate={() => handleCardActivate(index)}
           />
         ))}
@@ -312,6 +318,7 @@ function AccordionCard({
   index,
   isExpanded,
   isDesktop,
+  currentHour,
   onActivate,
 }: {
   card: (typeof CARDS)[0]
@@ -319,6 +326,7 @@ function AccordionCard({
   isExpanded: boolean
   isAnyExpanded: boolean
   isDesktop: boolean
+  currentHour: number | null
   onActivate: () => void
 }) {
   const [factIndex, setFactIndex] = useState(0)
@@ -452,7 +460,39 @@ function AccordionCard({
               zIndex: 2,
             }}
           >
-            <div>
+            {card.id === 3 && currentHour !== 2 && currentHour !== null && (
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10,
+                background: 'rgba(10, 3, 6, 0.4)',
+              }}>
+                <span style={{
+                  fontFamily: 'var(--font-figtree)',
+                  fontSize: '11px',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: '#FF1493',
+                  background: 'rgba(255, 20, 147, 0.1)',
+                  padding: '8px 16px',
+                  borderRadius: '100px',
+                  border: '1px solid rgba(255, 20, 147, 0.2)',
+                }}>
+                  This thought only exists at 2:00 AM.
+                </span>
+              </div>
+            )}
+            <div style={{
+              filter: card.id === 3 && currentHour !== 2 && currentHour !== null ? 'blur(12px) grayscale(1)' : 'none',
+              pointerEvents: card.id === 3 && currentHour !== 2 && currentHour !== null ? 'none' : 'auto',
+              userSelect: card.id === 3 && currentHour !== 2 && currentHour !== null ? 'none' : 'auto',
+              transition: 'filter 0.5s ease',
+              display: 'contents', // Inherit flex behavior
+            }}>
+              <div>
               {/* Tag — first element */}
               <motion.span
                 initial={{ opacity: 0, y: 8 }}
@@ -614,6 +654,7 @@ function AccordionCard({
               }}
             >
               {String(card.id).padStart(2, '0')}
+            </div>
             </div>
           </motion.div>
         )}

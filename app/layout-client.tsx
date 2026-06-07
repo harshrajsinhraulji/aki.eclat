@@ -32,6 +32,7 @@ import { BackToTop } from '@/components/layout/BackToTop'
 import { KeyboardToast } from '@/components/ui/KeyboardToast'
 import { GhostCursor } from '@/components/layout/GhostCursor'
 import { GodlyEasterEggs } from '@/components/ui/GodlyEasterEggs'
+import { AkiCodeListener } from '@/components/layout/AkiCodeListener'
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   useLenis()
@@ -57,6 +58,7 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
       <VinylPlayer />
       <VisitorCounter />
       <Navbar />
+      <AkiCodeListener />
       {/* Easter egg: type 'aneh' anywhere → bow rain 🎀 */}
       <AnehEasterEgg />
       {/* Arrow key navigation between sections */}

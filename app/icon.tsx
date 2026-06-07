@@ -20,23 +20,35 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #FF1493 0%, #C2185B 100%)',
+          background: '#0A0306',
           borderRadius: '120px',
+          border: '8px solid rgba(255, 20, 147, 0.4)',
         }}
       >
-        {/* Bow SVG rendered inline */}
         <div
           style={{
-            fontSize: '280px',
+            fontSize: '320px',
+            fontFamily: 'serif',
+            fontStyle: 'italic',
+            fontWeight: 'bold',
+            color: '#FFF0F5',
             lineHeight: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
+            marginTop: '-40px',
           }}
         >
-          🎀
+          A
         </div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '120px',
+            right: '120px',
+            width: '40px',
+            height: '40px',
+            background: '#FF1493',
+            borderRadius: '50%',
+          }}
+        />
       </div>
     ),
     { ...size }

@@ -11,8 +11,9 @@
  * It does not gate the main content.
  */
 
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useLenis } from '@/hooks/useLenis'
+import { motion, useScroll, useVelocity } from 'framer-motion'
 import { LoadingScreen } from '@/components/layout/LoadingScreen'
 import { AmbientDust } from '@/components/layout/AmbientDust'
 import { CustomCursor } from '@/components/layout/CustomCursor'
@@ -36,9 +37,24 @@ import { AkiCodeListener } from '@/components/layout/AkiCodeListener'
 import { GlobalCanvas } from '@/components/webgl/GlobalCanvas'
 import { SpatialAudio } from '@/components/layout/SpatialAudio'
 import { PrecognitiveEngine } from '@/hooks/usePrecognitiveHover'
+import { ConsoleArt } from '@/components/layout/ConsoleArt'
+import { EndlessRecursion } from '@/components/layout/EndlessRecursion'
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   useLenis()
+  const { scrollY } = useScroll()
+  const scrollVelocity = useVelocity(scrollY)
+
+  // Tie font-weight to scroll velocity
+  useEffect(() => {
+    return scrollVelocity.onChange((v) => {
+      // Calculate a dynamic weight between 300 and 700 based on speed
+      const baseWeight = 400
+      const addedWeight = Math.min(Math.abs(v) * 0.15, 300)
+      const newWeight = Math.round(baseWeight + addedWeight)
+      document.documentElement.style.setProperty('--dynamic-weight', `${newWeight}`)
+    })
+  }, [scrollVelocity])
 
   // onComplete is a no-op now — loading screen is just cosmetic overlay
   const handleLoadComplete = useCallback(() => {
@@ -47,6 +63,11 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <ConsoleArt />
+      
+      {/* Endless Teleportation Loop */}
+      <EndlessRecursion />
+      
       {/* Mathematical Link Prediction */}
       <PrecognitiveEngine />
 
@@ -69,6 +90,7 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
       <ScrollProgress />
       <VinylPlayer />
       <VisitorCounter />
+      <ScrollProgress />
       <Navbar />
       <AkiCodeListener />
       {/* Easter egg: type 'aneh' anywhere → bow rain 🎀 */}

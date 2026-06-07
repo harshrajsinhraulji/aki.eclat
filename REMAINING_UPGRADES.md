@@ -36,13 +36,11 @@ Here are the remaining items from the original 100 Godly Implementations list th
 - **Parallax Layers:** True multi-plane parallax mimicking a multiplane camera from classic animation.
 - **Page Tearing:** Navigating by literally swiping to "tear" the current DOM away.
 - **Endless Recursion:** Scrolling past the footer seamlessly re-enters the header without a reload.
-- **Precognitive Hover:** Tracking mouse trajectory to predict which link will be clicked and pre-fetching it before the hover even occurs.
 
 ## V. Raw Performance & DOM Mastery
 - **Predictive Image Decoding:** Using `ImageDecoder` API in background workers.
 - **Virtual DOM Bypassing:** Mutating DOM nodes directly for high-frequency cursor/scroll updates.
 - **Hardware-Accelerated SVGs:** Converting complex SVGs into WebGL geometry.
-- **Dynamic FPS Throttling:** Detecting battery power to gracefully degrade physics.
 - **Priority Hints & Early Hints:** 103 Early Hints on the server.
 - **Brotli Level 11:** Maximum compression delivery.
 - **Zero Layout Shifts (CLS):** Mathematical pre-calculation of all dimensions to prevent shift.

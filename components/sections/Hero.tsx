@@ -25,6 +25,7 @@ import { useRef, useState, useEffect } from 'react'
 import { motion, useMotionValue, useSpring, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { BowSvg } from '@/components/ui/BowSvg'
 import { springs, easings, durations } from '@/lib/motion'
+import { eradicateOrphans } from '@/utils/text'
 
 /* ─── Text Scramble Hook ─── */
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%'
@@ -607,7 +608,7 @@ export function Hero() {
               whiteSpace: 'nowrap',
             }}
           >
-            {"aneh, I'm just a girl".split(" ").map((word, i) => (
+            {eradicateOrphans("aneh, I'm just a girl").split(" ").map((word, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 12, rotate: 2 }}

@@ -1,60 +1,66 @@
-# aki.eclat — A Digital Installation
+# Aki's World — The £250,000 Interactive Installation
 
-Welcome to the repository for **aki.eclat**, an interactive, world-class personal portfolio and digital art piece.
+> *"Minimalism with warmth. Spaces that make me feel something before I understand why."*
 
-This is not a traditional website. It is an exploration into treating the browser as a hyper-responsive physics engine and a psychological mirror. Every pixel is intentional, every millisecond is accounted for, and the user leaves feeling like they just walked through a high-end contemporary art gallery.
+Welcome to the source code for **Aki's World** (`aki.eclat`). This is not a standard portfolio or a basic Next.js app. It is a highly engineered, psychologically driven digital installation designed to mirror the nuances of high-end interior design and cognitive science.
 
-## The Philosophy
-If you hand over £250,000 for a digital experience, you are not buying a website. You are buying a piece of digital architecture that bends the browser to its limits while feeling utterly effortless. The site must possess a soul, spatial awareness, and a level of polish that makes other luxury brands look dated.
+## 🎀 The Philosophy
 
-We achieved this by breaking the project into **Godly Implementations**, executing interactions that are rarely seen outside of WebGL award sites, yet keeping them accessible, native, and entirely DOM/CSS/Canvas based.
+This project was built under the constraint of treating the browser like a true physical and psychological medium. 
+- **The Browser is a Physics Engine:** Every scroll velocity, mouse twitch, and button interaction is mapped to spring physics, providing mechanical tension and haptic feedback.
+- **Temporal Physics:** The entire aesthetic of the application responds to the actual local time of day of the user (Dawn, Noon, Dusk, Midnight).
+- **The Edge of the Web:** Hosted entirely on the Edge, utilizing Next.js Turbopack, Framer Motion heavily memoized springs, and Zero-CLS predictive rendering.
 
-## Core Features & Godly Upgrades
+---
 
-### I. The Hero (Ambient Physics)
-- **Kinetic Canvas Particles**: A bare-metal, high-performance Canvas particle system representing ambient dust. It runs off the main thread with `desynchronized: true` to guarantee 120fps physics.
-- **Sub-Pixel Anti-Aliasing**: Typography is locked to optical perfection, ensuring the massive serifs of Bodoni Moda render flawlessly.
+## 🛠️ Tech Stack & Architecture
 
-### II. Sensory & Micro-Interactions
-- **Magnetic Velocity Cursor**: The custom cursor tracks physics. It snaps to elements elastically, morphs on hover, and reacts to velocity.
-- **Architectural Scrollbar**: The native browser scrollbar is completely overridden with a dynamic, theme-aware architectural tracker.
+- **Framework:** Next.js 16 (App Router) + Turbopack
+- **Language:** TypeScript (Strict End-to-End Type Safety)
+- **Styling:** CSS Modules + Inline CSS Variables (No Tailwind by design; absolute pixel control)
+- **Physics & Animation:** Framer Motion (Hardware-accelerated springs, velocity tracking)
+- **Typography:** Custom locally hosted fonts (`Bodoni Moda`, `Instrument Serif`, `Figtree`)
+- **Hosting:** Vercel Edge Network
 
-### III. The Infinite Closet (Re-Engineered)
-- **Native Inertia Scrolling**: Hardware-accelerated CSS `scroll-snap-type: x mandatory` ensures the carousel feels like a heavy physical wheel.
-- **Seamless Fullscreen Transitions (FLIP)**: Using Framer Motion's `layoutId`, cards physically detach from the carousel and interpolate into the center of the screen seamlessly.
-- **Lighting Reaction**: A glowing spotlight tracks your cursor exactly across the surface of the polaroids.
+---
 
-### IV. The Confessions Wall (Psychological Physics)
-- **Dynamic Shadow Casting**: The sticky notes act as physical 3D objects, casting inverted drop shadows that continuously recalculate based on the global position of your cursor (your mouse is the light source).
-- **Tear-off Physics**: You can click and drag confessions. Pulling them beyond 150 pixels "rips" them off the wall, dropping them into the void.
-- **Ink Bleed Aesthetics**: A custom SVG `<feTurbulence>` filter is applied to the typography, causing the text to subtly wobble and bleed, mimicking wet ink on cotton paper.
+## 🎭 The Hidden Architecture (Category VI)
 
-### V. Poetry & Words (The Kinetic Overlay)
-- **Physical Candlelight**: An absolute, radial WebGL-like gradient completely tracks your cursor, acting as a physical candle illuminating the dark poetry overlay.
-- **Breathing Typography**: The poem titles infinitely and smoothly interpolate their `letterSpacing` and `textShadow`, simulating a living, breathing entity.
-- **Smoke & Mask Stanza Entrance**: Lines of the poem emerge from a heavy blur (`filter: blur(8px)`) resolving down to `0px`, mimicking words pulling themselves out of a memory.
+This site contains secrets. It is designed to reward curiosity and punish impatience.
+1. **The Konami Code (`A K I`)**: Typing this sequence globally shatters the interface with an aggressive, beautiful glitch sequence.
+2. **The 2:00 AM Lock**: Certain thoughts and content in the "Universe" section are entirely illegible and blurred unless your physical machine clock reads precisely between `02:00:00` and `02:59:59`.
+3. **The Absolute Absence**: `/absence`. A completely hidden, unlinked route. It tracks your mouse. If you can sit perfectly still for 10 seconds in the pure #0A0306 void, it speaks to you. If you twitch, it dies.
+4. **The Self-Destruct Sequence**: A 4-pixel transparent red dot in the footer. 5 rapid clicks sequentially animates every DOM node to scale to 0 and disappear, completely destroying the visual site before a forced reboot.
 
-## Tech Stack
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router, React 19)
-- **Animations & Physics**: [Framer Motion](https://www.framer.com/motion/) (Spring physics, layout animations, drag)
-- **Styling**: Vanilla CSS (`globals.css`), CSS Variables, CSS color-mix (Theme awareness)
-- **Backend / Database**: [Firebase Firestore](https://firebase.google.com/) (Real-time live confessions stream)
-- **Font Stack**: Bodoni Moda (Serif), Instrument Serif (Italics), Figtree (Sans-serif)
-- **Performance**: Bare-metal Canvas API, hardware-accelerated CSS properties.
+---
 
-## Getting Started
+## 🚀 Local Development
 
-First, install the dependencies:
+To run the installation locally with the required 4GB heap allocation:
+
 ```bash
+# Install strict dependencies
 npm install
+
+# Run the development server (Windows PowerShell)
+$env:NODE_OPTIONS="--max-old-space-size=4096"; npm run dev
+
+# Run the development server (Mac/Linux)
+NODE_OPTIONS="--max-old-space-size=4096" npm run dev
 ```
 
-Run the development server:
-```bash
-npm run dev
-```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to experience the installation.
+## 🌐 Deployment (Vercel)
 
-## License
-All personal assets (images, writing, audio) are strictly copyright to the creator. The underlying codebase architecture is proprietary.
+This project is built to deploy out-of-the-box on Vercel with zero configuration required.
+1. Connect this GitHub repository to Vercel.
+2. Vercel will auto-detect Next.js.
+3. Keep default build command (`npm run build`).
+4. **Deploy**. The Edge runtime will handle the rest.
+
+See `DEPLOYMENT_GUIDE.md` for extended deployment strategies.
+
+---
+
+*Built with absolute precision. Diamond 1 mechanics.*

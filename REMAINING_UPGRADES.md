@@ -1,8 +1,8 @@
 # The Unfinished £250,000 Critique
 
-We have implemented Phases 1 through 7, turning this portfolio into an interactive masterpiece. However, a true £250,000 digital installation is never truly "done." 
+We have implemented Phases 1 through 9, turning this portfolio into an interactive masterpiece. The sensory physics, time locks, absence voids, and self-destruct sequences are live. However, a true £250,000 digital installation is never truly "done." 
 
-Here are the remaining items from the original 100 Godly Implementations list that are left to conquer:
+Here are the remaining items from the original 100 Godly Implementations list that are left to conquer for the next phases:
 
 ## I. WebGL & Spatial Computing
 - **Fluid Typography:** Text that acts as a fluid simulation; dragging the cursor through a heading displaces the ink like water.
@@ -26,29 +26,19 @@ Here are the remaining items from the original 100 Godly Implementations list th
 - **Reading Pace Indicators:** Calculates reading speed based on scroll rhythm.
 
 ## III. Sensory & Micro-Interactions
-- **Haptic Feedback:** Web Haptics API triggers on mobile devices when snapping to items.
 - **Color Extraction Ambient Lighting:** Dominant colors extracted from images and subtly painted onto the background.
-- **Audio-Reactive UI:** UI elements (gradients, borders, weights) pulsing to the stems of playing music.
-- **Input Field Choreography:** Typing causes letters to float down and the cursor to drip ink.
-- **Button Tension:** Buttons physically compress like a mechanical keyboard switch when pressed.
-- **Link Pre-fetching with Intent:** Tracking mouse trajectory to predict and pre-fetch links.
-- **Glitch Aesthetics with Intent:** Generated WebGL noise map for the 404 page that tears specific elements apart.
+- **Cursor Physics:** The custom cursor acts like a magnetic spring around clickable elements.
+- **Text Selection Highlighting:** Text highlighting that acts like an animated marker pen, not a flat rectangle.
+- **Hover Noise:** Generating random SVG noise on hover instead of flat colors.
 
-## IV. Data & Personalization
-- **Time-of-Day Theming:** Calculates user's local sunset/sunrise to transition through Dawn, Noon, Dusk, Midnight palettes.
-- **Weather Integration:** Window effects or grain density reflecting the user's local weather.
-- **Return Visitor Memory:** Remembers exactly where the user left off reading.
-- **Procedural Soundtracks:** Ambient generative track that builds layers based on scroll depth.
-- **Confession Constellations:** 3D nebula mapping of semantically similar confessions.
-- **Live Typing Indicators:** "Aki is typing..." visible globally if the owner is updating the site.
-- **Dynamic Open Graph:** Previews generated on-the-fly containing exact time, cursor position, and quotes.
-- **Scroll Velocity Tracking:** Paragraph text fades out during fast scrolling to highlight keywords.
-- **Anonymous Presence:** Faint drifting fireflies representing other live users on the site.
+## IV. The Infinite Canvas & Flow
+- **Non-Linear Navigation:** A mode where the entire site becomes a zoomable infinite canvas (like Figma or Miro).
+- **Parallax Layers:** True multi-plane parallax mimicking a multiplane camera from classic animation.
+- **Page Tearing:** Navigating by literally swiping to "tear" the current DOM away.
+- **Endless Recursion:** Scrolling past the footer seamlessly re-enters the header without a reload.
+- **Precognitive Hover:** Tracking mouse trajectory to predict which link will be clicked and pre-fetching it before the hover even occurs.
 
-## V. Performance & Hardware Mastery
-- **Off-Main-Thread Architecture:** Web Workers running all heavy physics/analytics.
-- **GPU Texture Compression:** Delivering KTX2/Basis compressed textures directly to the GPU.
-- **WebAssembly (Wasm) Physics:** Porting physics calculations to Rust/Wasm.
+## V. Raw Performance & DOM Mastery
 - **Predictive Image Decoding:** Using `ImageDecoder` API in background workers.
 - **Virtual DOM Bypassing:** Mutating DOM nodes directly for high-frequency cursor/scroll updates.
 - **Hardware-Accelerated SVGs:** Converting complex SVGs into WebGL geometry.
@@ -57,7 +47,7 @@ Here are the remaining items from the original 100 Godly Implementations list th
 - **Brotli Level 11:** Maximum compression delivery.
 - **Zero Layout Shifts (CLS):** Mathematical pre-calculation of all dimensions to prevent shift.
 
-## VI. The Unseen Architecture & The Ego
+## VI. The Unseen Architecture
 - **Global Edge Network Deployment:** Running entirely on the Edge with sub-50ms latency.
 - **End-to-End Type Safety:** tRPC and Zod ensuring DB and frontend props never mismatch.
 - **A/B Testing via Edge Routing:** Testing animation timings at the server edge.
@@ -65,9 +55,5 @@ Here are the remaining items from the original 100 Godly Implementations list th
 - **Real-time Analytics Dashboard:** A secret `/command-center` showing live heatmaps and cursor tracking.
 - **Zero-Downtime Schema Migrations:** Restructuring databases without dropping a write.
 - **WebSockets for Everything:** CMS updates pushing instantly to active readers via crossfades.
-- **Konami Code Variations:** Secret codes triggering site-wide easter eggs.
 - **Console Art:** ASCII art and cryptographic puzzles in the developer console.
-- **Time-Locked Content:** Sections that only unlock at 2:00 AM local time.
 - **Cryptographic Signatures:** Every page source signed by a private key.
-- **Self-Destruct Sequence:** A hidden footer button that visually deletes the site file-by-file before rebooting.
-- **The Absolute Absence:** A hidden URL containing pure `#0a0306` black, forcing the user to sit with themselves.

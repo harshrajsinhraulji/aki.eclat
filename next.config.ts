@@ -1,6 +1,7 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['three'],
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
   experimental: {
     optimizePackageImports: ['framer-motion', 'gsap'],

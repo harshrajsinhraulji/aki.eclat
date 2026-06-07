@@ -278,7 +278,7 @@ export function Footer() {
           right: '8px',
           width: '4px',
           height: '4px',
-          background: destructing ? '#ff0000' : 'rgba(255, 0, 0, 0.05)',
+          backgroundColor: destructing ? '#ff0000' : 'rgba(255, 0, 0, 0.05)',
           border: 'none',
           borderRadius: '50%',
           cursor: 'pointer',

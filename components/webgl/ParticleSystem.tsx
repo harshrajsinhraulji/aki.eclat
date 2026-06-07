@@ -3,24 +3,27 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { usePerformanceMonitor } from '@/hooks/usePerformanceMonitor'
 
-const PARTICLE_COUNT = 25000
+const MAX_PARTICLES = 25000
+const MIN_PARTICLES = 5000
 
 /**
  * ParticleSystem
- * A vast array of 25,000 particles orbiting the screen.
- * They use AdditiveBlending for a massive glowing effect.
+ * A vast array of floating particles. 
+ * Includes hardware degradation if FPS drops below 40.
  */
 export function ParticleSystem() {
   const pointsRef = useRef<THREE.Points>(null)
-  
-  // Custom Shader to handle fluid-like organic movement on the GPU
   const materialRef = useRef<THREE.ShaderMaterial>(null)
+  
+  const isThrottled = usePerformanceMonitor()
+  const currentCount = isThrottled ? MIN_PARTICLES : MAX_PARTICLES
 
-  // Precompute initial positions (a massive loose torus/sphere)
-  const positions = useMemo(() => {
-    const pos = new Float32Array(PARTICLE_COUNT * 3)
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+  // Precompute initial positions
+  const fullPositions = useMemo(() => {
+    const pos = new Float32Array(MAX_PARTICLES * 3)
+    for (let i = 0; i < MAX_PARTICLES; i++) {
       const radius = 4 + Math.random() * 12
       const theta = Math.random() * 2 * Math.PI
       const phi = Math.acos(Math.random() * 2 - 1)
@@ -32,14 +35,14 @@ export function ParticleSystem() {
     return pos
   }, [])
 
-  // Colors (mix of hot pink and gold)
-  const colors = useMemo(() => {
-    const col = new Float32Array(PARTICLE_COUNT * 3)
+  // Colors
+  const fullColors = useMemo(() => {
+    const col = new Float32Array(MAX_PARTICLES * 3)
     const color1 = new THREE.Color('#FF1493') // Hot pink
     const color2 = new THREE.Color('#C9A465') // Gold
     const color3 = new THREE.Color('#FFFFFF') // White
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < MAX_PARTICLES; i++) {
       const rand = Math.random()
       let mixedColor = color1
       if (rand > 0.7) mixedColor = color2
@@ -52,14 +55,19 @@ export function ParticleSystem() {
     return col
   }, [])
 
-  // Random phase offsets for each particle
-  const randoms = useMemo(() => {
-    const r = new Float32Array(PARTICLE_COUNT)
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+  // Random phase offsets
+  const fullRandoms = useMemo(() => {
+    const r = new Float32Array(MAX_PARTICLES)
+    for (let i = 0; i < MAX_PARTICLES; i++) {
       r[i] = Math.random()
     }
     return r
   }, [])
+
+  // Slice based on throttle state
+  const positions = useMemo(() => fullPositions.slice(0, currentCount * 3), [fullPositions, currentCount])
+  const colors = useMemo(() => fullColors.slice(0, currentCount * 3), [fullColors, currentCount])
+  const randoms = useMemo(() => fullRandoms.slice(0, currentCount), [fullRandoms, currentCount])
 
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },

@@ -203,6 +203,20 @@ body {
   transition: background-color 400ms ease, color 400ms ease;
 }
 
+/* ─────────────────────────────────────────────
+   EDITORIAL SELECTION HIGHLIGHT
+───────────────────────────────────────────── */
+::selection {
+  background-color: var(--color-pink-hot);
+  color: #FFFFFF;
+  text-shadow: none;
+}
+::-moz-selection {
+  background-color: var(--color-pink-hot);
+  color: #FFFFFF;
+  text-shadow: none;
+}
+
 /* Bringhurst: eliminate widows/orphans globally */
 /* ─────────────────────────────────────────────
    SECTION SCROLL TARGETS

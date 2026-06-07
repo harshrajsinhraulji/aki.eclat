@@ -35,6 +35,7 @@ import { GodlyEasterEggs } from '@/components/ui/GodlyEasterEggs'
 import { AkiCodeListener } from '@/components/layout/AkiCodeListener'
 import { GlobalCanvas } from '@/components/webgl/GlobalCanvas'
 import { SpatialAudio } from '@/components/layout/SpatialAudio'
+import { PrecognitiveEngine } from '@/hooks/usePrecognitiveHover'
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   useLenis()
@@ -46,6 +47,9 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      {/* Mathematical Link Prediction */}
+      <PrecognitiveEngine />
+
       {/* Headless Spatial Audio Engine */}
       <SpatialAudio />
 

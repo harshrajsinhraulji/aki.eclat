@@ -98,8 +98,8 @@ export function DarkMatter() {
 
   return (
     <mesh ref={meshRef}>
-      {/* Full screen quad */}
-      <planeGeometry args={[2, 2]} />
+      {/* Massive screen quad to cover background at any distance */}
+      <planeGeometry args={[100, 100]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}

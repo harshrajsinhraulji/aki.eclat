@@ -2,6 +2,7 @@
 
 import { Canvas } from '@react-three/fiber'
 import { DarkMatter } from './DarkMatter'
+import { ParticleSystem } from './ParticleSystem'
 
 /**
  * GlobalCanvas
@@ -20,7 +21,7 @@ export function GlobalCanvas() {
       }}
     >
       <Canvas
-        camera={{ position: [0, 0, 1], fov: 75 }}
+        camera={{ position: [0, 0, 15], fov: 75 }} // Moved back to see particles
         gl={{ 
           alpha: true, 
           antialias: false, // Post-processing or low-res is better for shaders
@@ -30,7 +31,13 @@ export function GlobalCanvas() {
         }}
         dpr={[1, 1.5]} // Restrict maximum pixel ratio for mobile performance
       >
-        <DarkMatter />
+        {/* The Raymarching SDF background */}
+        <group position={[0, 0, -14]}>
+          <DarkMatter />
+        </group>
+        
+        {/* The GPU Particle simulation */}
+        <ParticleSystem />
       </Canvas>
     </div>
   )

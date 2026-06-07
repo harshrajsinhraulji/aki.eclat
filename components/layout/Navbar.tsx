@@ -21,14 +21,17 @@ import { easings } from '@/lib/motion'
 import { BowSvg } from '@/components/ui/BowSvg'
 import { useTheme } from '@/lib/ThemeContext'
 
-const DARK_SECTIONS = new Set(['universe', 'confessions-teaser', 'contact'])
+const DARK_SECTIONS = new Set(['universe', 'closet', 'confessions-teaser', 'contact'])
 
 export function Navbar() {
   const [visible, setVisible] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
   const { theme, toggleTheme } = useTheme()
-  const isDark = theme === 'midnight' || theme === 'dusk'
+  const themeIsDark = theme === 'midnight' || theme === 'dusk'
+  // Section-aware dark mode: navbar goes dark when scrolled into a dark section
+  const sectionIsDark = DARK_SECTIONS.has(activeSection)
+  const isDark = themeIsDark || sectionIsDark
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const lastScrollY = useRef(0)
@@ -102,7 +105,7 @@ export function Navbar() {
     return () => observers.forEach((o) => o.disconnect())
   }, [])
 
-  // #80 Dynamic meta theme-color
+  // Dynamic meta theme-color — also responds to section
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null
     if (meta) {

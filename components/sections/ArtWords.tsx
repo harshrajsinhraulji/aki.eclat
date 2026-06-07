@@ -92,14 +92,14 @@ export function ArtWords() {
         padding: 'clamp(80px, 10vh, 120px) clamp(24px, 6vw, 80px)',
       }}
     >
-      {/* Dawn fade-in from InfiniteCloset's dark bottom */}
+      {/* Dawn bridge — InfiniteCloset ends at #0A0306, this melts it into the gradient */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
           top: 0, left: 0, right: 0,
-          height: '180px',
-          background: 'linear-gradient(to bottom, #FFF5F8 0%, transparent 100%)',
+          height: '200px',
+          background: 'linear-gradient(to bottom, #0A0306 0%, transparent 100%)',
           zIndex: 1,
           pointerEvents: 'none',
         }}

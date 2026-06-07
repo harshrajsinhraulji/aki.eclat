@@ -9,7 +9,7 @@
   /* ── Colour Palette ── */
   --color-pink-pale: #FFF0F5;
   --color-pink-blush: #FFD6E7;
-  --color-pink-hot: #E91E63; /* Softened from #FF1493 */
+  --color-pink-hot: #E91E63;   /* canonical accent — used everywhere */
   --color-pink-deep: #C2185B;
   --color-pink-rose: #AD1457;
   --color-cream: #FFFAF6;
@@ -39,10 +39,10 @@
   --radius-image: 16px;
   --radius-pill: 100px;
 
-  /* ── Shadows (pink-tinted, never grey) ── */
-  --shadow-sm: 0 4px 16px rgba(255, 20, 147, 0.1);
-  --shadow-md: 0 8px 32px rgba(255, 20, 147, 0.16);
-  --shadow-lg: 0 20px 60px rgba(255, 20, 147, 0.22);
+  /* ── Shadows (E91E63 = 233,30,99 — the one pink) ── */
+  --shadow-sm: 0 4px 16px rgba(233, 30, 99, 0.10);
+  --shadow-md: 0 8px 32px rgba(233, 30, 99, 0.16);
+  --shadow-lg: 0 20px 60px rgba(233, 30, 99, 0.22);
   --shadow-magnetic: 0 32px 80px rgba(194, 24, 91, 0.28);
 
   /* ── Easing ── */
@@ -500,7 +500,7 @@ p, blockquote, q {
 
 /* Text gradient utility */
 .text-gradient-pink {
-  background: linear-gradient(180deg, #FF1493 0%, #C2185B 100%);
+  background: linear-gradient(180deg, #E91E63 0%, #C2185B 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -533,7 +533,7 @@ p, blockquote, q {
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid #FF1493;
+  outline: 2px solid #E91E63;
   outline-offset: 3px;
   border-radius: 4px;
 }

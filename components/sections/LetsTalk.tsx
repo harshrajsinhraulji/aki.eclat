@@ -145,14 +145,24 @@ export function LetsTalk() {
         position: 'relative',
         width: '100%',
         minHeight: '100svh',
-        background: 'var(--bg-primary)',
-        transition: 'background 400ms ease',
+        /* CINEMATIC CLOSE — the final dark. Matches Universe and InfiniteCloset depth. */
+        background: '#0A0306',
         display: 'flex',
         alignItems: 'center',
         padding: 'clamp(80px, 10vh, 120px) clamp(24px, 5vw, 80px)',
         overflow: 'hidden',
       }}
     >
+      {/* Top bridge — seamless from ConfessionsTeaser dark bridge */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          height: '200px',
+          background: 'linear-gradient(to bottom, #0A0306 0%, transparent 100%)',
+          pointerEvents: 'none', zIndex: 1,
+        }}
+      />
       {/* Film-grain texture */}
       <div
         aria-hidden
@@ -242,9 +252,9 @@ export function LetsTalk() {
             fontFamily: 'var(--font-figtree)',
             fontWeight: 500, fontSize: '10px',
             letterSpacing: '0.24em', textTransform: 'uppercase',
-            color: '#FF1493',
+            color: '#E91E63',
           }}>
-            06 — Let&apos;s Talk
+            07 — Let&apos;s Talk
           </span>
         </motion.div>
 
@@ -260,8 +270,9 @@ export function LetsTalk() {
             letterSpacing: '-0.04em',
             lineHeight: 0.85,
             textAlign: 'center',
-            color: 'var(--text-primary)',
-            textShadow: '0 32px 80px color-mix(in srgb, var(--text-primary) 10%, transparent)',
+            /* Light on dark — white cream, luminous */
+            color: '#FFF0F5',
+            textShadow: '0 32px 80px rgba(233,30,99,0.15)',
             marginBottom: '64px',
           }}
         >
@@ -291,7 +302,8 @@ export function LetsTalk() {
             fontWeight: 300,
             fontSize: '10px',
             letterSpacing: '0.16em',
-            color: 'var(--text-soft)',
+            /* Soft pink-white on dark */
+            color: 'rgba(255,182,217,0.5)',
             opacity: textOpacity,
             filter: textFilter,
             willChange: 'opacity, filter',

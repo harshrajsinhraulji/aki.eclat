@@ -111,10 +111,10 @@ export function Footer() {
     <footer
       role="contentinfo"
       style={{
-        /* Blush — the last thing. Matches the first thing. Peak-End Rule. */
-        background: 'var(--bg-primary)',
-        transition: 'background 400ms ease',
-        borderTop: '1px solid rgba(255, 20, 147, 0.08)',
+        /* Blush — the last thing. Matches the first thing. Peak-End Rule.
+           Explicit #FFF5F8, not var(--bg-primary), because LetsTalk is
+           hardcoded dark and we need to guarantee the contrast. */
+        background: '#FFF5F8',
         padding: 'clamp(72px, 12vh, 120px) 24px clamp(40px, 6vh, 64px)',
         display: 'flex',
         flexDirection: 'column',
@@ -124,6 +124,19 @@ export function Footer() {
         position: 'relative',
       }}
     >
+      {/* Top bridge — dark LetsTalk (#0A0306) melts into blush */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0,
+          height: '120px',
+          background: 'linear-gradient(to bottom, #FFF5F8 0%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
+
       {/* Grain texture overlay */}
       <div
         aria-hidden

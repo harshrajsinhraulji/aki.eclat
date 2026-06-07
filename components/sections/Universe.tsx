@@ -182,14 +182,14 @@ export function Universe() {
         overflow: 'hidden',
       }}
     >
-      {/* Seamless section fade-in from above — blends Coconut into Universe */}
+      {/* Seamless section fade-in from above — blends Coconut dark bridge into Universe */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
           top: 0, left: 0, right: 0,
           height: '200px',
-          background: 'linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%)',
+          background: 'linear-gradient(to bottom, #0F0308 0%, transparent 100%)',
           zIndex: 1,
           pointerEvents: 'none',
         }}

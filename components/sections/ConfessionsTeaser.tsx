@@ -254,8 +254,8 @@ export function ConfessionsTeaser() {
         width: '100%',
         minHeight: '100svh',
         padding: 'clamp(80px, 12vh, 140px) clamp(24px, 6vw, 80px)',
-        background: 'var(--bg-primary)',
-        transition: 'background 400ms ease',
+        /* Deep intimate blush — not the main blush, slightly more saturated */
+        background: '#FFF0F5',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -294,13 +294,13 @@ export function ConfessionsTeaser() {
         spill
       </div>
 
-      {/* Header */}
+      {/* Cinematic intro phrase — appears before cards */}
       <motion.div
-        initial={{ opacity: 0, y: 32 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: easings.outExpo }}
-        style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        style={{ textAlign: 'center', position: 'relative', zIndex: 1, maxWidth: '700px' }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', marginBottom: '20px' }}>
           <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#C9A465' }} />
@@ -310,33 +310,54 @@ export function ConfessionsTeaser() {
             fontSize: '10px',
             letterSpacing: '0.24em',
             textTransform: 'uppercase',
-            color: '#FF1493',
+            color: '#C2185B',
           }}>
-            The Wall · Live
+            06 · The Wall · Live
           </span>
         </div>
+
+        {/* The cinematic hook line */}
+        <p style={{
+          fontFamily: 'var(--font-instrument-serif)',
+          fontStyle: 'italic',
+          fontSize: 'clamp(22px, 3.5vw, 42px)',
+          lineHeight: 1.35,
+          color: '#6B2D4A',
+          marginBottom: '24px',
+          letterSpacing: '-0.01em',
+        }}>
+          &ldquo;they told me things they couldn&apos;t say out loud.&rdquo;
+        </p>
 
         <h2 style={{
           fontFamily: 'var(--font-bodoni-moda)',
           fontSize: 'clamp(36px, 6vw, 80px)',
           letterSpacing: '-0.025em',
           lineHeight: 1.05,
-          color: 'var(--text-primary)',
-          transition: 'color 400ms ease',
+          color: '#1A0A12',
           marginBottom: '12px',
         }}>
           I read every confession.
         </h2>
         <p style={{
-          fontFamily: 'var(--font-instrument-serif)',
-          fontStyle: 'italic',
-          fontSize: 'clamp(17px, 2vw, 24px)',
-          color: '#FF1493',
-          maxWidth: '420px',
+          fontFamily: 'var(--font-figtree)',
+          fontWeight: 300,
+          fontSize: 'clamp(15px, 1.4vw, 18px)',
+          color: '#A8627A',
+          maxWidth: '380px',
           margin: '0 auto',
-          lineHeight: 1.5,
+          lineHeight: 1.6,
         }}>
-          No names. No judgment. Just tea, aneh.
+          No names. No judgment.
+          {totalCount !== null && (
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              style={{ display: 'block', color: '#C2185B', fontWeight: 500, marginTop: '8px', fontSize: 'clamp(13px, 1.2vw, 15px)', letterSpacing: '0.06em' }}
+            >
+              {totalCount.toLocaleString()} whispers and counting.
+            </motion.span>
+          )}
         </p>
       </motion.div>
 
@@ -382,62 +403,40 @@ export function ConfessionsTeaser() {
         ))}
       </div>
 
-      {/* CTA */}
+      {/* Full-width dramatic CTA strip */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: easings.outExpo, delay: 0.4 }}
-        style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px' }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+        style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '600px' }}
       >
-        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-          <Link
-            href="/confessions"
+        <Link
+          href="/confessions"
+          style={{ textDecoration: 'none', display: 'block' }}
+        >
+          <motion.div
+            whileHover={{ scale: 1.02, boxShadow: '0 32px 80px rgba(194, 24, 91, 0.30)' }}
+            whileTap={{ scale: 0.98 }}
             style={{
-              display: 'inline-flex',
+              width: '100%',
+              padding: 'clamp(20px, 3vh, 28px) clamp(32px, 5vw, 56px)',
+              background: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)',
+              borderRadius: '20px',
+              boxShadow: '0 16px 48px rgba(194, 24, 91, 0.22)',
+              display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              padding: 'clamp(14px, 2vh, 18px) clamp(32px, 5vw, 52px)',
-              background: 'linear-gradient(135deg, #FF1493 0%, #C2185B 100%)',
-              color: 'white',
-              fontFamily: 'var(--font-figtree)',
-              fontWeight: 500,
-              fontSize: 'clamp(11px, 1.1vw, 13px)',
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-              borderRadius: '100px',
-              boxShadow: '0 8px 28px rgba(255,20,147,0.3)',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
             }}
           >
-            Enter the Wall
-            <span style={{ fontSize: '1.2em' }}>✦</span>
-          </Link>
-        </motion.div>
-        <p style={{
-          fontFamily: 'var(--font-figtree)',
-          fontWeight: 300,
-          fontSize: '10px',
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          color: 'var(--text-soft)',
-          transition: 'color 400ms ease',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '4px',
-        }}>
-          <span>anonymous · no login required</span>
-          {totalCount !== null && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              style={{ color: '#FF1493', fontWeight: 500 }}
-            >
-              {totalCount} whispers on the wall
-            </motion.span>
-          )}
-        </p>
+            <div>
+              <div style={{ fontFamily: 'var(--font-figtree)', fontWeight: 500, fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)', marginBottom: '6px' }}>anonymous · no login</div>
+              <div style={{ fontFamily: 'var(--font-bodoni-moda)', fontStyle: 'italic', fontSize: 'clamp(22px, 3vw, 32px)', color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.1 }}>Enter the Wall</div>
+            </div>
+            <div style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-bodoni-moda)', fontStyle: 'italic' }}>✦</div>
+          </motion.div>
+        </Link>
       </motion.div>
     </section>
   )

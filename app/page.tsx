@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic'
 import { Hero } from '@/components/sections/Hero'
+import { SocialProof } from '@/components/sections/SocialProof'
 
 /**
  * app/page.tsx — Server Component
@@ -41,12 +42,13 @@ export default function HomePage() {
       {/* Phase 1 — Hero: eagerly rendered, above fold */}
       <Hero />
 
-      {/* Phase 2 — Below fold: correct narrative flow
-          Blush world: Hero → About → [dark: Universe] → Closet → Art → Plushies
-          Dark peaks:  Confessions → Contact
-          Blush close: Footer (in layout-client)
+      {/* Narrative arc:
+          Blush world: Hero → About → [Credibility strip] → [dark: Universe → Closet]
+          The dawn:    ArtWords rises back to blush
+          Blush close: Plushies → Confessions (deepened blush) → [dark: LetsTalk]
       */}
       <Coconut />
+      <SocialProof />
       <Universe />
       <InfiniteCloset />
       <ArtWords />

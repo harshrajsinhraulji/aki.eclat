@@ -83,8 +83,8 @@ export function ArtWords() {
         position: 'relative',
         width: '100%',
         minHeight: '100svh',
-        background: 'var(--bg-primary)',
-        transition: 'background 400ms ease',
+        /* THE DAWN — starts near-dark at top, fully blush by centre */
+        background: 'linear-gradient(180deg, #1A0812 0%, #FFF5F8 30%, #FFF5F8 100%)',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -92,6 +92,19 @@ export function ArtWords() {
         padding: 'clamp(80px, 10vh, 120px) clamp(24px, 6vw, 80px)',
       }}
     >
+      {/* Dawn fade-in from InfiniteCloset's dark bottom */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0,
+          height: '180px',
+          background: 'linear-gradient(to bottom, #FFF5F8 0%, transparent 100%)',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Watermark — deep plum at 2%, barely there */}
       <div
         aria-hidden

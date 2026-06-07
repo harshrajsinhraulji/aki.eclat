@@ -894,55 +894,82 @@ section[id] {
 
 
 /* ══ SECTION GRADIENT BRIDGES ════════════════════════
-   Seamlessly connects blush sections to dark sections.
-   Applied as pseudo-elements on the sections themselves.
+   Cinematic light → dark → light narrative arc.
+   Each bridge uses the ACTUAL colour of the next section,
+   not --bg-primary, so transitions work correctly.
 
-   Blush (#FFF5F8) → Dark (#0A0306) at Universe entry
-   Dark  (#0A0306) → Blush (#FFF5F8) at InfiniteCloset entry
-   Blush (#FFF5F8) → Dark (#0A0306) at ConfessionsTeaser entry
-   Dark  (#0A0306) → Blush (#FFF5F8) at Footer entry
+   Arc:
+   Hero (#FFF5F8 blush)
+   ↓ bridge → dark
+   Coconut (blush, deepening)
+   ↓ bridge → dark
+   Universe (#0F0308 near-black) ← THE DESCENT
+   ↓ stays dark
+   InfiniteCloset (#0F0308)
+   ↓ bridge → blush
+   ArtWords (#FFF5F8) ← THE DAWN
+   ↓ stays blush
+   PlushieGang (blush)
+   ↓ stays blush
+   ConfessionsTeaser (deepened blush #FFF0F5)
+   ↓ bridge → dark
+   LetsTalk (#0A0306) ← CINEMATIC CLOSE
 ──────────────────────────────────────────────────── */
 
-/* About (Coconut) → Universe: blush fades to dark at bottom */
+/* Coconut (blush) → Universe (dark): fade to near-black at bottom */
 #coconut::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 160px;
-  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, #0F0308);
   pointer-events: none;
   z-index: 2;
 }
 
-/* Universe → InfiniteCloset: dark fades to blush at bottom */
-#universe::after {
+/* Universe (dark) → InfiniteCloset (dark): no bridge needed — same colour */
+/* InfiniteCloset (dark) → ArtWords (blush): bridge to blush */
+#closet::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 160px;
-  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, #FFF5F8);
   pointer-events: none;
   z-index: 2;
 }
 
-/* PlushieGang → ConfessionsTeaser: blush fades to dark at bottom */
+/* PlushieGang (blush) → ConfessionsTeaser (deep blush): subtle deepening */
 #plushies::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 160px;
-  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #FFF0F5);
   pointer-events: none;
   z-index: 2;
 }
 
-/* LetsTalk (Contact) → Footer: dark fades to blush at bottom */
+/* ConfessionsTeaser → LetsTalk (dark): deep pink blush → near-black */
+#confessions-teaser::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, #0A0306);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* LetsTalk (Contact) → Footer: stays dark, slight fade */
 #contact::after {
   content: '';
   position: absolute;
@@ -950,9 +977,41 @@ section[id] {
   left: 0;
   right: 0;
   height: 120px;
-  background: linear-gradient(to bottom, transparent, var(--bg-primary));
+  background: linear-gradient(to bottom, transparent, #0A0306);
   pointer-events: none;
   z-index: 2;
+}
+
+/* ══ MOBILE TOUCH IMPROVEMENTS ═══════════════════════
+   Larger tap targets, better snap scroll, improved spacing.
+──────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Universe accordion: taller tap targets on mobile */
+  .universe-card-mobile {
+    min-height: 72px;
+    padding: 20px 24px;
+  }
+
+  /* Section headings: tighter on mobile */
+  .section-heading-xl {
+    font-size: clamp(32px, 9vw, 52px);
+  }
+
+  /* LetsTalk CTA: minimum 56px touch target */
+  .cta-button {
+    min-height: 56px;
+    padding: 16px 32px;
+  }
+
+  /* InfiniteCloset carousel: enforce snap on mobile */
+  .closet-carousel {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .closet-snap-child {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
 }
 
 

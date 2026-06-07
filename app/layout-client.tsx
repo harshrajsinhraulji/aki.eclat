@@ -34,11 +34,9 @@ import { KeyboardToast } from '@/components/ui/KeyboardToast'
 import { GhostCursor } from '@/components/layout/GhostCursor'
 import { GodlyEasterEggs } from '@/components/ui/GodlyEasterEggs'
 import { AkiCodeListener } from '@/components/layout/AkiCodeListener'
-import { GlobalCanvas } from '@/components/webgl/GlobalCanvas'
 import { SpatialAudio } from '@/components/layout/SpatialAudio'
 import { PrecognitiveEngine } from '@/hooks/usePrecognitiveHover'
 import { ConsoleArt } from '@/components/layout/ConsoleArt'
-import { EndlessRecursion } from '@/components/layout/EndlessRecursion'
 
 export function LayoutClient({ children }: { children: React.ReactNode }) {
   useLenis()
@@ -65,17 +63,11 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
     <>
       <ConsoleArt />
       
-      {/* Endless Teleportation Loop */}
-      <EndlessRecursion />
-      
       {/* Mathematical Link Prediction */}
       <PrecognitiveEngine />
 
       {/* Headless Spatial Audio Engine */}
       <SpatialAudio />
-
-      {/* WebGL Layer - Must be at the very bottom z-index */}
-      <GlobalCanvas />
 
       {/* Loading screen — fixed overlay, purely cosmetic, never gates content */}
       <LoadingScreen onComplete={handleLoadComplete} />

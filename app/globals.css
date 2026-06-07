@@ -195,7 +195,7 @@ html {
 }
 
 body {
-  background-color: color-mix(in srgb, var(--bg-primary) 85%, transparent);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-figtree), system-ui, sans-serif;
   overflow-x: hidden;

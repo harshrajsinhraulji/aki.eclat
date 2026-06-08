@@ -123,8 +123,9 @@
   --blob-color-3: rgba(139, 69, 19, 0.25);
 }
 
-/* Midnight */
-[data-theme="midnight"] {
+/* Midnight & Dark Fallback */
+[data-theme="midnight"],
+[data-theme="dark"] {
   --bg-primary: #0A0306;
   --text-primary: #FFF0F5;
   --text-mid: #FFB6D9;
@@ -192,6 +193,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 body {
@@ -736,7 +738,7 @@ html {
 .coconut-grid {
   display: grid;
   grid-template-columns: 1fr; /* mobile: single column */
-  gap: clamp(48px, 8vh, 80px);
+  gap: clamp(32px, 6vh, 80px);
   align-items: start;
   width: 100%;
 }

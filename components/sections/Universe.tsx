@@ -178,7 +178,7 @@ export function Universe() {
         minHeight: '100svh',
         background: 'linear-gradient(180deg, #0A0306 0%, #150818 50%, #0A0306 100%)',
         transition: 'background 400ms ease',
-        padding: 'clamp(80px, 10vh, 120px) clamp(24px, 5vw, 80px)',
+        padding: 'clamp(40px, 8vh, 120px) clamp(24px, 5vw, 80px)',
         overflow: 'hidden',
       }}
     >
@@ -371,7 +371,7 @@ function AccordionCard({
       onClick={() => !isDesktop && onActivate()}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: isDesktop && !isExpanded ? 0.5 : 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ once: true, margin: '-10px' }}
     >
       {/* Background texture pattern */}
       <div

@@ -302,7 +302,7 @@ function MagneticLetter({
     display: 'inline-block',
     fontFamily: 'var(--font-bodoni-moda)',
     fontVariationSettings: '"wght" 400, "opsz" 96',
-    fontSize: 'clamp(80px, 26vw, 320px)',
+    fontSize: 'clamp(60px, 22vw, 320px)',
     letterSpacing: '-0.04em',
     lineHeight: 0.85,
     background: 'linear-gradient(135deg, #FF1493 0%, #C2185B 60%, #AD1457 100%)',
@@ -553,8 +553,8 @@ export function Hero() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          /* 42% golden ratio placement minus approximate half-height of AKI name */
-          marginTop: 'calc(42dvh - clamp(40px, 13vw, 160px))',
+          /* 35% golden ratio placement minus approximate half-height of AKI name */
+          marginTop: 'calc(35dvh - clamp(20px, 8vw, 100px))',
           width: '100%',
         }}
       >

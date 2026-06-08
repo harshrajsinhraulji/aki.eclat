@@ -148,6 +148,7 @@ export function LetsTalk() {
         /* CINEMATIC CLOSE — the final dark. Matches Universe and InfiniteCloset depth. */
         background: '#0A0306',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         padding: 'clamp(80px, 10vh, 120px) clamp(24px, 5vw, 80px)',
         overflow: 'hidden',
@@ -270,10 +271,11 @@ export function LetsTalk() {
             letterSpacing: '-0.04em',
             lineHeight: 0.85,
             textAlign: 'center',
-            /* Light on dark — white cream, luminous */
             color: '#FFF0F5',
             textShadow: '0 32px 80px rgba(233,30,99,0.15)',
             marginBottom: '64px',
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word',
           }}
         >
           YOU FOUND <br />

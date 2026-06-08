@@ -173,7 +173,7 @@ export function ArtWords() {
             fontSize: 'clamp(48px, 6vw, 84px)',
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
-            color: 'var(--text-primary)',
+            color: '#1A0A12',
             transition: 'color 400ms ease',
             marginBottom: '24px',
           }}
@@ -196,7 +196,7 @@ export function ArtWords() {
             fontFamily: 'var(--font-figtree)',
             fontWeight: 300,
             fontSize: 'clamp(15px, 1.4vw, 18px)',
-            color: 'var(--text-mid)',
+            color: '#6B2D4A',
             lineHeight: 1.65,
             transition: 'color 400ms ease',
             maxWidth: '48ch',
@@ -473,7 +473,7 @@ function PoemsView() {
                   style={{
                     fontFamily: 'var(--font-figtree)',
                     fontSize: '10px',
-                    color: 'var(--text-soft)',
+                    color: '#A8627A',
                     transition: 'color 400ms ease',
                     letterSpacing: '0.14em',
                   }}
@@ -511,7 +511,7 @@ function PoemsView() {
                       style={{
                         fontFamily: 'var(--font-instrument-serif)',
                         fontSize: 'clamp(17px, 1.8vw, 22px)',
-                        color: 'var(--text-primary)',
+                        color: '#1A0A12',
                         transition: 'color 400ms ease',
                         lineHeight: 1.65,
                         margin: 0,

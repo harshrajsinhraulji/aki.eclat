@@ -55,7 +55,7 @@ export function Coconut() {
         minHeight: '100svh',
         background: 'var(--bg-primary)',
         transition: 'background 400ms ease',
-        padding: 'clamp(80px, 10vh, 120px) clamp(24px, 5vw, 80px)',
+        padding: 'clamp(40px, 8vh, 120px) clamp(24px, 5vw, 80px)',
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden',
@@ -86,7 +86,7 @@ export function Coconut() {
           style={{ y: imageY }}
           initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
           whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, margin: '-10px' }}
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
         >
           {/* Polaroid style container */}
@@ -148,7 +148,7 @@ export function Coconut() {
           className="coconut-text"
           initial={{ opacity: 0, x: 32 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, margin: '-10px' }}
           transition={{ duration: 0.85, delay: 0.12, ease: easings.outExpoAlt }}
           style={{
             display: 'flex',
@@ -226,7 +226,7 @@ export function Coconut() {
             style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-40px' }}
+            viewport={{ once: true, margin: '-10px' }}
             variants={{
               hidden: {},
               visible: { transition: { staggerChildren: 0.07 } },

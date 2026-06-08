@@ -82,11 +82,18 @@ export default function RootLayout({
               (function() {
                 try {
                   var saved = localStorage.getItem('aki-theme');
-                  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  var theme = saved || (prefersDark ? 'dark' : 'light');
-                  document.documentElement.setAttribute('data-theme', theme);
+                  if (saved) {
+                    document.documentElement.setAttribute('data-theme', saved);
+                  } else {
+                    var hour = new Date().getHours();
+                    var theme = 'midnight';
+                    if (hour >= 5 && hour < 10) theme = 'dawn';
+                    else if (hour >= 10 && hour < 17) theme = 'noon';
+                    else if (hour >= 17 && hour < 20) theme = 'dusk';
+                    document.documentElement.setAttribute('data-theme', theme);
+                  }
                 } catch(e) {
-                  document.documentElement.setAttribute('data-theme', 'light');
+                  document.documentElement.setAttribute('data-theme', 'noon');
                 }
               })()
             `

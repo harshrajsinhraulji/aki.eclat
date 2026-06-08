@@ -304,7 +304,7 @@ export function InfiniteCloset() {
             >
               {zoomItem.image ? (
                 <motion.div layoutId={`closet-img-${zoomItem.id}`} style={{ position: 'relative', width: '100%', aspectRatio: '1/1', borderRadius: '16px', overflow: 'hidden' }}>
-                  <Image src={zoomItem.image} alt={zoomItem.title} fill style={{ objectFit: 'cover' }} sizes="500px" />
+                  <Image src={zoomItem.image} alt={zoomItem.title} fill style={{ objectFit: 'cover' }} sizes="500px" priority />
                 </motion.div>
               ) : (
                 <div style={{ fontSize: '72px', textAlign: 'center' }}>{zoomItem.emoji}</div>
@@ -522,7 +522,7 @@ function ClosetCard({
                   transition={{ duration: 0.5, ease: easings.outExpoAlt }}
                   style={{ width: '100%', height: '100%', position: 'relative' }}
                 >
-                  <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="380px" loading="lazy" />
+                  <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="380px" priority />
                 </motion.div>
               </div>
             ) : (
@@ -796,7 +796,7 @@ function CarouselCard({
                 zIndex: 2,
               }}
             >
-              <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="340px" loading="lazy" />
+              <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="340px" priority />
             </motion.div>
           ) : (
             <div style={{ fontSize: '52px', lineHeight: 1, marginBottom: '16px', zIndex: 2 }}>{item.emoji}</div>

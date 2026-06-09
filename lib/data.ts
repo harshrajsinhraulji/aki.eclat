@@ -92,6 +92,7 @@ export const navLinks = [
   { label: 'Art', href: '#art' },
   { label: 'Gang', href: '#plushies' },
   { label: 'Spill', href: '/confessions' },
+  { label: 'Play', href: '/arcade' },
 ]
 
 /* ─────────────────────────────────────────────

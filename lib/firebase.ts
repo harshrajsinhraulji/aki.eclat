@@ -14,6 +14,7 @@ import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app'
 import { initializeAppCheck, ReCaptchaV3Provider, type AppCheck } from 'firebase/app-check'
 import { getDatabase, type Database } from 'firebase/database'
 import { getFirestore, type Firestore } from 'firebase/firestore'
+import { getAuth, type Auth } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -35,6 +36,7 @@ const hasDatabaseUrl = Boolean(firebaseConfig.databaseURL)
 let app: FirebaseApp | null = null
 let database: Database | null = null
 let firestore: Firestore | null = null
+let auth: Auth | null = null
 let appCheck: AppCheck | null = null
 
 if (hasConfig) {
@@ -46,6 +48,7 @@ if (hasConfig) {
     }
 
     firestore = getFirestore(app)
+    auth = getAuth(app)
 
     // Security: App Check
     if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
@@ -62,5 +65,5 @@ if (hasConfig) {
   }
 }
 
-export { app, database, firestore, appCheck }
+export { app, database, firestore, auth, appCheck }
 export default app

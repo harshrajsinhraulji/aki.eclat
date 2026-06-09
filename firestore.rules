@@ -8,5 +8,14 @@ service cloud.firestore {
                     && request.resource.data.text.size() <= 1000;
       allow update, delete: if true;
     }
+    match /leaderboards_synthesis/{id} {
+      allow read, create: if true;
+    }
+    match /leaderboards_thread/{id} {
+      allow read, create: if true;
+    }
+    match /leaderboards_echoes/{id} {
+      allow read, create: if true;
+    }
   }
 }

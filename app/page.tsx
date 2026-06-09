@@ -32,6 +32,9 @@ const PlushieGang = dynamic(() =>
 const ConfessionsTeaser = dynamic(() =>
   import('@/components/sections/ConfessionsTeaser').then((m) => ({ default: m.ConfessionsTeaser }))
 )
+const ArcadeTeaser = dynamic(() =>
+  import('@/components/sections/ArcadeTeaser').then((m) => ({ default: m.ArcadeTeaser }))
+)
 const LetsTalk = dynamic(() =>
   import('@/components/sections/LetsTalk').then((m) => ({ default: m.LetsTalk }))
 )
@@ -53,6 +56,7 @@ export default function HomePage() {
       <InfiniteCloset />
       <ArtWords />
       <PlushieGang />
+      <ArcadeTeaser />
       <ConfessionsTeaser />
       <LetsTalk />
     </>

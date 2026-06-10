@@ -28,9 +28,9 @@ const CARDS = [
     id: 1,
     title: 'Design',
     description: 'Minimalism with warmth. Spaces that make me feel something before I understand why.',
-    bg: 'rgba(20, 10, 15, 0.4)',
-    border: 'rgba(255, 240, 245, 0.05)',
-    borderHover: 'rgba(255, 240, 245, 0.25)',
+    bg: 'var(--card-bg)',
+    border: 'var(--card-border)',
+    borderHover: 'var(--card-border-hover)',
     tag: 'Interior Design',
     accent: 'var(--accent-primary)',
     tagColor: 'var(--accent-primary)',
@@ -39,9 +39,9 @@ const CARDS = [
     id: 2,
     title: 'Gaming',
     description: "Diamond 1. Not just playing — mastering. Perfect CS, macro calls, outplaying the jungler at 3am.",
-    bg: 'rgba(20, 10, 15, 0.4)',
-    border: 'rgba(255, 240, 245, 0.05)',
-    borderHover: 'var(--accent-hot)',
+    bg: 'var(--card-bg)',
+    border: 'var(--card-border)',
+    borderHover: 'var(--card-border-hover)',
     tag: 'League of Legends',
     accent: 'var(--accent-hot)',
     tagColor: 'var(--accent-hot)',
@@ -50,9 +50,9 @@ const CARDS = [
     id: 3,
     title: 'Mind',
     description: "I study cognitive biases, decision theory, and why humans are beautifully irrational. Also: 7cups.",
-    bg: 'rgba(20, 10, 15, 0.4)',
-    border: 'rgba(255, 240, 245, 0.05)',
-    borderHover: 'var(--accent-deep)',
+    bg: 'var(--card-bg)',
+    border: 'var(--card-border)',
+    borderHover: 'var(--card-border-hover)',
     tag: 'Psychology',
     accent: 'var(--accent-deep)',
     tagColor: 'var(--accent-deep)',
@@ -98,7 +98,7 @@ function StarField() {
             width: `${s.size}px`,
             height: `${s.size}px`,
             borderRadius: '50%',
-            background: 'color-mix(in srgb, #FFF0F5 70%, transparent)',
+            background: 'color-mix(in srgb, var(--text-primary) 15%, transparent)',
           }}
         />
       ))}
@@ -177,7 +177,7 @@ export function Universe() {
         position: 'relative',
         width: '100%',
         minHeight: '100svh',
-        background: '#0A0306',
+        background: 'var(--bg-primary)',
         transition: 'background 400ms ease',
         padding: 'clamp(40px, 8vh, 120px) clamp(24px, 5vw, 80px)',
         overflow: 'hidden',
@@ -230,7 +230,7 @@ export function Universe() {
             fontSize: isDesktop ? 'clamp(48px, 6vw, 120px)' : 'clamp(40px, 12vw, 80px)',
             lineHeight: 0.9,
             letterSpacing: '-0.02em',
-            color: '#FFF0F5',
+            color: 'var(--text-primary)',
             transition: 'font-weight 200ms ease-out',
           }}
         >
@@ -248,7 +248,7 @@ export function Universe() {
               fontWeight: 300,
               fontSize: '15px',
               lineHeight: 1.65,
-              color: 'rgba(255, 240, 245, 0.6)',
+              color: 'var(--text-soft)',
               maxWidth: '32ch',
             }}
           >
@@ -326,12 +326,11 @@ function AccordionCard({
           : undefined,
         position: 'relative',
         background: card.bg,
-        backdropFilter: 'blur(20px)',
         borderRadius: '20px',
         border: `1px solid ${isExpanded ? card.borderHover : card.border}`,
         boxShadow: isExpanded
-          ? `0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 ${card.borderHover}`
-          : '0 4px 20px rgba(0,0,0,0.2)',
+          ? `0 24px 60px var(--shadow-magnetic, rgba(0,0,0,0.15)), inset 0 1px 0 ${card.borderHover}`
+          : '0 4px 20px var(--shadow-sm, rgba(0,0,0,0.1))',
         overflow: 'hidden',
         cursor: 'pointer',
         opacity: isDesktop && !isExpanded ? 0.5 : 1,
@@ -360,24 +359,21 @@ function AccordionCard({
         }}
       />
 
-      {/* Intense Dynamic Auras — Shows on expanded */}
+      {/* Inner glow — shows on expanded with breathing animation */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
             key="glow"
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0.7, 1.0, 0.7] }}
+            animate={{ opacity: [0.6, 1.0, 0.6] }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
             aria-hidden
             style={{
               position: 'absolute',
-              inset: '-50%',
-              background: card.id === 1
-                ? `radial-gradient(ellipse at 20% 20%, ${card.accent}2A 0%, transparent 50%), linear-gradient(120deg, rgba(255,255,255,0.03) 0%, transparent 40%)`
-                : card.id === 2
-                ? `radial-gradient(circle at 80% 80%, ${card.accent}3A 0%, transparent 60%), radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%)`
-                : `radial-gradient(circle at 50% 50%, ${card.accent}35 0%, transparent 70%)`,
+              top: '-40%', left: '-20%',
+              width: '140%', height: '140%',
+              background: `radial-gradient(ellipse at top left, ${card.accent}18 0%, transparent 60%)`,
               pointerEvents: 'none',
               zIndex: 0,
             }}
@@ -498,8 +494,7 @@ function AccordionCard({
                     ? 'clamp(44px, 5.5vw, 88px)'
                     : 'clamp(36px, 5vw, 60px)',
                   lineHeight: 0.95,
-                  color: '#FFF0F5',
-                  textShadow: `0 0 30px ${card.accent}60`,
+                  color: 'var(--text-primary)',
                   letterSpacing: '-0.03em',
                   marginBottom: '20px',
                 }}
@@ -517,7 +512,7 @@ function AccordionCard({
                   fontWeight: 300,
                   fontSize: 'clamp(14px, 1.4vw, 17px)',
                   lineHeight: 1.68,
-                  color: 'rgba(255, 240, 245, 0.7)',
+                  color: 'var(--text-mid)',
                   maxWidth: '40ch',
                 }}
               >
@@ -600,7 +595,7 @@ function AccordionCard({
                           fontWeight: 300,
                           fontSize: '13px',
                           lineHeight: 1.4,
-                          color: 'rgba(255, 240, 245, 0.7)',
+                          color: 'var(--text-mid)',
                           maxWidth: '38ch',
                           margin: 0,
                         }}
@@ -613,19 +608,16 @@ function AccordionCard({
               )}
             </div>
 
-            {/* Massive Parallax Watermark */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, x: 20 }}
-              animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: easings.outExpo }}
+            {/* Watermark number */}
+            <div
               aria-hidden
               style={{
                 position: 'absolute',
-                bottom: '-5%', right: '-5%',
+                bottom: '16px', right: '20px',
                 fontFamily: 'var(--font-bodoni-moda)',
                 fontStyle: 'italic',
-                fontSize: 'clamp(120px, 20vw, 300px)',
-                color: 'rgba(255, 255, 255, 0.03)',
+                fontSize: 'clamp(40px, 6vw, 80px)',
+                color: 'color-mix(in srgb, var(--text-primary) 6%, transparent)',
                 lineHeight: 1,
                 userSelect: 'none',
                 pointerEvents: 'none',
@@ -633,7 +625,7 @@ function AccordionCard({
               }}
             >
               {String(card.id).padStart(2, '0')}
-            </motion.div>
+            </div>
             </div>
           </motion.div>
         )}

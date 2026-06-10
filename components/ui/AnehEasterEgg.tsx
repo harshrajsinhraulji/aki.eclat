@@ -1,51 +1,88 @@
 'use client'
 
-/**
- * components/ui/AnehEasterEgg.tsx
- * Keyboard sequence easter egg: type "a" "n" "e" "h" anywhere on the page
- * → 50 SVG bows rain down from the top of the viewport.
- *
- * Each bow has:
- * — Random horizontal position (0–100%)
- * — Random rotation (-30° to +30°)
- * — Random scale (0.6–1.4)
- * — Random duration (1.2s–2.4s)
- * — Random delay (0–400ms)
- *
- * The bows use CSS animation (bow-fall keyframe from globals.css)
- * for GPU-only animation. No JS requestAnimationFrame loop.
- * After 3s (max bow-duration + delay), bows are cleaned up from DOM.
- */
-
 import { useEffect, useState, useCallback } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { BowSvg } from '@/components/ui/BowSvg'
 
 const TARGET = 'aneh'
-const BOW_COUNT = 40
+const BOW_COUNT = 60
 
 interface BowParticle {
   id: number
-  x: number      // 0–100% left
-  rot: number    // -30 to +30 degrees
-  scale: number  // 0.6 to 1.4
-  dur: string    // animation duration
-  delay: string  // animation delay
-  size: number   // 14–28px
-  color: string  // hot pink or deep rose
+  x: number      
+  rotStart: number
+  rotEnd: number
+  scale: number  
+  dur: number    
+  delay: number  
+  size: number   
+  color: string  
+  blur: number
+  zIndex: number
 }
 
-const COLORS = ['#FF1493', '#C2185B', '#E91E63', '#AD1457']
+const COLORS = ['#FF1493', '#C2185B', '#E91E63', '#AD1457', '#FF69B4', '#FFF0F5']
 
 function randomBow(id: number): BowParticle {
+  const isForeground = Math.random() > 0.85
+  const isBackground = Math.random() > 0.6 && !isForeground
+  
+  let scale = 0.6 + Math.random() * 0.8
+  let blur = 0
+  let zIndex = 50
+  
+  if (isForeground) {
+    scale = 3 + Math.random() * 3
+    blur = 4 + Math.random() * 8
+    zIndex = 999999
+  } else if (isBackground) {
+    scale = 0.2 + Math.random() * 0.3
+    blur = 2 + Math.random() * 4
+    zIndex = 10
+  }
+
   return {
     id,
     x: Math.random() * 100,
-    rot: Math.random() * 60 - 30,
-    scale: 0.6 + Math.random() * 0.8,
-    dur: `${1.2 + Math.random() * 1.2}s`,
-    delay: `${Math.random() * 0.4}s`,
-    size: 14 + Math.floor(Math.random() * 14),
+    rotStart: Math.random() * 360,
+    rotEnd: Math.random() * 720 - 360,
+    scale,
+    dur: isForeground ? 1.5 + Math.random() * 1 : 2.5 + Math.random() * 3,
+    delay: Math.random() * 1.5,
+    size: 24,
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    blur,
+    zIndex
+  }
+}
+
+function playGlassChimes() {
+  try {
+    const ctx = new AudioContext()
+    
+    // Play 5 rapid random chimes
+    for (let i = 0; i < 8; i++) {
+      const osc = ctx.createOscillator()
+      const gainNode = ctx.createGain()
+      
+      osc.type = 'sine'
+      // High pitch frequencies
+      osc.frequency.value = 800 + Math.random() * 2000
+      
+      osc.connect(gainNode)
+      gainNode.connect(ctx.destination)
+      
+      const time = ctx.currentTime + Math.random() * 1.5
+      
+      gainNode.gain.setValueAtTime(0, time)
+      gainNode.gain.linearRampToValueAtTime(0.1, time + 0.05)
+      gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.5)
+      
+      osc.start(time)
+      osc.stop(time + 0.6)
+    }
+  } catch (e) {
+    // AudioContext blocked
   }
 }
 
@@ -54,15 +91,14 @@ export function AnehEasterEgg() {
   const [buffer, setBuffer] = useState('')
 
   const triggerRain = useCallback(() => {
+    playGlassChimes()
     const particles = Array.from({ length: BOW_COUNT }, (_, i) => randomBow(i))
     setBows(particles)
-    /* Clean up after max animation duration finishes */
-    setTimeout(() => setBows([]), 3200)
+    setTimeout(() => setBows([]), 6000)
   }, [])
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      /* Ignore if focused on input/textarea/select */
       const tag = (e.target as HTMLElement)?.tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
 
@@ -75,7 +111,6 @@ export function AnehEasterEgg() {
       }
     }
 
-    /* Custom event: double-clicking AKI in the hero fires this */
     const handleCustom = () => triggerRain()
 
     window.addEventListener('keydown', handleKey)
@@ -89,22 +124,32 @@ export function AnehEasterEgg() {
   if (bows.length === 0) return null
 
   return (
-    <div className="bow-rain-container" aria-hidden>
-      {bows.map((bow) => (
-        <div
-          key={bow.id}
-          className="bow-rain-item"
-          style={{
-            '--bow-x': `${bow.x}%`,
-            '--bow-rot': `${bow.rot}deg`,
-            '--bow-scale': bow.scale,
-            '--bow-dur': bow.dur,
-            '--bow-delay': bow.delay,
-          } as React.CSSProperties}
-        >
-          <BowSvg size={bow.size} color={bow.color} />
-        </div>
-      ))}
+    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 99999, overflow: 'hidden' }} aria-hidden>
+      <AnimatePresence>
+        {bows.map((bow) => (
+          <motion.div
+            key={bow.id}
+            initial={{ y: '-20vh', x: `${bow.x}vw`, rotate: bow.rotStart, scale: bow.scale, opacity: 0, filter: `blur(${bow.blur}px)` }}
+            animate={{ 
+              y: '120vh', 
+              x: `${bow.x + (Math.random() * 10 - 5)}vw`, 
+              rotate: bow.rotEnd,
+              opacity: [0, 1, 1, 0]
+            }}
+            transition={{ 
+              duration: bow.dur, 
+              delay: bow.delay, 
+              ease: [0.25, 0.46, 0.45, 0.94] 
+            }}
+            style={{
+              position: 'absolute',
+              zIndex: bow.zIndex,
+            }}
+          >
+            <BowSvg size={bow.size} color={bow.color} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   )
 }

@@ -96,9 +96,9 @@ export const navLinks = [
   { label: 'About', href: '#coconut' },
   { label: 'Closet', href: '#closet' },
   { label: 'Art', href: '#art' },
+  { label: 'Play', href: '/arcade' },
   { label: 'Gang', href: '#plushies' },
   { label: 'Spill', href: '/confessions' },
-  { label: 'Play', href: '/arcade' },
 ]
 
 /* ─────────────────────────────────────────────

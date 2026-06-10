@@ -56,8 +56,14 @@ function Signal({ id, label, value, sub, icon, color, bg, border }: typeof SIGNA
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ 
+        y: -4, 
+        scale: 1.02, 
+        boxShadow: '0 24px 48px color-mix(in srgb, var(--text-primary) 8%, transparent)',
+        borderColor: 'color-mix(in srgb, var(--text-primary) 12%, transparent)'
+      }}
       viewport={{ once: true }}
-      transition={{ duration: 0.55, ease: easings.outExpo }}
+      transition={{ duration: 0.4, ease: easings.outExpo }}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -68,9 +74,30 @@ function Signal({ id, label, value, sub, icon, color, bg, border }: typeof SIGNA
         borderRadius: 'var(--radius-md, 16px)',
         flex: '1 1 200px',
         minWidth: '180px',
+        cursor: 'default',
+        transition: 'background 400ms ease, border-color 400ms ease',
       }}
     >
-      <span style={{ color, display: 'flex', flexShrink: 0 }}>{icon}</span>
+      <span style={{ color, display: 'flex', flexShrink: 0, position: 'relative' }}>
+        {icon}
+        {/* Pulsating live dot for Active Listener */}
+        {id === 'listener' && (
+          <motion.div
+            animate={{ scale: [1, 1.4, 1], opacity: [0.8, 0.2, 0.8] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              position: 'absolute',
+              top: '-2px',
+              right: '-2px',
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#E1306C',
+              boxShadow: '0 0 8px #E1306C',
+            }}
+          />
+        )}
+      </span>
       <div>
         <div style={{
           fontFamily: 'var(--font-figtree)',
@@ -144,8 +171,14 @@ export function SocialProof() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          whileHover={{ 
+            y: -4, 
+            scale: 1.02, 
+            boxShadow: '0 24px 48px color-mix(in srgb, var(--badge-primary-text) 15%, transparent)',
+            borderColor: 'color-mix(in srgb, var(--badge-primary-border) 40%, transparent)'
+          }}
           viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: easings.outExpo, delay: 0.2 }}
+          transition={{ duration: 0.4, ease: easings.outExpo, delay: 0.2 }}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -156,10 +189,26 @@ export function SocialProof() {
             borderRadius: 'var(--radius-md, 16px)',
             flex: '1 1 200px',
             minWidth: '180px',
+            cursor: 'default',
+            transition: 'background 400ms ease, border-color 400ms ease',
           }}
         >
-          <span style={{ color: 'var(--badge-primary-text)', display: 'flex', flexShrink: 0 }}>
+          <span style={{ color: 'var(--badge-primary-text)', display: 'flex', flexShrink: 0, position: 'relative' }}>
             <MessageCircleHeart size={20} />
+            <motion.div
+              animate={{ scale: [1, 1.5, 1], opacity: [1, 0, 1] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                position: 'absolute',
+                top: '-2px',
+                right: '-2px',
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: 'var(--badge-primary-text)',
+                boxShadow: '0 0 12px var(--badge-primary-text)',
+              }}
+            />
           </span>
           <div>
             <div style={{

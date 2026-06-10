@@ -17,12 +17,13 @@
  * — Tag pills: spring stagger 70ms per pill, scale 0.85→1.0 (hand-placed feeling).
  */
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { easings } from '@/lib/motion'
 import { Gamepad2, BookOpen, Waves } from 'lucide-react'
 import { SectionLabel } from '@/components/ui/SectionLabel'
+import { Magnetic } from '@/components/ui/Magnetic'
 
 const TAGS = [
   { label: 'Interior Design', type: 'secondary' },
@@ -52,6 +53,27 @@ export function Coconut() {
 
   /* Subtle parallax on image: 8% shift total. Small enough to feel physical. */
   const imageY = useTransform(scrollYProgress, [0, 1], ['-4%', '4%'])
+
+  const photoMouseX = useMotionValue(0)
+  const photoMouseY = useMotionValue(0)
+  const rotateX = useTransform(photoMouseY, [-200, 200], [8, -8])
+  const rotateY = useTransform(photoMouseX, [-200, 200], [-8, 8])
+  const glareX = useTransform(photoMouseX, [-200, 200], [100, -100])
+  const glareY = useTransform(photoMouseY, [-200, 200], [100, -100])
+
+  const handlePhotoMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    photoMouseX.set(e.clientX - centerX)
+    photoMouseY.set(e.clientY - centerY)
+  }
+
+  const handlePhotoMouseLeave = () => {
+    setPhotoHovered(false)
+    photoMouseX.set(0)
+    photoMouseY.set(0)
+  }
 
   return (
     <section
@@ -91,26 +113,25 @@ export function Coconut() {
         {/* ── IMAGE — parallax wrapper ── */}
         <motion.div
           className="coconut-image"
-          style={{ y: imageY }}
+          style={{ y: imageY, perspective: 1200 }}
           initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
           whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
           viewport={{ once: true, margin: '-10px' }}
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Polaroid style container with Brownian Motion */}
+          {/* Polaroid style container with 3D Gyro Hover */}
           <motion.div
             onMouseEnter={() => setPhotoHovered(true)}
-            onMouseLeave={() => setPhotoHovered(false)}
+            onMouseMove={handlePhotoMouseMove}
+            onMouseLeave={handlePhotoMouseLeave}
             onClick={() => setLightboxOpen(true)}
-            animate={photoHovered ? { y: 0, x: 0, rotate: 0 } : {
+            animate={photoHovered ? { y: 0, x: 0 } : {
               y: [0, -8, 4, 0],
-              x: [0, 3, -3, 0],
-              rotate: [0, 1, -1, 0]
+              x: [0, 3, -3, 0]
             }}
             transition={{
               y: photoHovered ? { duration: 0.4 } : { duration: 6, repeat: Infinity, ease: 'easeInOut' },
-              x: photoHovered ? { duration: 0.4 } : { duration: 7.2, repeat: Infinity, ease: 'easeInOut' },
-              rotate: photoHovered ? { duration: 0.4 } : { duration: 8.5, repeat: Infinity, ease: 'easeInOut' },
+              x: photoHovered ? { duration: 0.4 } : { duration: 7.2, repeat: Infinity, ease: 'easeInOut' }
             }}
             style={{
               position: 'relative',
@@ -121,9 +142,12 @@ export function Coconut() {
               overflow: 'hidden',
               background: 'var(--card-bg)',
               border: '8px solid var(--card-bg)',
+              rotateX: photoHovered ? rotateX : 0,
+              rotateY: photoHovered ? rotateY : 0,
+              transformStyle: 'preserve-3d',
               /* On light bg: deeper, more polaroid-style shadow */
               boxShadow: photoHovered
-                ? '0 40px 100px rgba(255,20,147,0.22), 0 8px 24px rgba(0,0,0,0.08)'
+                ? '0 40px 100px rgba(255,20,147,0.22), 0 16px 32px rgba(0,0,0,0.12)'
                 : '0 24px 60px rgba(255,20,147,0.14), 0 4px 12px rgba(0,0,0,0.05)',
               transition: 'box-shadow 500ms cubic-bezier(0.22,1,0.36,1)',
               cursor: 'zoom-in',
@@ -148,14 +172,17 @@ export function Coconut() {
               />
             </motion.div>
 
-            {/* Gradient vignette — lightened for blush bg context */}
-            <div
+            {/* 3D Interactive Glare Overlay */}
+            <motion.div
               aria-hidden
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(to bottom, transparent 60%, rgba(255,245,248,0.1) 100%)',
+                background: useMotionTemplate`radial-gradient(circle at calc(50% + ${glareX}px) calc(50% + ${glareY}px), rgba(255,255,255,0.4) 0%, transparent 60%)`,
+                opacity: photoHovered ? 1 : 0,
                 pointerEvents: 'none',
+                transition: 'opacity 400ms ease',
+                mixBlendMode: 'overlay',
               }}
             />
           </motion.div>
@@ -230,29 +257,37 @@ export function Coconut() {
             }}
           >
             {TAGS.map((tag) => (
-              <motion.span
-                key={tag.label}
-                variants={{
-                  hidden: { opacity: 0, scale: 0.85, y: 8 },
-                  visible: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 18 } },
-                }}
-                style={{
-                  fontFamily: 'var(--font-figtree)',
-                  fontWeight: 400,
-                  fontSize: '10px',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: `var(--badge-${tag.type}-text)`,
-                  padding: '6px 14px',
-                  borderRadius: '100px',
-                  border: `1px solid var(--badge-${tag.type}-border)`,
-                  background: `var(--badge-${tag.type}-bg)`,
-                  cursor: 'default',
-                  display: 'inline-block',
-                }}
-              >
-                {tag.label}
-              </motion.span>
+              <Magnetic key={tag.label}>
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.85, y: 8 },
+                    visible: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 18 } },
+                  }}
+                  style={{
+                    fontFamily: 'var(--font-figtree)',
+                    fontWeight: 400,
+                    fontSize: '10px',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: `var(--badge-${tag.type}-text)`,
+                    padding: '6px 14px',
+                    borderRadius: '100px',
+                    border: `1px solid var(--badge-${tag.type}-border)`,
+                    background: `var(--badge-${tag.type}-bg)`,
+                    cursor: 'pointer',
+                    display: 'inline-block',
+                    transition: 'all 0.3s ease',
+                  }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    boxShadow: '0 4px 12px color-mix(in srgb, var(--text-primary) 10%, transparent)',
+                    backgroundColor: 'var(--text-primary)',
+                    color: 'var(--bg-primary)'
+                  }}
+                >
+                  {tag.label}
+                </motion.span>
+              </Magnetic>
             ))}
           </motion.div>
 
@@ -339,39 +374,75 @@ export function Coconut() {
   )
 }
 
-/* ── Pull quote with 3-quote carousel (Von Restorff + Zeigarnik) ── */
+/* ── Editorial Pull Quote with word-by-word reveal ── */
 function PullQuote() {
   const [idx, setIdx] = useState(0)
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => (i + 1) % QUOTES.length), 5000)
+    const t = setInterval(() => setIdx((i) => (i + 1) % QUOTES.length), 6000)
     return () => clearInterval(t)
   }, [])
 
+  const words = QUOTES[idx].split(' ')
+
   return (
-    <div style={{ position: 'relative', minHeight: '80px' }}>
+    <div style={{ position: 'relative', minHeight: '120px', padding: '20px 0 20px 40px' }}>
+      {/* Massive Background Quotation Mark */}
+      <div 
+        aria-hidden 
+        style={{
+          position: 'absolute',
+          top: '-20px',
+          left: '-10px',
+          fontFamily: 'var(--font-bodoni-moda)',
+          fontSize: '180px',
+          color: 'color-mix(in srgb, var(--accent-hot) 8%, transparent)',
+          lineHeight: 1,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      >
+        &ldquo;
+      </div>
+
       <AnimatePresence mode="wait">
         <motion.blockquote
           key={idx}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ rotate: -1.5, opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
           style={{
+            position: 'relative',
+            zIndex: 1,
             fontFamily: 'var(--font-instrument-serif)',
             fontStyle: 'italic',
-            fontSize: 'clamp(16px, 1.8vw, 21px)',
-            color: 'var(--text-mid)',
+            fontSize: 'clamp(20px, 2vw, 28px)',
+            color: 'var(--text-primary)',
             transition: 'color 400ms ease',
-            lineHeight: 1.55,
-            boxShadow: 'inset 2px 0 0 var(--glass-border)',
-            paddingLeft: '24px',
-            maxWidth: '44ch',
-            transformOrigin: 'top left',
+            lineHeight: 1.4,
+            maxWidth: '32ch',
             margin: 0,
+            display: 'inline-block'
           }}
         >
-          &ldquo;{QUOTES[idx]}&rdquo;
+          {words.map((word, i) => (
+            <span key={i} style={{ display: 'inline-block', overflow: 'hidden', paddingRight: '0.25em' }}>
+              <motion.span
+                style={{ display: 'inline-block' }}
+                variants={{
+                  hidden: { opacity: 0, y: '100%', rotate: 4 },
+                  visible: { 
+                    opacity: 1, 
+                    y: '0%', 
+                    rotate: 0,
+                    transition: { duration: 0.6, ease: easings.outExpo, delay: i * 0.04 } 
+                  }
+                }}
+              >
+                {word}
+              </motion.span>
+            </span>
+          ))}
         </motion.blockquote>
       </AnimatePresence>
     </div>

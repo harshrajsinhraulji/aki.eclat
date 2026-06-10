@@ -16,7 +16,7 @@
  * MOBILE (<768px): Same as tablet, tighter padding.
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion'
 import { BowSvg } from '@/components/ui/BowSvg'
 import { Magnetic } from '@/components/ui/Magnetic'

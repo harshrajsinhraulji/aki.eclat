@@ -43,9 +43,9 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
   const { scrollY } = useScroll()
   const scrollVelocity = useVelocity(scrollY)
 
-  // Tie font-weight to scroll velocity
+    // Tie font-weight to scroll velocity
   useEffect(() => {
-    return scrollVelocity.onChange((v) => {
+    return scrollVelocity.on("change", (v) => {
       // Calculate a dynamic weight between 300 and 700 based on speed
       const baseWeight = 400
       const addedWeight = Math.min(Math.abs(v) * 0.15, 300)

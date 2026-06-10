@@ -59,8 +59,8 @@ function Signal({ id, label, value, sub, icon, color, bg, border }: typeof SIGNA
       whileHover={{ 
         y: -4, 
         scale: 1.02, 
-        boxShadow: '0 24px 48px color-mix(in srgb, var(--text-primary) 8%, transparent)',
-        borderColor: 'color-mix(in srgb, var(--text-primary) 12%, transparent)'
+        boxShadow: '0 24px 48px rgba(26, 10, 18, 0.08)',
+        borderColor: 'rgba(26, 10, 18, 0.12)'
       }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, ease: easings.outExpo }}
@@ -174,8 +174,8 @@ export function SocialProof() {
           whileHover={{ 
             y: -4, 
             scale: 1.02, 
-            boxShadow: '0 24px 48px color-mix(in srgb, var(--badge-primary-text) 15%, transparent)',
-            borderColor: 'color-mix(in srgb, var(--badge-primary-border) 40%, transparent)'
+            boxShadow: '0 24px 48px rgba(194, 24, 91, 0.15)',
+            borderColor: 'rgba(194, 24, 91, 0.40)'
           }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, ease: easings.outExpo, delay: 0.2 }}

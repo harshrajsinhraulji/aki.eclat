@@ -84,7 +84,6 @@ export function ArtWords() {
         position: 'relative',
         width: '100%',
         minHeight: '100svh',
-        minHeight: '100svh',
         background: 'var(--bg-primary)',
         transition: 'background 400ms ease',
         overflow: 'hidden',

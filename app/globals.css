@@ -973,19 +973,6 @@ section[id] {
    LetsTalk (#0A0306) ← CINEMATIC CLOSE
 ──────────────────────────────────────────────────── */
 
-/* Coconut (blush) → Universe (dark): fade to near-black at bottom */
-#coconut::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(to bottom, transparent, #0F0308);
-  pointer-events: none;
-  z-index: 2;
-}
-
 /* Universe (dark) → InfiniteCloset (dark): no bridge needed — same colour */
 /* InfiniteCloset (dark) → ArtWords (blush): bridge to blush */
 #closet::after {

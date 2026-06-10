@@ -67,22 +67,23 @@ class AudioEngine {
   playGhostPenalty() {
     if (!this.enabled) return;
     this.init();
-    if (!this.ctx) return;
+    const ctx = this.ctx;
+    if (!ctx) return;
 
     // Dissonant minor second chord
     for (const freq of [150, 158]) {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
       osc.type = 'square';
       osc.frequency.value = freq;
       
-      gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.8);
+      gain.gain.setValueAtTime(0.05, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
       
       osc.connect(gain);
-      gain.connect(this.ctx.destination);
+      gain.connect(ctx.destination);
       osc.start();
-      osc.stop(this.ctx.currentTime + 0.8);
+      osc.stop(ctx.currentTime + 0.8);
     }
   }
 }

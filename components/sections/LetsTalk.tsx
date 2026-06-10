@@ -378,60 +378,63 @@ function DeconstructedFooter() {
       backdropFilter: 'blur(20px)',
     }}>
       {links.map((link, i) => (
-        <Magnetic key={link.name}>
-          <motion.a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-hover="link"
-            initial="rest"
-            whileHover="hover"
-            variants={{
-              rest: { backgroundColor: 'transparent' },
-              hover: { backgroundColor: `rgba(${link.brandRgb}, 0.05)` }
-            }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '16px',
-              padding: '40px 24px',
-              borderRight: i === links.length - 1 ? 'none' : '1px solid color-mix(in srgb, var(--text-primary) 5%, transparent)',
-              textDecoration: 'none',
-              color: 'color-mix(in srgb, var(--text-primary) 40%, transparent)',
-              width: '100%',
-              height: '100%'
-            }}
-          >
-            <motion.div 
-              variants={{ 
-                rest: { color: 'color-mix(in srgb, var(--text-primary) 30%, transparent)', scale: 1, filter: 'drop-shadow(0 0 0px transparent)' }, 
-                hover: { color: link.brandHex, scale: 1.1, filter: `drop-shadow(0 0 16px rgba(${link.brandRgb}, 0.6))` } 
-              }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-            >
-              <link.icon size={24} color="currentColor" />
-            </motion.div>
-            <motion.span 
-              variants={{
-                rest: { color: 'color-mix(in srgb, var(--text-primary) 40%, transparent)' },
-                hover: { color: 'var(--text-primary)' }
-              }}
-              style={{ 
-                fontFamily: 'var(--font-figtree)', 
-                fontSize: '10px', 
-                fontWeight: 500, 
-                letterSpacing: '0.2em', 
-                textTransform: 'uppercase' 
-              }}
-            >
-              {link.name}
-            </motion.span>
-          </motion.a>
-        </Magnetic>
+        <SocialLink key={link.name} link={link} isLast={i === links.length - 1} />
       ))}
     </div>
+  )
+}
+
+function SocialLink({ link, isLast }: { link: any, isLast: boolean }) {
+  const [isHovered, setIsHovered] = useState(false)
+  return (
+    <Magnetic>
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-hover="link"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '16px',
+          padding: '40px 24px',
+          borderRight: isLast ? 'none' : '1px solid color-mix(in srgb, var(--text-primary) 5%, transparent)',
+          textDecoration: 'none',
+          color: 'color-mix(in srgb, var(--text-primary) 40%, transparent)',
+          width: '100%',
+          height: '100%',
+          backgroundColor: isHovered ? `rgba(${link.brandRgb}, 0.05)` : 'transparent',
+          transition: 'background-color 0.4s ease-out',
+        }}
+      >
+        <div 
+          style={{ 
+            color: isHovered ? link.brandHex : 'color-mix(in srgb, var(--text-primary) 30%, transparent)',
+            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+            filter: isHovered ? `drop-shadow(0 0 16px rgba(${link.brandRgb}, 0.6))` : 'drop-shadow(0 0 0px transparent)',
+            transition: 'all 0.3s ease-out'
+          }}
+        >
+          <link.icon size={24} color="currentColor" />
+        </div>
+        <span 
+          style={{ 
+            color: isHovered ? 'var(--text-primary)' : 'color-mix(in srgb, var(--text-primary) 40%, transparent)',
+            fontFamily: 'var(--font-figtree)', 
+            fontSize: '10px', 
+            fontWeight: 500, 
+            letterSpacing: '0.2em', 
+            textTransform: 'uppercase',
+            transition: 'color 0.3s ease-out'
+          }}
+        >
+          {link.name}
+        </span>
+      </a>
+    </Magnetic>
   )
 }

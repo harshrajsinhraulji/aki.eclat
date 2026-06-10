@@ -176,10 +176,12 @@ export function InfiniteCloset() {
         transition={{ duration: 0.7, ease: easings.outExpoAlt }}
         style={{
           fontFamily: 'var(--font-bodoni-moda)',
+          fontWeight: 'var(--dynamic-weight, 400)',
           fontSize: 'clamp(36px, 5vw, 64px)',
           letterSpacing: '-0.025em',
           lineHeight: 1.05,
           color: 'var(--text-primary)',
+          transition: 'font-weight 200ms ease-out',
           paddingLeft: 'clamp(24px, 6vw, 80px)',
           marginBottom: 'clamp(40px, 5vh, 56px)',
           marginTop: '20px',

@@ -18,8 +18,8 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion'
-import Link from 'next/link'
 import { BowSvg } from '@/components/ui/BowSvg'
+import { Magnetic } from '@/components/ui/Magnetic'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { easings, durations } from '@/lib/motion'
 
@@ -378,56 +378,59 @@ function DeconstructedFooter() {
       backdropFilter: 'blur(20px)',
     }}>
       {links.map((link, i) => (
-        <motion.a
-          key={link.name}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-hover="link"
-          initial="rest"
-          whileHover="hover"
-          variants={{
-            rest: { backgroundColor: 'transparent' },
-            hover: { backgroundColor: `rgba(${link.brandRgb}, 0.05)` }
-          }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '16px',
-            padding: '40px 24px',
-            borderRight: i === links.length - 1 ? 'none' : '1px solid color-mix(in srgb, var(--text-primary) 5%, transparent)',
-            textDecoration: 'none',
-            color: 'color-mix(in srgb, var(--text-primary) 40%, transparent)',
-          }}
-        >
-          <motion.div 
-            variants={{ 
-              rest: { color: 'color-mix(in srgb, var(--text-primary) 30%, transparent)', scale: 1, filter: 'drop-shadow(0 0 0px transparent)' }, 
-              hover: { color: link.brandHex, scale: 1.1, filter: `drop-shadow(0 0 16px rgba(${link.brandRgb}, 0.6))` } 
-            }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-          >
-            <link.icon size={24} color="currentColor" />
-          </motion.div>
-          <motion.span 
+        <Magnetic key={link.name}>
+          <motion.a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-hover="link"
+            initial="rest"
+            whileHover="hover"
             variants={{
-              rest: { color: 'color-mix(in srgb, var(--text-primary) 40%, transparent)' },
-              hover: { color: 'var(--text-primary)' }
+              rest: { backgroundColor: 'transparent' },
+              hover: { backgroundColor: `rgba(${link.brandRgb}, 0.05)` }
             }}
-            style={{ 
-              fontFamily: 'var(--font-figtree)', 
-              fontSize: '10px', 
-              fontWeight: 500, 
-              letterSpacing: '0.2em', 
-              textTransform: 'uppercase' 
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '16px',
+              padding: '40px 24px',
+              borderRight: i === links.length - 1 ? 'none' : '1px solid color-mix(in srgb, var(--text-primary) 5%, transparent)',
+              textDecoration: 'none',
+              color: 'color-mix(in srgb, var(--text-primary) 40%, transparent)',
+              width: '100%',
+              height: '100%'
             }}
           >
-            {link.name}
-          </motion.span>
-        </motion.a>
+            <motion.div 
+              variants={{ 
+                rest: { color: 'color-mix(in srgb, var(--text-primary) 30%, transparent)', scale: 1, filter: 'drop-shadow(0 0 0px transparent)' }, 
+                hover: { color: link.brandHex, scale: 1.1, filter: `drop-shadow(0 0 16px rgba(${link.brandRgb}, 0.6))` } 
+              }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <link.icon size={24} color="currentColor" />
+            </motion.div>
+            <motion.span 
+              variants={{
+                rest: { color: 'color-mix(in srgb, var(--text-primary) 40%, transparent)' },
+                hover: { color: 'var(--text-primary)' }
+              }}
+              style={{ 
+                fontFamily: 'var(--font-figtree)', 
+                fontSize: '10px', 
+                fontWeight: 500, 
+                letterSpacing: '0.2em', 
+                textTransform: 'uppercase' 
+              }}
+            >
+              {link.name}
+            </motion.span>
+          </motion.a>
+        </Magnetic>
       ))}
     </div>
   )

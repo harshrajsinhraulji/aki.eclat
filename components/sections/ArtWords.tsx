@@ -148,11 +148,12 @@ export function ArtWords() {
         <h2
           style={{
             fontFamily: 'var(--font-bodoni-moda)',
+            fontWeight: 'var(--dynamic-weight, 400)',
             fontSize: 'clamp(48px, 6vw, 84px)',
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
             color: 'var(--text-primary)',
-            transition: 'color 400ms ease',
+            transition: 'color 400ms ease, font-weight 200ms ease-out',
             marginBottom: '24px',
           }}
         >

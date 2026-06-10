@@ -54,6 +54,20 @@ export function LayoutClient({ children }: { children: React.ReactNode }) {
     })
   }, [scrollVelocity])
 
+  // Tab Title Notification (Zeigarnik Effect hook)
+  useEffect(() => {
+    const defaultTitle = document.title
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        document.title = 'aneh, come back 🎀'
+      } else {
+        document.title = defaultTitle
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [])
+
   // onComplete is a no-op now — loading screen is just cosmetic overlay
   const handleLoadComplete = useCallback(() => {
     // No-op: content is already visible. LoadingScreen just fades out.

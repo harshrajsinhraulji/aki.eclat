@@ -183,7 +183,7 @@ export function CustomCursor() {
           width: ringSize,
           height: ringSize,
           borderRadius: '50%',
-          border: '1.5px solid rgba(255,20,147,0.5)',
+          border: '1.5px solid white',
           background: 'transparent',
           scaleX: ringScaleX,
           scaleY: ringScaleY,
@@ -191,6 +191,7 @@ export function CustomCursor() {
           pointerEvents: 'none',
           zIndex: 99999,
           willChange: 'transform',
+          mixBlendMode: 'difference',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -251,12 +252,13 @@ export function CustomCursor() {
           width: 6,
           height: 6,
           borderRadius: '50%',
-          background: '#FF1493',
+          background: 'white',
           scale: dotScale,
           opacity: dotOpacity,
           pointerEvents: 'none',
           zIndex: 100000,
           willChange: 'transform',
+          mixBlendMode: 'difference',
         }}
       />
     </div>

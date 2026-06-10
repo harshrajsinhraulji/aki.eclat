@@ -226,10 +226,12 @@ export function Universe() {
           transition={{ duration: 0.7, delay: 0.06, ease: easings.outExpo }}
           style={{
             fontFamily: 'var(--font-bodoni-moda)',
-            fontSize: 'clamp(36px, 5vw, 64px)',
-            letterSpacing: '-0.025em',
-            lineHeight: 1.05,
+            fontWeight: 'var(--dynamic-weight, 400)',
+            fontSize: isDesktop ? 'clamp(48px, 6vw, 120px)' : 'clamp(40px, 12vw, 80px)',
+            lineHeight: 0.9,
+            letterSpacing: '-0.02em',
             color: 'var(--text-primary)',
+            transition: 'font-weight 200ms ease-out',
           }}
         >
           Everything I&apos;m made of.

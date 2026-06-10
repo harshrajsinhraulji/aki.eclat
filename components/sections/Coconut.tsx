@@ -97,11 +97,21 @@ export function Coconut() {
           viewport={{ once: true, margin: '-10px' }}
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Polaroid style container */}
+          {/* Polaroid style container with Brownian Motion */}
           <motion.div
             onMouseEnter={() => setPhotoHovered(true)}
             onMouseLeave={() => setPhotoHovered(false)}
             onClick={() => setLightboxOpen(true)}
+            animate={photoHovered ? { y: 0, x: 0, rotate: 0 } : {
+              y: [0, -8, 4, 0],
+              x: [0, 3, -3, 0],
+              rotate: [0, 1, -1, 0]
+            }}
+            transition={{
+              y: photoHovered ? { duration: 0.4 } : { duration: 6, repeat: Infinity, ease: 'easeInOut' },
+              x: photoHovered ? { duration: 0.4 } : { duration: 7.2, repeat: Infinity, ease: 'easeInOut' },
+              rotate: photoHovered ? { duration: 0.4 } : { duration: 8.5, repeat: Infinity, ease: 'easeInOut' },
+            }}
             style={{
               position: 'relative',
               width: '100%',

@@ -204,12 +204,19 @@ function DesktopPlushie({
         }}
       />
 
-      {/* Plushie Image with micro-vibrations */}
+      {/* Plushie Image with Brownian micro-vibrations */}
       <motion.div
-        animate={{ scale: isHovered ? 1.05 : [1, 1.015, 1], y: isHovered ? -10 : [0, -4, 0] }}
+        animate={isHovered ? { scale: 1.05, y: -10, x: 0, rotate: 0 } : {
+          scale: [1, 1.02, 0.98, 1],
+          y: [0, -6, 3, 0],
+          x: [0, 4, -4, 0],
+          rotate: [0, 2, -1, 0]
+        }}
         transition={{
-          scale: isHovered ? { duration: 0.3 } : { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.5 },
-          y: isHovered ? { duration: 0.3 } : { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.5 },
+          scale: isHovered ? { duration: 0.3 } : { duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.3 },
+          y: isHovered ? { duration: 0.3 } : { duration: 6, repeat: Infinity, ease: 'easeInOut', delay: index * 0.2 },
+          x: isHovered ? { duration: 0.3 } : { duration: 7.2, repeat: Infinity, ease: 'easeInOut', delay: index * 0.4 },
+          rotate: isHovered ? { duration: 0.3 } : { duration: 8.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.5 },
         }}
         style={{
           position: 'relative',

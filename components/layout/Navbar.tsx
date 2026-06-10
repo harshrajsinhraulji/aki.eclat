@@ -19,6 +19,7 @@ import Link from 'next/link'
 import { navLinks } from '@/lib/data'
 import { easings } from '@/lib/motion'
 import { BowSvg } from '@/components/ui/BowSvg'
+import { Magnetic } from '@/components/ui/Magnetic'
 import { useTheme } from '@/lib/ThemeContext'
 
 const DARK_SECTIONS = new Set(['universe', 'closet', 'confessions-teaser', 'contact'])
@@ -167,29 +168,31 @@ export function Navbar() {
             aria-label="Main navigation"
           >
             {/* Col 1: Wordmark with tiny swinging bow badge */}
-            <Link
-              href="/"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontFamily: 'var(--font-bodoni-moda)',
-                fontVariationSettings: '"wght" 400, "opsz" 48',
-                fontSize: '1.15rem',
-                color: wordmarkColor,
-                textDecoration: 'none',
-                letterSpacing: '-0.01em',
-                lineHeight: 1,
-                whiteSpace: 'nowrap',
-                transition: 'color 350ms ease',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = wordmarkHover }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = wordmarkColor }}
-              data-hover="link"
-            >
-              Aki
-              <BowSvg size={12} color="#C2185B" swing={true} style={{ marginLeft: '1px' }} />
-            </Link>
+            <Magnetic>
+              <Link
+                href="/"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontFamily: 'var(--font-bodoni-moda)',
+                  fontVariationSettings: '"wght" 400, "opsz" 48',
+                  fontSize: '1.15rem',
+                  color: wordmarkColor,
+                  textDecoration: 'none',
+                  letterSpacing: '-0.01em',
+                  lineHeight: 1,
+                  whiteSpace: 'nowrap',
+                  transition: 'color 350ms ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = wordmarkHover }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = wordmarkColor }}
+                data-hover="link"
+              >
+                Aki
+                <BowSvg size={12} color="#C2185B" swing={true} style={{ marginLeft: '1px' }} />
+              </Link>
+            </Magnetic>
 
             {/* Col 2: Centre nav links — DESKTOP ONLY */}
             <div
@@ -224,47 +227,49 @@ export function Navbar() {
 
             {/* Col 3: Theme toggle & 3-dot mobile toggle */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
-              <ThemeToggle />
-              <button
-                onClick={() => setMobileOpen((o) => !o)}
-                className="nav-mobile"
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '4px',
-                  padding: '12px',
-                  minWidth: '48px',
-                  minHeight: '48px',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                aria-label="Toggle navigation"
-                aria-expanded={mobileOpen}
-              >
-                {mobileOpen ? (
-                  // X icon when open
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-                    <path d="M2 2L14 14M14 2L2 14" stroke="#FF1493" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                ) : (
-                  [0, 1, 2].map((i) => (
-                    <span
-                      key={i}
-                      style={{
-                        display: 'block',
-                        width: '4px',
-                        height: '4px',
-                        borderRadius: '50%',
-                        background: dotColor,
-                        transition: 'background 350ms ease',
-                      }}
-                    />
-                  ))
-                )}
-              </button>
+              <Magnetic><ThemeToggle /></Magnetic>
+              <Magnetic>
+                <button
+                  onClick={() => setMobileOpen((o) => !o)}
+                  className="nav-mobile"
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '4px',
+                    padding: '12px',
+                    minWidth: '48px',
+                    minHeight: '48px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  aria-label="Toggle navigation"
+                  aria-expanded={mobileOpen}
+                >
+                  {mobileOpen ? (
+                    // X icon when open
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+                      <path d="M2 2L14 14M14 2L2 14" stroke="#FF1493" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  ) : (
+                    [0, 1, 2].map((i) => (
+                      <span
+                        key={i}
+                        style={{
+                          display: 'block',
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          background: dotColor,
+                          transition: 'background 350ms ease',
+                        }}
+                      />
+                    ))
+                  )}
+                </button>
+              </Magnetic>
             </div>
           </motion.nav>
         )}

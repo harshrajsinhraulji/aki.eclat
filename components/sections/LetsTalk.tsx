@@ -35,6 +35,10 @@ function DiscordIcon({ size = 18, color = 'currentColor' }: { size?: number; col
 /* Copyable Discord username block */
 function VIPAccessPass() {
   const [copied, setCopied] = useState(false)
+  const [joined, setJoined] = useState(false)
+  const [isHolding, setIsHolding] = useState(false)
+  const holdTimer = useRef<NodeJS.Timeout | null>(null)
+  
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
@@ -42,6 +46,35 @@ function VIPAccessPass() {
     const { left, top } = currentTarget.getBoundingClientRect()
     mouseX.set(clientX - left)
     mouseY.set(clientY - top)
+  }
+
+  const handlePointerDown = () => {
+    setIsHolding(true)
+    holdTimer.current = setTimeout(() => {
+      setIsHolding(false)
+      setJoined(true)
+      window.open('https://discord.gg/kMnaqq6RUW', '_blank')
+      setTimeout(() => setJoined(false), 3000)
+    }, 800) // 800ms hold required
+  }
+
+  const handlePointerUp = () => {
+    if (holdTimer.current) {
+      clearTimeout(holdTimer.current)
+      holdTimer.current = null
+    }
+    if (isHolding) {
+      setIsHolding(false)
+      copy() // It was a short tap
+    }
+  }
+
+  const handlePointerLeave = () => {
+    if (holdTimer.current) {
+      clearTimeout(holdTimer.current)
+      holdTimer.current = null
+    }
+    setIsHolding(false)
   }
 
   const copy = async () => {
@@ -54,10 +87,13 @@ function VIPAccessPass() {
 
   return (
     <motion.div
-      onClick={copy}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerLeave}
+      onPointerCancel={handlePointerLeave}
       onMouseMove={handleMouseMove}
       whileHover={{ scale: 1.02, y: -4, boxShadow: '0 40px 100px color-mix(in srgb, var(--text-primary) 15%, transparent)' }}
-      whileTap={{ scale: 0.96, y: 8, boxShadow: '0 8px 20px color-mix(in srgb, var(--text-primary) 15%, transparent) inset, 0 4px 10px color-mix(in srgb, var(--text-primary) 5%, transparent)' }}
+      whileTap={{ scale: 0.98, y: 2, boxShadow: '0 8px 20px color-mix(in srgb, var(--text-primary) 15%, transparent) inset, 0 4px 10px color-mix(in srgb, var(--text-primary) 5%, transparent)' }}
       initial={{ opacity: 0, y: 40, boxShadow: '0 32px 80px color-mix(in srgb, var(--text-primary) 10%, transparent)' }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -105,17 +141,33 @@ function VIPAccessPass() {
           />
           <AnimatePresence mode="wait">
             <motion.span 
-              key={copied ? 'copied' : 'copy'}
+              key={copied ? 'copied' : joined ? 'joined' : isHolding ? 'holding' : 'idle'}
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
-              style={{ fontSize: '10px', color: copied ? '#5865F2' : 'color-mix(in srgb, var(--text-primary) 70%, transparent)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: copied ? 700 : 500 }}
+              transition={{ duration: 0.2 }}
+              style={{ fontSize: '10px', color: (copied || joined) ? '#5865F2' : 'color-mix(in srgb, var(--text-primary) 70%, transparent)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: (copied || joined || isHolding) ? 700 : 500 }}
             >
-              {copied ? 'Copied to clipboard' : 'Click to copy & join'}
+              {copied ? 'Copied username!' : joined ? 'Opening Discord...' : isHolding ? 'Hold to join...' : 'Tap to copy • Hold to join'}
             </motion.span>
           </AnimatePresence>
         </div>
       </div>
+      
+      {/* Hold Progress Bar */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: isHolding ? 1 : 0 }}
+        transition={{ duration: isHolding ? 0.8 : 0.2, ease: isHolding ? "linear" : "easeOut" }}
+        style={{
+          position: 'absolute',
+          bottom: 0, left: 0, right: 0,
+          height: '4px',
+          background: '#5865F2',
+          transformOrigin: 'left',
+          zIndex: 10
+        }}
+      />
     </motion.div>
   )
 }

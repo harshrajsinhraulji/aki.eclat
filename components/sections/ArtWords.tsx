@@ -18,6 +18,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform, useScroll, useMo
 import { useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { easings } from '@/lib/motion'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 
 /* ── DATA ── */
 const POEMS = [
@@ -83,8 +84,9 @@ export function ArtWords() {
         position: 'relative',
         width: '100%',
         minHeight: '100svh',
-        /* THE DAWN — starts near-dark at top, fully blush by centre */
-        background: 'linear-gradient(180deg, #1A0812 0%, #FFF5F8 30%, #FFF5F8 100%)',
+        minHeight: '100svh',
+        background: 'var(--bg-primary)',
+        transition: 'background 400ms ease',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -92,18 +94,6 @@ export function ArtWords() {
         padding: 'clamp(80px, 10vh, 120px) clamp(24px, 6vw, 80px)',
       }}
     >
-      {/* Dawn bridge — InfiniteCloset ends at #0A0306, this melts it into the gradient */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0,
-          height: '200px',
-          background: 'linear-gradient(to bottom, #0A0306 0%, transparent 100%)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
 
       {/* Watermark — deep plum at 2%, barely there */}
       <div
@@ -114,7 +104,7 @@ export function ArtWords() {
           left: '-5%',
           fontFamily: 'var(--font-bodoni-moda)',
           fontSize: 'clamp(180px, 28vw, 400px)',
-          color: 'rgba(45,26,46,0.022)',
+          color: 'color-mix(in srgb, var(--text-primary) 2%, transparent)',
           letterSpacing: '-0.06em',
           userSelect: 'none',
           pointerEvents: 'none',
@@ -123,7 +113,7 @@ export function ArtWords() {
       >
         thoughts
         <br />
-        <span style={{ fontStyle: 'italic', marginLeft: '20vw', color: 'rgba(45,26,46,0.015)' }}>
+        <span style={{ fontStyle: 'italic', marginLeft: '20vw', color: 'color-mix(in srgb, var(--text-primary) 1.5%, transparent)' }}>
           &amp; words
         </span>
       </div>
@@ -136,7 +126,7 @@ export function ArtWords() {
           left: 0,
           right: 0,
           height: '2px',
-          background: '#FF1493',
+          background: 'var(--accent-primary)',
           transformOrigin: '0%',
           scaleX: scrollYProgress,
           zIndex: 100,
@@ -151,20 +141,8 @@ export function ArtWords() {
         transition={{ duration: 0.6, ease: easings.outExpoAlt }}
         style={{ position: 'relative', zIndex: 10, marginBottom: 'clamp(40px, 6vh, 64px)' }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
-          <div style={{ width: '40px', height: '1px', background: '#FF1493' }} />
-          <span
-            style={{
-              fontFamily: 'var(--font-figtree)',
-              fontWeight: 600,
-              fontSize: '10px',
-              letterSpacing: '0.24em',
-              textTransform: 'uppercase',
-              color: '#FF1493',
-            }}
-          >
-            04 — Art &amp; Words
-          </span>
+        <div style={{ marginBottom: '32px' }}>
+          <SectionLabel>Art &amp; Words</SectionLabel>
         </div>
 
         <h2
@@ -173,7 +151,7 @@ export function ArtWords() {
             fontSize: 'clamp(48px, 6vw, 84px)',
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
-            color: '#1A0A12',
+            color: 'var(--text-primary)',
             transition: 'color 400ms ease',
             marginBottom: '24px',
           }}
@@ -184,7 +162,7 @@ export function ArtWords() {
             style={{
               fontFamily: 'var(--font-instrument-serif)',
               fontStyle: 'italic',
-              color: '#FF1493',
+              color: 'var(--accent-hot)',
             }}
           >
             2am.
@@ -196,7 +174,7 @@ export function ArtWords() {
             fontFamily: 'var(--font-figtree)',
             fontWeight: 300,
             fontSize: 'clamp(15px, 1.4vw, 18px)',
-            color: '#6B2D4A',
+            color: 'var(--text-mid)',
             lineHeight: 1.65,
             transition: 'color 400ms ease',
             maxWidth: '48ch',
@@ -261,7 +239,7 @@ function PoemFocusOverlay({
           inset: 0,
           pointerEvents: 'none',
           zIndex: 0,
-          background: useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(255,215,0,0.06), transparent 80%)`,
+          background: useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, var(--badge-primary-bg), transparent 80%)`,
         }}
       />
 
@@ -276,11 +254,11 @@ function PoemFocusOverlay({
           zIndex: 1,
           maxWidth: '560px',
           width: '90vw',
-          background: 'rgba(10, 3, 6, 0.95)',
-          border: '1px solid rgba(255,20,147,0.15)',
+          background: 'var(--card-bg)',
+          border: '1px solid var(--card-border)',
           borderRadius: '24px',
           padding: 'clamp(32px, 5vw, 56px)',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,20,147,0.08)',
+          boxShadow: '0 32px 80px var(--shadow-sm), 0 0 0 1px var(--card-border-hover)',
         }}
       >
         {/* Header */}
@@ -290,9 +268,9 @@ function PoemFocusOverlay({
               animate={{
                 letterSpacing: ['-0.01em', '0.04em', '-0.01em'],
                 textShadow: [
-                  '0px 0px 8px rgba(255,20,147,0.1)',
-                  '0px 0px 16px rgba(255,20,147,0.4)',
-                  '0px 0px 8px rgba(255,20,147,0.1)'
+                  '0px 0px 8px var(--card-border-hover)',
+                  '0px 0px 16px var(--badge-primary-border)',
+                  '0px 0px 8px var(--card-border-hover)'
                 ]
               }}
               transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
@@ -300,7 +278,7 @@ function PoemFocusOverlay({
                 fontFamily: 'var(--font-bodoni-moda)',
                 fontStyle: 'italic',
                 fontSize: 'clamp(24px, 3vw, 36px)',
-                color: '#FF1493',
+                color: 'var(--accent-primary)',
                 margin: 0,
               }}
             >
@@ -309,7 +287,7 @@ function PoemFocusOverlay({
             <p style={{
               fontFamily: 'var(--font-figtree)',
               fontSize: '10px',
-              color: 'rgba(255,182,217,0.5)',
+              color: 'var(--text-soft)',
               letterSpacing: '0.14em',
               margin: '4px 0 0',
             }}>
@@ -319,8 +297,8 @@ function PoemFocusOverlay({
           <button
             onClick={onClose}
             style={{
-              background: 'rgba(255,20,147,0.08)',
-              border: '1px solid rgba(255,20,147,0.15)',
+              background: 'var(--badge-primary-bg)',
+              border: '1px solid var(--badge-primary-border)',
               borderRadius: '50%',
               width: '36px',
               height: '36px',
@@ -328,7 +306,7 @@ function PoemFocusOverlay({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#FF1493',
+              color: 'var(--accent-primary)',
               fontSize: '16px',
               transition: 'all 200ms ease',
             }}
@@ -356,7 +334,7 @@ function PoemFocusOverlay({
           fontSize: '9px',
           letterSpacing: '0.2em',
           textTransform: 'uppercase',
-          color: 'rgba(255,182,217,0.3)',
+          color: 'var(--text-soft)',
           textAlign: 'center',
         }}>
           press Esc or click outside to close
@@ -400,7 +378,7 @@ function FocusLine({ line, i, mouseY }: { line: string; i: number; mouseY: Motio
       style={{
         fontFamily: 'var(--font-instrument-serif)',
         fontSize: 'clamp(18px, 2vw, 24px)',
-        color: 'rgba(255,240,245,0.88)',
+        color: 'var(--text-primary)',
         lineHeight: 1.65,
         margin: 0,
         filter,
@@ -459,11 +437,11 @@ function PoemsView() {
                     fontFamily: 'var(--font-bodoni-moda)',
                     fontStyle: 'italic',
                     fontSize: 'clamp(20px, 2.5vw, 28px)',
-                    color: '#FF1493',
+                    color: 'var(--accent-primary)',
                     letterSpacing: '-0.01em',
                     textDecoration: 'underline',
                     textDecorationStyle: 'dotted',
-                    textDecorationColor: 'rgba(255,20,147,0.3)',
+                    textDecorationColor: 'var(--badge-primary-border)',
                     textUnderlineOffset: '4px',
                   }}
                 >
@@ -473,7 +451,7 @@ function PoemsView() {
                   style={{
                     fontFamily: 'var(--font-figtree)',
                     fontSize: '10px',
-                    color: '#A8627A',
+                    color: 'var(--text-soft)',
                     transition: 'color 400ms ease',
                     letterSpacing: '0.14em',
                   }}
@@ -485,7 +463,7 @@ function PoemsView() {
                   fontSize: '8px',
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,20,147,0.4)',
+                  color: 'var(--badge-primary-text)',
                 }}>
                   ▶ focus
                 </span>
@@ -511,7 +489,7 @@ function PoemsView() {
                       style={{
                         fontFamily: 'var(--font-instrument-serif)',
                         fontSize: 'clamp(17px, 1.8vw, 22px)',
-                        color: '#1A0A12',
+                        color: 'var(--text-primary)',
                         transition: 'color 400ms ease',
                         lineHeight: 1.65,
                         margin: 0,
@@ -534,7 +512,7 @@ function PoemsView() {
                   transition={{ duration: 0.6, ease: easings.outExpoAlt }}
                   style={{
                     height: '1px',
-                    background: 'rgba(194,24,91,0.15)',
+                    background: 'var(--card-border)',
                     transformOrigin: 'left',
                     width: '100%',
                   }}
@@ -549,7 +527,7 @@ function PoemsView() {
                     left: '50%',
                     top: '50%',
                     transform: 'translate(-50%, -50%)',
-                    color: '#C9A465',
+                    color: 'var(--badge-secondary-text)',
                     fontSize: '11px',
                     lineHeight: 1,
                     background: 'var(--bg-primary)',
@@ -580,7 +558,7 @@ function PoemsView() {
             fontWeight: 600,
             letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: '#FF1493',
+            color: 'var(--accent-primary)',
             textDecoration: 'none',
           }}
           data-hover="link"

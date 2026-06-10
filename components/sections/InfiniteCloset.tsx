@@ -15,6 +15,8 @@ import { useRef, useEffect, useState, useCallback } from 'react'
 import { motion, useMotionValue, useMotionTemplate, useSpring, useTransform, useVelocity, AnimatePresence, type MotionValue, animate } from 'framer-motion'
 import Image from 'next/image'
 import { easings } from '@/lib/motion'
+import { SectionLabel } from '@/components/ui/SectionLabel'
+import { RefreshCw, X } from 'lucide-react'
 
 const items = [
   {
@@ -112,7 +114,8 @@ export function InfiniteCloset() {
       style={{
         position: 'relative',
         minHeight: '100svh',
-        background: 'linear-gradient(180deg, #0F0308 0%, #0A0306 100%)',
+        background: 'var(--bg-primary)',
+        transition: 'background 400ms ease',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -144,19 +147,7 @@ export function InfiniteCloset() {
           zIndex: 10,
         }}
       >
-        <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#C9A465' }} />
-        <span
-          style={{
-            fontFamily: 'var(--font-figtree)',
-            fontWeight: 500,
-            fontSize: '10px',
-            letterSpacing: '0.24em',
-            textTransform: 'uppercase',
-            color: '#FF1493',
-          }}
-        >
-          03 — The Infinite Closet
-        </span>
+        <SectionLabel>The Infinite Closet</SectionLabel>
         {/* #73 Piece count badge */}
         <span
           style={{
@@ -165,9 +156,9 @@ export function InfiniteCloset() {
             fontWeight: 600,
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: '#C9A465',
-            background: 'rgba(201,164,101,0.1)',
-            border: '1px solid rgba(201,164,101,0.25)',
+            color: 'var(--badge-secondary-text)',
+            background: 'var(--badge-secondary-bg)',
+            border: '1px solid var(--badge-secondary-border)',
             borderRadius: '100px',
             padding: '2px 8px',
             marginLeft: '4px',
@@ -188,7 +179,7 @@ export function InfiniteCloset() {
           fontSize: 'clamp(36px, 5vw, 64px)',
           letterSpacing: '-0.025em',
           lineHeight: 1.05,
-          color: '#FFF0F5',
+          color: 'var(--text-primary)',
           paddingLeft: 'clamp(24px, 6vw, 80px)',
           marginBottom: 'clamp(40px, 5vh, 56px)',
           marginTop: '20px',
@@ -203,7 +194,7 @@ export function InfiniteCloset() {
           style={{
             fontFamily: 'var(--font-instrument-serif)',
             fontStyle: 'italic',
-            color: '#FF1493',
+            color: 'var(--accent-hot)',
           }}
         >
           my reality.
@@ -260,7 +251,7 @@ export function InfiniteCloset() {
               width: i === activeIndex ? '24px' : '6px',
               height: '6px',
               borderRadius: '100px',
-              background: i === activeIndex ? '#FF1493' : 'rgba(194,24,91,0.25)',
+              background: i === activeIndex ? 'var(--accent-primary)' : 'var(--badge-primary-border)',
               transition: 'all 0.3s ease',
             }}
           />
@@ -279,7 +270,7 @@ export function InfiniteCloset() {
               position: 'fixed',
               inset: 0,
               zIndex: 10000,
-              background: 'rgba(10,3,6,0.94)',
+              background: 'var(--glass-bg)',
               backdropFilter: 'blur(16px)',
               display: 'flex',
               alignItems: 'center',
@@ -332,16 +323,19 @@ export function InfiniteCloset() {
                   borderRadius: '100px',
                   border: 'none',
                   background: 'transparent',
-                  color: '#FF1493',
+                  color: 'var(--accent-primary)',
                   fontFamily: 'var(--font-figtree)',
                   fontSize: '11px',
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
                   cursor: 'pointer',
-                  borderTop: '1px solid var(--card-border)'
+                  borderTop: '1px solid var(--card-border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
                 }}
               >
-                Close Gallery
+                <X size={14} /> Close Gallery
               </button>
             </motion.div>
           </motion.div>
@@ -469,7 +463,7 @@ function ClosetCard({
               fontFamily: 'var(--font-bodoni-moda)',
               fontStyle: 'italic',
               fontSize: '72px',
-              color: 'rgba(194,24,91,0.04)',
+              color: 'color-mix(in srgb, var(--text-primary) 4%, transparent)',
               lineHeight: 1,
               userSelect: 'none',
               pointerEvents: 'none',
@@ -489,20 +483,20 @@ function ClosetCard({
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              background: 'rgba(255,20,147,0.08)',
-              border: '1px solid rgba(255,20,147,0.15)',
+              background: 'var(--badge-primary-bg)',
+              border: '1px solid var(--badge-primary-border)',
+              color: 'var(--badge-primary-text)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '14px',
               transition: 'all 200ms ease',
               zIndex: 10,
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,20,147,0.18)'; e.currentTarget.style.transform = 'rotate(180deg)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,20,147,0.08)'; e.currentTarget.style.transform = 'rotate(0deg)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--badge-primary-border)'; e.currentTarget.style.transform = 'rotate(180deg)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--badge-primary-bg)'; e.currentTarget.style.transform = 'rotate(0deg)' }}
           >
-            ↺
+            <RefreshCw size={14} />
           </button>
 
           <div>
@@ -607,7 +601,7 @@ function ClosetCard({
             fontWeight: 600,
             letterSpacing: '0.24em',
             textTransform: 'uppercase',
-            color: 'rgba(255,20,147,0.6)',
+            color: 'var(--badge-primary-text)',
           }}>
             Aki&apos;s note
           </div>
@@ -615,7 +609,7 @@ function ClosetCard({
             fontFamily: 'var(--font-instrument-serif)',
             fontStyle: 'italic',
             fontSize: 'clamp(16px, 1.8vw, 22px)',
-            color: 'rgba(255,240,245,0.85)',
+            color: 'var(--text-primary)',
             lineHeight: 1.5,
             textAlign: 'center',
             maxWidth: '28ch',
@@ -628,17 +622,20 @@ function ClosetCard({
               marginTop: '8px',
               padding: '8px 20px',
               borderRadius: '100px',
-              border: '1px solid rgba(255,20,147,0.3)',
-              background: 'transparent',
-              color: '#FF1493',
+              border: '1px solid var(--badge-primary-border)',
+              background: 'var(--badge-primary-bg)',
+              color: 'var(--badge-primary-text)',
               fontFamily: 'var(--font-figtree)',
               fontSize: '9px',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
               cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
           >
-            flip back ↺
+            <RefreshCw size={10} /> flip back
           </button>
         </div>
       </div>
@@ -739,29 +736,28 @@ function CarouselCard({
                 width: '32px',
                 height: '32px',
                 borderRadius: '50%',
-                background: 'rgba(255,20,147,0.1)',
-                border: '1px solid rgba(255,20,147,0.2)',
-                color: '#FF1493',
+                background: 'var(--badge-primary-bg)',
+                border: '1px solid var(--badge-primary-border)',
+                color: 'var(--badge-primary-text)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
                 zIndex: 20,
-                fontSize: '14px',
                 transition: 'all 0.3s ease',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'rotate(180deg)'
-                e.currentTarget.style.background = 'rgba(255,20,147,0.2)'
+                e.currentTarget.style.background = 'var(--badge-primary-border)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'rotate(0deg)'
-                e.currentTarget.style.background = 'rgba(255,20,147,0.1)'
+                e.currentTarget.style.background = 'var(--badge-primary-bg)'
               }}
               aria-label="Flip card"
               title="Read Aki's note"
             >
-              ↻
+              <RefreshCw size={14} />
             </button>
           )}
 
@@ -774,7 +770,7 @@ function CarouselCard({
               fontFamily: 'var(--font-bodoni-moda)',
               fontStyle: 'italic',
               fontSize: '60px',
-              color: 'rgba(194,24,91,0.04)',
+              color: 'color-mix(in srgb, var(--text-primary) 4%, transparent)',
               lineHeight: 1,
               userSelect: 'none',
               pointerEvents: 'none',
@@ -844,7 +840,7 @@ function CarouselCard({
             fontWeight: 600,
             letterSpacing: '0.24em',
             textTransform: 'uppercase',
-            color: 'rgba(255,20,147,0.6)',
+            color: 'var(--badge-primary-text)',
           }}>
             Aki&apos;s note
           </div>
@@ -852,7 +848,7 @@ function CarouselCard({
             fontFamily: 'var(--font-instrument-serif)',
             fontStyle: 'italic',
             fontSize: 'clamp(16px, 1.8vw, 22px)',
-            color: 'rgba(255,240,245,0.85)',
+            color: 'var(--text-primary)',
             lineHeight: 1.5,
             textAlign: 'center',
             maxWidth: '28ch',
@@ -865,17 +861,20 @@ function CarouselCard({
               marginTop: '8px',
               padding: '8px 20px',
               borderRadius: '100px',
-              border: '1px solid rgba(255,20,147,0.3)',
-              background: 'transparent',
-              color: '#FF1493',
+              border: '1px solid var(--badge-primary-border)',
+              background: 'var(--badge-primary-bg)',
+              color: 'var(--badge-primary-text)',
               fontFamily: 'var(--font-figtree)',
               fontSize: '9px',
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
               cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
           >
-            flip back ↺
+            <RefreshCw size={10} /> flip back
           </button>
         </div>
       </div>

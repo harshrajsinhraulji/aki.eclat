@@ -12,6 +12,8 @@ import Link from 'next/link'
 import { easings } from '@/lib/motion'
 import { firestore } from '@/lib/firebase'
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'
+import { SectionLabel } from '@/components/ui/SectionLabel'
+import { ArrowUpRight } from 'lucide-react'
 
 const SAMPLE_CONFESSIONS = [
   { id: '1', text: "I pretend to like matcha so I look mysterious.", author: "anon" },
@@ -113,8 +115,8 @@ function WhisperCard({ text, author, index, mouseX, mouseY }: { text: string; au
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              background: '#FF1493',
-              boxShadow: isHovered ? '0 0 0 4px rgba(255,20,147,0.15)' : 'none',
+              background: 'var(--accent-hot)',
+              boxShadow: isHovered ? '0 0 0 4px var(--badge-primary-bg)' : 'none',
               transition: 'box-shadow 0.3s ease',
             }}
           />
@@ -160,7 +162,7 @@ function WhisperCard({ text, author, index, mouseX, mouseY }: { text: string; au
               fontFamily: 'var(--font-instrument-serif)',
               fontStyle: 'italic',
               fontSize: '15px',
-              color: isHovered ? '#FF1493' : 'var(--text-soft)',
+              color: isHovered ? 'var(--accent-hot)' : 'var(--text-soft)',
               transition: 'color 0.3s ease',
               position: 'relative',
               zIndex: 1,
@@ -179,11 +181,11 @@ function WhisperCard({ text, author, index, mouseX, mouseY }: { text: string; au
                 position: 'absolute',
                 bottom: '12px',
                 right: '16px',
-                background: 'rgba(255,20,147,0.12)',
-                border: '1px solid rgba(255,20,147,0.25)',
+                background: 'var(--badge-primary-bg)',
+                border: '1px solid var(--badge-primary-border)',
                 borderRadius: '6px',
                 padding: '4px 8px',
-                color: '#FF1493',
+                color: 'var(--badge-primary-text)',
                 fontFamily: 'var(--font-figtree)',
                 fontSize: '9px',
                 fontWeight: 600,
@@ -193,8 +195,8 @@ function WhisperCard({ text, author, index, mouseX, mouseY }: { text: string; au
                 zIndex: 2,
                 transition: 'background 0.2s',
               }}
-              onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,20,147,0.22)'}
-              onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,20,147,0.12)'}
+              onMouseOver={(e) => e.currentTarget.style.background = 'var(--badge-primary-border)'}
+              onMouseOut={(e) => e.currentTarget.style.background = 'var(--badge-primary-bg)'}
             >
               Share ✦
             </motion.button>
@@ -254,8 +256,8 @@ export function ConfessionsTeaser() {
         width: '100%',
         minHeight: '100svh',
         padding: 'clamp(80px, 12vh, 140px) clamp(24px, 6vw, 80px)',
-        /* Deep intimate blush — not the main blush, slightly more saturated */
-        background: '#FFF0F5',
+        background: 'var(--bg-primary)',
+        transition: 'background 400ms ease',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -283,7 +285,7 @@ export function ConfessionsTeaser() {
           justifyContent: 'center',
           fontFamily: 'var(--font-bodoni-moda)',
           fontSize: 'clamp(120px, 25vw, 360px)',
-          color: 'rgba(255,20,147,0.03)',
+          color: 'color-mix(in srgb, var(--text-primary) 3%, transparent)',
           letterSpacing: '-0.06em',
           userSelect: 'none',
           pointerEvents: 'none',
@@ -303,17 +305,7 @@ export function ConfessionsTeaser() {
         style={{ textAlign: 'center', position: 'relative', zIndex: 1, maxWidth: '700px' }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', marginBottom: '20px' }}>
-          <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#C9A465' }} />
-          <span style={{
-            fontFamily: 'var(--font-figtree)',
-            fontWeight: 500,
-            fontSize: '10px',
-            letterSpacing: '0.24em',
-            textTransform: 'uppercase',
-            color: '#C2185B',
-          }}>
-            06 · The Wall · Live
-          </span>
+          <SectionLabel>The Wall &middot; Live</SectionLabel>
         </div>
 
         {/* The cinematic hook line */}
@@ -322,7 +314,7 @@ export function ConfessionsTeaser() {
           fontStyle: 'italic',
           fontSize: 'clamp(22px, 3.5vw, 42px)',
           lineHeight: 1.35,
-          color: '#6B2D4A',
+          color: 'var(--text-mid)',
           marginBottom: '24px',
           letterSpacing: '-0.01em',
         }}>
@@ -334,7 +326,7 @@ export function ConfessionsTeaser() {
           fontSize: 'clamp(36px, 6vw, 80px)',
           letterSpacing: '-0.025em',
           lineHeight: 1.05,
-          color: '#1A0A12',
+          color: 'var(--text-primary)',
           marginBottom: '12px',
         }}>
           I read every confession.
@@ -343,7 +335,7 @@ export function ConfessionsTeaser() {
           fontFamily: 'var(--font-figtree)',
           fontWeight: 300,
           fontSize: 'clamp(15px, 1.4vw, 18px)',
-          color: '#A8627A',
+          color: 'var(--text-soft)',
           maxWidth: '380px',
           margin: '0 auto',
           lineHeight: 1.6,
@@ -353,7 +345,7 @@ export function ConfessionsTeaser() {
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              style={{ display: 'block', color: '#C2185B', fontWeight: 500, marginTop: '8px', fontSize: 'clamp(13px, 1.2vw, 15px)', letterSpacing: '0.06em' }}
+              style={{ display: 'block', color: 'var(--accent-deep)', fontWeight: 500, marginTop: '8px', fontSize: 'clamp(13px, 1.2vw, 15px)', letterSpacing: '0.06em' }}
             >
               {totalCount.toLocaleString()} whispers and counting.
             </motion.span>
@@ -421,9 +413,9 @@ export function ConfessionsTeaser() {
             style={{
               width: '100%',
               padding: 'clamp(20px, 3vh, 28px) clamp(32px, 5vw, 56px)',
-              background: 'linear-gradient(135deg, #E91E63 0%, #C2185B 100%)',
+              background: 'linear-gradient(135deg, var(--accent-hot) 0%, var(--accent-deep) 100%)',
               borderRadius: '20px',
-              boxShadow: '0 16px 48px rgba(194, 24, 91, 0.22)',
+              boxShadow: '0 16px 48px var(--shadow-magnetic)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -434,7 +426,9 @@ export function ConfessionsTeaser() {
               <div style={{ fontFamily: 'var(--font-figtree)', fontWeight: 500, fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)', marginBottom: '6px' }}>anonymous · no login</div>
               <div style={{ fontFamily: 'var(--font-bodoni-moda)', fontStyle: 'italic', fontSize: 'clamp(22px, 3vw, 32px)', color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.1 }}>Enter the Wall</div>
             </div>
-            <div style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-bodoni-moda)', fontStyle: 'italic' }}>✦</div>
+            <div style={{ color: 'rgba(255,255,255,0.85)' }}>
+              <ArrowUpRight size={32} strokeWidth={1.5} />
+            </div>
           </motion.div>
         </Link>
       </motion.div>

@@ -20,6 +20,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion'
 import Link from 'next/link'
 import { BowSvg } from '@/components/ui/BowSvg'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 import { easings, durations } from '@/lib/motion'
 
 /* Discord SVG — official brand mark */
@@ -145,8 +146,8 @@ export function LetsTalk() {
         position: 'relative',
         width: '100%',
         minHeight: '100svh',
-        /* CINEMATIC CLOSE — the final dark. Matches Universe and InfiniteCloset depth. */
-        background: '#0A0306',
+        background: 'var(--bg-primary)',
+        transition: 'background 400ms ease',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -154,16 +155,6 @@ export function LetsTalk() {
         overflow: 'hidden',
       }}
     >
-      {/* Top bridge — seamless from ConfessionsTeaser dark bridge */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute', top: 0, left: 0, right: 0,
-          height: '200px',
-          background: 'linear-gradient(to bottom, #0A0306 0%, transparent 100%)',
-          pointerEvents: 'none', zIndex: 1,
-        }}
-      />
       {/* Film-grain texture */}
       <div
         aria-hidden
@@ -241,23 +232,9 @@ export function LetsTalk() {
         }}
       >
         {/* Section label */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: easings.outExpo }}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '40px' }}
-        >
-          <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#C9A465' }} />
-          <span style={{
-            fontFamily: 'var(--font-figtree)',
-            fontWeight: 500, fontSize: '10px',
-            letterSpacing: '0.24em', textTransform: 'uppercase',
-            color: '#E91E63',
-          }}>
-            07 — Let&apos;s Talk
-          </span>
-        </motion.div>
+        <div style={{ marginBottom: '40px' }}>
+          <SectionLabel>Let&apos;s Talk</SectionLabel>
+        </div>
 
         {/* Massive Screen-Spanning Typography */}
         <motion.h2
@@ -271,8 +248,8 @@ export function LetsTalk() {
             letterSpacing: '-0.04em',
             lineHeight: 0.85,
             textAlign: 'center',
-            color: '#FFF0F5',
-            textShadow: '0 32px 80px rgba(233,30,99,0.15)',
+            color: 'var(--text-primary)',
+            textShadow: '0 32px 80px var(--shadow-sm)',
             marginBottom: '64px',
             overflowWrap: 'break-word',
             wordBreak: 'break-word',
@@ -282,7 +259,7 @@ export function LetsTalk() {
           <span style={{
             fontFamily: 'var(--font-instrument-serif)',
             fontStyle: 'italic',
-            color: '#FF1493',
+            color: 'var(--accent-hot)',
             opacity: 0.95,
             paddingRight: '4vw'
           }}>
@@ -304,8 +281,7 @@ export function LetsTalk() {
             fontWeight: 300,
             fontSize: '10px',
             letterSpacing: '0.16em',
-            /* Soft pink-white on dark */
-            color: 'rgba(255,182,217,0.5)',
+            color: 'var(--text-soft)',
             opacity: textOpacity,
             filter: textFilter,
             willChange: 'opacity, filter',

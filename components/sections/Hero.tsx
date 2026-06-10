@@ -23,6 +23,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { motion, useMotionValue, useSpring, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { Compass, Brain, Gamepad2, Sparkles } from 'lucide-react'
 import { BowSvg } from '@/components/ui/BowSvg'
 import { springs, easings, durations } from '@/lib/motion'
 import { eradicateOrphans } from '@/utils/text'
@@ -304,25 +305,25 @@ function MagneticLetter({
     fontVariationSettings: '"wght" 400, "opsz" 96',
     fontSize: 'clamp(60px, 22vw, 320px)',
     letterSpacing: '-0.04em',
-    lineHeight: 0.85,
-    background: 'linear-gradient(135deg, #FF1493 0%, #C2185B 60%, #AD1457 100%)',
+    lineHeight: 1.1,
+    paddingBottom: '20px',
+    background: 'linear-gradient(135deg, var(--accent-hot) 0%, var(--accent-deep) 60%, var(--accent-primary) 100%)',
     WebkitBackgroundClip: 'text',
     backgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     color: 'transparent',
     userSelect: 'none',
-    willChange: 'transform',
-    filter: 'drop-shadow(0px 12px 24px rgba(194, 24, 91, 0.20))',
+    filter: 'drop-shadow(0 12px 32px rgba(255, 20, 147, 0.2))',
   }
 
   return (
     <div style={{ overflow: 'visible', display: 'inline-block', padding: '8px 2px 0' }}>
       <motion.span
         ref={letterRef}
-        initial={{ y: '110%', opacity: 0, rotateX: -90, filter: 'blur(8px)' }}
-        animate={{ y: '0%', opacity: 1, rotateX: 0, filter: 'blur(0px)' }}
+        initial={{ y: '110%', opacity: 0, filter: 'blur(12px)' }}
+        animate={{ y: '0%', opacity: 1, filter: 'blur(0px)' }}
         transition={{
-          duration: 0.9,
+          duration: 1.0,
           delay: 0.6 + index * 0.08,
           ease: [0.16, 1, 0.3, 1],
         }}
@@ -332,7 +333,6 @@ function MagneticLetter({
           y: isTouchDevice ? 0 : y,
           rotate: isTouchDevice ? 0 : rotate,
           transformOrigin: 'bottom center',
-          perspective: 800,
         }}
       >
         {isBowLetter ? (
@@ -412,7 +412,7 @@ function ScrollIndicator() {
             style={{
               width: '1px',
               height: '48px',
-              background: 'rgba(194,24,91,0.45)',
+              background: 'var(--accent-primary)',
               borderRadius: '1px',
             }}
           />
@@ -602,7 +602,7 @@ export function Hero() {
               fontFamily: 'var(--font-instrument-serif)',
               fontStyle: 'italic',
               fontSize: 'clamp(16px, 2.2vw, 22px)',
-              color: '#FF1493',
+              color: 'var(--accent-hot)',
               margin: 0,
               cursor: 'default',
               whiteSpace: 'nowrap',
@@ -625,7 +625,7 @@ export function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.4, duration: 0.5, type: 'spring' }}
           >
-            <BowSvg size={18} color="#C2185B" swing={true} swingReverse={true} />
+            <BowSvg size={18} color="var(--accent-deep)" swing={true} swingReverse={true} />
           </motion.div>
         </motion.div>
 
@@ -647,9 +647,16 @@ export function Hero() {
           }}
           aria-hidden
         >
-          {(['interior design', 'psychology', 'diamond 1', 'coconut'] as const).map((tag, i, arr) => (
+          {(
+            [
+              { id: 'interior', label: 'interior design', icon: <Compass size={11} strokeWidth={2.5} /> },
+              { id: 'psychology', label: 'psychology', icon: <Brain size={11} strokeWidth={2.5} /> },
+              { id: 'rank', label: 'diamond 1', icon: <Gamepad2 size={11} strokeWidth={2.5} /> },
+              { id: 'coconut', label: 'coconut', icon: <Sparkles size={11} strokeWidth={2.5} /> },
+            ]
+          ).map((tag, i, arr) => (
             <motion.span
-              key={tag}
+              key={tag.id}
               variants={{
                 hidden: { opacity: 0, y: 10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
@@ -662,9 +669,13 @@ export function Hero() {
                 textTransform: 'uppercase',
                 color: 'var(--text-soft)',
                 transition: 'color 400ms ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
               }}
             >
-              {tag}{i < arr.length - 1 && <span style={{ marginLeft: '4px', opacity: 0.4 }}> &middot;</span>}
+              <span style={{ color: 'var(--badge-secondary-text)', opacity: 0.8 }}>{tag.icon}</span>
+              {tag.label}{i < arr.length - 1 && <span style={{ marginLeft: '4px', marginRight: '4px', opacity: 0.4 }}> &middot;</span>}
             </motion.span>
           ))}
         </motion.div>

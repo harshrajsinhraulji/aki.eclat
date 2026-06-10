@@ -21,40 +21,41 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { easings } from '@/lib/motion'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 
 const CARDS = [
   {
     id: 1,
     title: 'Design',
     description: 'Minimalism with warmth. Spaces that make me feel something before I understand why.',
-    bg: 'linear-gradient(145deg, #2D0A1E 0%, #1A0A12 100%)',
-    border: 'rgba(255,20,147,0.2)',
-    borderHover: 'rgba(255,20,147,0.45)',
+    bg: 'var(--card-bg)',
+    border: 'var(--card-border)',
+    borderHover: 'var(--card-border-hover)',
     tag: 'Interior Design',
-    accent: '#FF1493',
-    tagColor: 'rgba(255,20,147,0.7)',
+    accent: 'var(--accent-primary)',
+    tagColor: 'var(--accent-primary)',
   },
   {
     id: 2,
     title: 'Gaming',
     description: "Diamond 1. Not just playing — mastering. Perfect CS, macro calls, outplaying the jungler at 3am.",
-    bg: 'linear-gradient(145deg, #1E0818 0%, #0F0308 100%)',
-    border: 'rgba(194,24,91,0.2)',
-    borderHover: 'rgba(194,24,91,0.45)',
+    bg: 'var(--card-bg)',
+    border: 'var(--card-border)',
+    borderHover: 'var(--card-border-hover)',
     tag: 'League of Legends',
-    accent: '#C2185B',
-    tagColor: 'rgba(194,24,91,0.7)',
+    accent: 'var(--accent-hot)',
+    tagColor: 'var(--accent-hot)',
   },
   {
     id: 3,
     title: 'Mind',
     description: "I study cognitive biases, decision theory, and why humans are beautifully irrational. Also: 7cups.",
-    bg: 'linear-gradient(145deg, #1A061A 0%, #0A0408 100%)',
-    border: 'rgba(173,20,87,0.2)',
-    borderHover: 'rgba(173,20,87,0.45)',
+    bg: 'var(--card-bg)',
+    border: 'var(--card-border)',
+    borderHover: 'var(--card-border-hover)',
     tag: 'Psychology',
-    accent: '#AD1457',
-    tagColor: 'rgba(173,20,87,0.7)',
+    accent: 'var(--accent-deep)',
+    tagColor: 'var(--accent-deep)',
   },
 ]
 
@@ -97,7 +98,7 @@ function StarField() {
             width: `${s.size}px`,
             height: `${s.size}px`,
             borderRadius: '50%',
-            background: 'rgba(255,255,255,0.85)',
+            background: 'color-mix(in srgb, var(--text-primary) 15%, transparent)',
           }}
         />
       ))}
@@ -176,24 +177,12 @@ export function Universe() {
         position: 'relative',
         width: '100%',
         minHeight: '100svh',
-        background: 'linear-gradient(180deg, #0A0306 0%, #150818 50%, #0A0306 100%)',
+        background: 'var(--bg-primary)',
         transition: 'background 400ms ease',
         padding: 'clamp(40px, 8vh, 120px) clamp(24px, 5vw, 80px)',
         overflow: 'hidden',
       }}
     >
-      {/* Seamless section fade-in from above — blends Coconut dark bridge into Universe */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0,
-          height: '200px',
-          background: 'linear-gradient(to bottom, #0F0308 0%, transparent 100%)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
 
       {/* Ambient radial glow */}
       <div
@@ -227,27 +216,7 @@ export function Universe() {
         }}
       >
         {/* Section label */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: easings.outExpo }}
-          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-        >
-          <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,20,147,0.8)' }} />
-          <span
-            style={{
-              fontFamily: 'var(--font-figtree)',
-              fontWeight: 500,
-              fontSize: '10px',
-              letterSpacing: '0.24em',
-              textTransform: 'uppercase',
-              color: 'rgba(255,20,147,0.8)',
-            }}
-          >
-            02 — The Universe
-          </span>
-        </motion.div>
+        <SectionLabel>The Universe</SectionLabel>
 
         {/* Headline */}
         <motion.h2
@@ -260,7 +229,7 @@ export function Universe() {
             fontSize: 'clamp(36px, 5vw, 64px)',
             letterSpacing: '-0.025em',
             lineHeight: 1.05,
-            color: 'rgba(255, 240, 245, 0.95)',
+            color: 'var(--text-primary)',
           }}
         >
           Everything I&apos;m made of.
@@ -277,7 +246,7 @@ export function Universe() {
               fontWeight: 300,
               fontSize: '15px',
               lineHeight: 1.65,
-              color: 'rgba(255,182,217,0.65)',
+              color: 'var(--text-soft)',
               maxWidth: '32ch',
             }}
           >
@@ -358,8 +327,8 @@ function AccordionCard({
         borderRadius: '20px',
         border: `1px solid ${isExpanded ? card.borderHover : card.border}`,
         boxShadow: isExpanded
-          ? `0 24px 60px rgba(0,0,0,0.4), inset 0 1px 0 ${card.borderHover}`
-          : '0 4px 20px rgba(0,0,0,0.2)',
+          ? `0 24px 60px var(--shadow-magnetic, rgba(0,0,0,0.15)), inset 0 1px 0 ${card.borderHover}`
+          : '0 4px 20px var(--shadow-sm, rgba(0,0,0,0.1))',
         overflow: 'hidden',
         cursor: 'pointer',
         opacity: isDesktop && !isExpanded ? 0.5 : 1,
@@ -523,7 +492,7 @@ function AccordionCard({
                     ? 'clamp(44px, 5.5vw, 88px)'
                     : 'clamp(36px, 5vw, 60px)',
                   lineHeight: 0.95,
-                  color: 'rgba(255,240,245,0.92)',
+                  color: 'var(--text-primary)',
                   letterSpacing: '-0.03em',
                   marginBottom: '20px',
                 }}
@@ -541,7 +510,7 @@ function AccordionCard({
                   fontWeight: 300,
                   fontSize: 'clamp(14px, 1.4vw, 17px)',
                   lineHeight: 1.68,
-                  color: 'rgba(255,200,220,0.68)',
+                  color: 'var(--text-mid)',
                   maxWidth: '40ch',
                 }}
               >
@@ -570,7 +539,7 @@ function AccordionCard({
                         borderRadius: '12px',
                         background: 'rgba(255,20,147,0.08)',
                         border: '1px solid rgba(255,20,147,0.15)',
-                        color: 'rgba(255,255,255,0.8)',
+                        color: 'var(--badge-primary-text)',
                       }}
                     >
                       {insp}
@@ -624,7 +593,7 @@ function AccordionCard({
                           fontWeight: 300,
                           fontSize: '13px',
                           lineHeight: 1.4,
-                          color: 'rgba(255,255,255,0.75)',
+                          color: 'var(--text-mid)',
                           maxWidth: '38ch',
                           margin: 0,
                         }}
@@ -646,7 +615,7 @@ function AccordionCard({
                 fontFamily: 'var(--font-bodoni-moda)',
                 fontStyle: 'italic',
                 fontSize: 'clamp(40px, 6vw, 80px)',
-                color: 'rgba(255,255,255,0.04)',
+                color: 'color-mix(in srgb, var(--text-primary) 6%, transparent)',
                 lineHeight: 1,
                 userSelect: 'none',
                 pointerEvents: 'none',
@@ -686,7 +655,7 @@ function AccordionCard({
             style={{
               fontFamily: 'var(--font-figtree)',
               fontSize: '18px',
-              color: 'rgba(255,255,255,0.3)',
+              color: 'var(--text-soft)',
               lineHeight: 1,
             }}
           >

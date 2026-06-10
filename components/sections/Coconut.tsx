@@ -21,13 +21,21 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { easings } from '@/lib/motion'
+import { Gamepad2, BookOpen, Waves } from 'lucide-react'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 
 const TAGS = [
-  { label: 'Interior Design', color: '#C2185B', bg: 'rgba(194,24,91,0.06)', border: 'rgba(194,24,91,0.22)' },
-  { label: 'League of Legends', color: '#C2185B', bg: 'rgba(194,24,91,0.06)', border: 'rgba(194,24,91,0.22)' },
-  { label: 'Psychology', color: '#C2185B', bg: 'rgba(194,24,91,0.06)', border: 'rgba(194,24,91,0.22)' },
-  { label: 'Sri Lankan', color: '#C2185B', bg: 'rgba(194,24,91,0.06)', border: 'rgba(194,24,91,0.22)' },
-  { label: '7cups Listener', color: '#00897B', bg: 'rgba(0,137,123,0.07)', border: 'rgba(0,137,123,0.25)' },
+  { label: 'Interior Design', type: 'secondary' },
+  { label: 'League of Legends', type: 'primary' },
+  { label: 'Psychology', type: 'secondary' },
+  { label: 'Sri Lankan', type: 'primary' },
+  { label: '7cups Listener', type: 'secondary' },
+]
+
+const FUN_FACTS = [
+  { text: '100+ hrs in LoL', icon: <Gamepad2 size={14} /> },
+  { text: '40+ books read', icon: <BookOpen size={14} /> },
+  { text: 'Freediver at heart', icon: <Waves size={14} /> },
 ]
 
 const QUOTES = [
@@ -157,28 +165,7 @@ export function Coconut() {
           }}
         >
           {/* Section label */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div
-              style={{
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                background: '#C9A465',
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-figtree)',
-                fontWeight: 500,
-                fontSize: '10px',
-                letterSpacing: '0.24em',
-                textTransform: 'uppercase',
-                color: '#FF1493',
-              }}
-            >
-              01 — About
-            </span>
-          </div>
+          <SectionLabel>About</SectionLabel>
 
           {/* Headline ── deep warm plum on blush */}
           <h2
@@ -197,7 +184,7 @@ export function Coconut() {
               style={{
                 fontFamily: 'var(--font-instrument-serif)',
                 fontStyle: 'italic',
-                color: '#FF1493',
+                color: 'var(--accent-hot)',
               }}
             >
               London soul.
@@ -245,11 +232,11 @@ export function Coconut() {
                   fontSize: '10px',
                   letterSpacing: '0.14em',
                   textTransform: 'uppercase',
-                  color: tag.color,
+                  color: `var(--badge-${tag.type}-text)`,
                   padding: '6px 14px',
                   borderRadius: '100px',
-                  border: `1px solid ${tag.border}`,
-                  background: tag.bg,
+                  border: `1px solid var(--badge-${tag.type}-border)`,
+                  background: `var(--badge-${tag.type}-bg)`,
                   cursor: 'default',
                   display: 'inline-block',
                 }}
@@ -267,9 +254,9 @@ export function Coconut() {
             transition={{ delay: 0.6, duration: 0.5 }}
             style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}
           >
-            {['🎮 3000+ hrs in LoL', '📚 40+ books read', '🌊 Freediver at heart'].map((fact) => (
+            {FUN_FACTS.map((fact) => (
               <span
-                key={fact}
+                key={fact.text}
                 style={{
                   fontFamily: 'var(--font-figtree)',
                   fontWeight: 300,
@@ -277,9 +264,13 @@ export function Coconut() {
                   color: 'var(--text-soft)',
                   transition: 'color 400ms ease',
                   letterSpacing: '0.06em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
                 }}
               >
-                {fact}
+                <span style={{ color: 'var(--badge-secondary-text)', opacity: 0.8 }}>{fact.icon}</span>
+                {fact.text}
               </span>
             ))}
           </motion.div>
@@ -363,7 +354,7 @@ function PullQuote() {
             color: 'var(--text-mid)',
             transition: 'color 400ms ease',
             lineHeight: 1.55,
-            boxShadow: 'inset 2px 0 0 rgba(255,20,147,0.4)',
+            boxShadow: 'inset 2px 0 0 var(--glass-border)',
             paddingLeft: '24px',
             maxWidth: '44ch',
             transformOrigin: 'top left',

@@ -111,10 +111,8 @@ export function Footer() {
     <footer
       role="contentinfo"
       style={{
-        /* Blush — the last thing. Matches the first thing. Peak-End Rule.
-           Explicit #FFF5F8, not var(--bg-primary), because LetsTalk is
-           hardcoded dark and we need to guarantee the contrast. */
-        background: '#FFF5F8',
+        /* The final blush—now strictly mapped to the theme token. */
+        background: 'var(--bg-primary)',
         padding: 'clamp(72px, 12vh, 120px) 24px clamp(40px, 6vh, 64px)',
         display: 'flex',
         flexDirection: 'column',
@@ -124,18 +122,7 @@ export function Footer() {
         position: 'relative',
       }}
     >
-      {/* Top bridge — dark LetsTalk (#0A0306) melts into blush */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0,
-          height: '120px',
-          background: 'linear-gradient(to bottom, #FFF5F8 0%, transparent 100%)',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
+      {/* Top bridge removed: LetsTalk and Footer now seamlessly blend via var(--bg-primary) */}
 
       {/* Grain texture overlay */}
       <div
@@ -190,7 +177,7 @@ export function Footer() {
               fontFamily: 'var(--font-bodoni-moda)',
               fontVariationSettings: '"wght" 400, "opsz" 48',
               fontSize: 'clamp(28px, 4vw, 48px)',
-              color: '#FF1493',
+              color: 'var(--accent-primary)',
               letterSpacing: '-0.02em',
               display: 'inline-block',
               willChange: 'transform',
@@ -212,7 +199,7 @@ export function Footer() {
           }}
           style={{ display: 'inline-flex', alignItems: 'center' }}
         >
-          <BowSvg size={22} color="#C2185B" />
+          <BowSvg size={22} color="var(--accent-deep)" />
         </motion.span>
       </motion.div>
 
@@ -226,7 +213,7 @@ export function Footer() {
           fontFamily: 'var(--font-instrument-serif)',
           fontStyle: 'italic',
           fontSize: 'clamp(14px, 1.5vw, 18px)',
-          color: '#C2185B',
+          color: 'var(--accent-deep)',
           textAlign: 'center',
           letterSpacing: '0.005em',
         }}
@@ -267,7 +254,7 @@ export function Footer() {
             fontSize: '11px',
             letterSpacing: '0.3em',
             textTransform: 'lowercase',
-            color: 'rgba(194,24,91,0.3)',
+            color: 'color-mix(in srgb, var(--accent-deep) 30%, transparent)',
             textAlign: 'center',
             marginTop: '8px',
           }}

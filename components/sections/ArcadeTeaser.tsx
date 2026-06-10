@@ -25,7 +25,8 @@ export function ArcadeTeaser() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#0A0306', // Deep dark theme matching Diamond 1 / Psychology
+        background: 'var(--bg-primary)',
+        transition: 'background 400ms ease',
         overflow: 'hidden',
         padding: '100px 24px',
       }}
@@ -72,7 +73,7 @@ export function ArcadeTeaser() {
           style={{
             fontFamily: 'var(--font-bodoni-moda)',
             fontSize: 'clamp(48px, 8vw, 100px)',
-            color: '#FFF5F8',
+            color: 'var(--text-primary)',
             marginBottom: '24px',
             lineHeight: 1.1,
             letterSpacing: '-0.02em',
@@ -89,7 +90,7 @@ export function ArcadeTeaser() {
           style={{
             fontFamily: 'var(--font-figtree)',
             fontSize: 'clamp(16px, 2vw, 20px)',
-            color: 'rgba(255,245,248,0.7)',
+            color: 'var(--text-soft)',
             marginBottom: '48px',
             maxWidth: '500px',
             marginInline: 'auto',
@@ -107,15 +108,15 @@ export function ArcadeTeaser() {
         >
           <Link href="/arcade" style={{ textDecoration: 'none' }}>
             <motion.div
-              whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(255,20,147,0.4)' }}
+              whileHover={{ scale: 1.05, boxShadow: '0 0 30px var(--card-border-hover)' }}
               whileTap={{ scale: 0.95 }}
               style={{
                 display: 'inline-block',
                 padding: '16px 48px',
-                background: 'rgba(255,20,147,0.1)',
-                border: '1px solid rgba(255,20,147,0.3)',
+                background: 'var(--badge-primary-bg)',
+                border: '1px solid var(--badge-primary-border)',
                 borderRadius: '100px',
-                color: '#FFB6D9',
+                color: 'var(--accent-primary)',
                 fontFamily: 'var(--font-figtree)',
                 fontSize: '14px',
                 letterSpacing: '0.2em',
@@ -124,8 +125,8 @@ export function ArcadeTeaser() {
                 cursor: 'pointer',
                 transition: 'border-color 0.3s ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(255,20,147,0.8)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,20,147,0.3)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent-hot)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--badge-primary-border)' }}
             >
               Enter Simulation
             </motion.div>

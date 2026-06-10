@@ -16,6 +16,7 @@ import { motion } from 'framer-motion'
 import { easings } from '@/lib/motion'
 import { firestore } from '@/lib/firebase'
 import { collection, onSnapshot } from 'firebase/firestore'
+import { Gamepad2, HeartHandshake, Compass, MessageCircleHeart } from 'lucide-react'
 
 const SIGNALS = [
   {
@@ -23,30 +24,30 @@ const SIGNALS = [
     label: 'Rank',
     value: 'Diamond I',
     sub: 'League of Legends',
-    icon: '♦',
-    color: '#7B9FCF',
-    bg: 'rgba(123, 159, 207, 0.08)',
-    border: 'rgba(123, 159, 207, 0.2)',
+    icon: <Gamepad2 size={20} />,
+    color: 'var(--badge-secondary-text)',
+    bg: 'var(--badge-secondary-bg)',
+    border: 'var(--badge-secondary-border)',
   },
   {
     id: 'listener',
     label: 'Status',
     value: 'Active Listener',
     sub: '7cups · empathy-certified',
-    icon: '♡',
-    color: '#00897B',
-    bg: 'rgba(0, 137, 123, 0.07)',
-    border: 'rgba(0, 137, 123, 0.2)',
+    icon: <HeartHandshake size={20} />,
+    color: 'var(--badge-primary-text)',
+    bg: 'var(--badge-primary-bg)',
+    border: 'var(--badge-primary-border)',
   },
   {
     id: 'education',
     label: 'Studying',
     value: 'Interior Design',
     sub: 'London, UK',
-    icon: '✦',
-    color: '#C9A465',
-    bg: 'rgba(201, 164, 101, 0.08)',
-    border: 'rgba(201, 164, 101, 0.2)',
+    icon: <Compass size={20} />,
+    color: 'var(--badge-secondary-text)',
+    bg: 'var(--badge-secondary-bg)',
+    border: 'var(--badge-secondary-border)',
   },
 ]
 
@@ -64,12 +65,12 @@ function Signal({ id, label, value, sub, icon, color, bg, border }: typeof SIGNA
         padding: '14px 20px',
         background: bg,
         border: `1px solid ${border}`,
-        borderRadius: '14px',
+        borderRadius: 'var(--radius-md, 16px)',
         flex: '1 1 200px',
         minWidth: '180px',
       }}
     >
-      <span style={{ fontSize: '20px', color, lineHeight: 1, flexShrink: 0 }}>{icon}</span>
+      <span style={{ color, display: 'flex', flexShrink: 0 }}>{icon}</span>
       <div>
         <div style={{
           fontFamily: 'var(--font-figtree)',
@@ -150,14 +151,16 @@ export function SocialProof() {
             alignItems: 'center',
             gap: '14px',
             padding: '14px 20px',
-            background: 'rgba(233, 30, 99, 0.06)',
-            border: '1px solid rgba(233, 30, 99, 0.15)',
-            borderRadius: '14px',
+            background: 'var(--badge-primary-bg)',
+            border: '1px solid var(--badge-primary-border)',
+            borderRadius: 'var(--radius-md, 16px)',
             flex: '1 1 200px',
             minWidth: '180px',
           }}
         >
-          <span style={{ fontSize: '20px', color: '#E91E63', lineHeight: 1, flexShrink: 0 }}>🎀</span>
+          <span style={{ color: 'var(--badge-primary-text)', display: 'flex', flexShrink: 0 }}>
+            <MessageCircleHeart size={20} />
+          </span>
           <div>
             <div style={{
               fontFamily: 'var(--font-figtree)',
@@ -173,7 +176,7 @@ export function SocialProof() {
             <div style={{
               fontFamily: 'var(--font-bodoni-moda)',
               fontSize: 'clamp(14px, 1.4vw, 17px)',
-              color: '#E91E63',
+              color: 'var(--badge-primary-text)',
               letterSpacing: '-0.01em',
               lineHeight: 1.2,
             }}>

@@ -56,15 +56,35 @@
 ───────────────────────────────────────────── */
 
 :root {
+  /* Core Base Colors */
   --bg-primary: #FFF5F8;
   --text-primary: #1A0A12;
   --text-mid: #6B2D4A;
   --text-soft: #A8627A;
+  
+  /* Brand Accents (Constant across light themes) */
+  --accent-hot: #FF1493;
+  --accent-deep: #C2185B;
+  --accent-primary: #E91E63;
+  --color-gold: #C9A465;
+
+  /* Surfaces */
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(255, 20, 147, 0.12);
   --card-bg: rgba(255, 255, 255, 0.85);
   --card-border: rgba(255, 20, 147, 0.10);
   --card-border-hover: rgba(255, 20, 147, 0.45);
+  
+  /* Semantic Badges */
+  --badge-primary-bg: rgba(194, 24, 91, 0.06);
+  --badge-primary-border: rgba(194, 24, 91, 0.22);
+  --badge-primary-text: #C2185B;
+  
+  --badge-secondary-bg: rgba(201, 164, 101, 0.08);
+  --badge-secondary-border: rgba(201, 164, 101, 0.2);
+  --badge-secondary-text: #C9A465;
+
+  /* Atmosphere */
   --grain-opacity: 0.022;
   --bokeh-opacity-1: 0.35;
   --bokeh-opacity-2: 0.07;
@@ -86,6 +106,11 @@
   --card-bg: rgba(255, 255, 255, 0.6);
   --card-border: rgba(255, 160, 122, 0.2);
   --card-border-hover: rgba(255, 160, 122, 0.5);
+  
+  --badge-primary-bg: rgba(255, 160, 122, 0.1);
+  --badge-primary-border: rgba(255, 160, 122, 0.3);
+  --badge-primary-text: #D2691E;
+
   --blob-color-1: rgba(255, 160, 122, 0.25);
   --blob-color-2: rgba(255, 218, 185, 0.2);
   --blob-color-3: rgba(250, 128, 114, 0.15);
@@ -102,6 +127,11 @@
   --card-bg: rgba(255, 255, 255, 0.85);
   --card-border: rgba(255, 20, 147, 0.10);
   --card-border-hover: rgba(255, 20, 147, 0.45);
+  
+  --badge-primary-bg: rgba(194, 24, 91, 0.06);
+  --badge-primary-border: rgba(194, 24, 91, 0.22);
+  --badge-primary-text: #C2185B;
+
   --blob-color-1: rgba(255, 182, 217, 0.35);
   --blob-color-2: rgba(255, 20, 147, 0.07);
   --blob-color-3: rgba(201, 164, 101, 0.12);
@@ -118,6 +148,11 @@
   --card-bg: rgba(20, 10, 15, 0.6);
   --card-border: rgba(255, 140, 0, 0.2);
   --card-border-hover: rgba(255, 140, 0, 0.5);
+  
+  --badge-primary-bg: rgba(255, 140, 0, 0.1);
+  --badge-primary-border: rgba(255, 140, 0, 0.25);
+  --badge-primary-text: #FF8C00;
+
   --blob-color-1: rgba(255, 140, 0, 0.15);
   --blob-color-2: rgba(205, 92, 92, 0.2);
   --blob-color-3: rgba(139, 69, 19, 0.25);
@@ -129,10 +164,21 @@
   --bg-primary: #0A0306;
   --text-primary: #FFF0F5;
   --text-mid: #FFB6D9;
+  --text-soft: #D4A3A3;
+  --glass-bg: rgba(45, 18, 33, 0.95);
   --glass-border: rgba(255, 20, 147, 0.28);
-  --card-bg: rgba(45, 18, 33, 0.95);
+  --card-bg: rgba(20, 8, 15, 0.95);
   --card-border: rgba(255, 20, 147, 0.25);
   --card-border-hover: rgba(255, 20, 147, 0.60);
+  
+  --badge-primary-bg: rgba(255, 20, 147, 0.15);
+  --badge-primary-border: rgba(255, 20, 147, 0.3);
+  --badge-primary-text: #FFB6D9;
+  
+  --badge-secondary-bg: rgba(201, 164, 101, 0.15);
+  --badge-secondary-border: rgba(201, 164, 101, 0.3);
+  --badge-secondary-text: #E6C88A;
+
   --grain-opacity: 0.015;
   --bokeh-opacity-1: 0.15;
   --bokeh-opacity-2: 0.03;
@@ -143,7 +189,7 @@
   --blob-color-3: rgba(201, 164, 101, 0.04);
 }
 
-/* Explicit light mode — matches :root but applies when data-theme="light" is set by anti-FOUC script */
+/* Explicit light mode — matches :root */
 [data-theme="light"] {
   --bg-primary: #FFF5F8;
   --text-primary: #1A0A12;
@@ -154,6 +200,15 @@
   --card-bg: rgba(255, 255, 255, 0.85);
   --card-border: rgba(255, 20, 147, 0.10);
   --card-border-hover: rgba(255, 20, 147, 0.45);
+  
+  --badge-primary-bg: rgba(194, 24, 91, 0.06);
+  --badge-primary-border: rgba(194, 24, 91, 0.22);
+  --badge-primary-text: #C2185B;
+  
+  --badge-secondary-bg: rgba(201, 164, 101, 0.08);
+  --badge-secondary-border: rgba(201, 164, 101, 0.2);
+  --badge-secondary-text: #C9A465;
+
   --grain-opacity: 0.022;
   --bokeh-opacity-1: 0.35;
   --bokeh-opacity-2: 0.07;
@@ -1236,7 +1291,7 @@ section[id] {
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, rgba(255, 20, 147, 0.9) 0%, rgba(194, 24, 91, 0.9) 100%);
+  background: linear-gradient(135deg, var(--accent-hot) 0%, var(--accent-deep) 100%);
   backdrop-filter: blur(16px);
   border: none;
   border-radius: 100px;
@@ -1247,13 +1302,13 @@ section[id] {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(255, 20, 147, 0.35);
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--accent-primary) 35%, transparent);
   transition: box-shadow 300ms ease, transform 200ms ease;
 }
 
 .back-to-top-btn:hover {
-  box-shadow: 0 12px 48px rgba(255, 20, 147, 0.55);
-  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 12px 48px color-mix(in srgb, var(--accent-primary) 55%, transparent), 0 0 20px color-mix(in srgb, var(--accent-primary) 40%, transparent);
+  transform: translateX(-50%) translateY(-2px) scale(1.05);
 }
 
 /* ══ KEYBOARD TOAST ═══════════════════════════════

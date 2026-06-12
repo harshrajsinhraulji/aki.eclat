@@ -402,28 +402,18 @@ function ScrollIndicator() {
             alignItems: 'center',
             gap: '10px',
             zIndex: 10,
-            cursor: 'pointer',
           }}
           aria-hidden
-          whileHover="hover"
-          onClick={() => {
-            if (navigator.vibrate) navigator.vibrate(50)
-            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
-          }}
         >
-          {/* Spring-loaded interactive vertical line */}
+          {/* 1px vertical line, breathing pulse */}
           <motion.div
-            variants={{
-              hover: { height: '64px', background: 'var(--accent-hot)' },
-            }}
             animate={{ opacity: [0.4, 0.8, 0.4] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
             style={{
-              width: '2px',
+              width: '1px',
               height: '48px',
               background: 'var(--accent-primary)',
               borderRadius: '1px',
-              transition: 'height 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275), background 300ms ease',
             }}
           />
           <span
@@ -488,13 +478,7 @@ export function Hero() {
       aria-label="Hero — Aki's World"
     >
       {/* Breathing gradient mesh — lives beneath everything */}
-      <motion.div
-        animate={{ scale: [1, 1.015, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ position: 'absolute', inset: 0 }}
-      >
-        <GradientMesh />
-      </motion.div>
+      <GradientMesh />
 
       {/* Breathing ambient glow — #9 heartbeat pulse */}
       <div
@@ -545,8 +529,7 @@ export function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          opacity: 0.045,
-          mixBlendMode: 'multiply',
+          opacity: 0.028,
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E\")",
           backgroundSize: '300px 300px',
@@ -636,19 +619,6 @@ export function Hero() {
                 {word}
               </motion.span>
             ))}
-            <motion.span
-              animate={{ opacity: [1, 0, 1] }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-              style={{
-                display: 'inline-block',
-                width: '6px',
-                height: '18px',
-                background: 'var(--accent-hot)',
-                marginLeft: '4px',
-                transform: 'translateY(4px)',
-                boxShadow: '0 0 10px var(--accent-hot)',
-              }}
-            />
           </div>
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
@@ -679,43 +649,34 @@ export function Hero() {
         >
           {(
             [
-              { id: 'interior', label: 'interior design', hover: 'spaces with feeling', icon: <Compass size={11} strokeWidth={2.5} /> },
-              { id: 'psychology', label: 'psychology', hover: 'cognitive biases', icon: <Brain size={11} strokeWidth={2.5} /> },
-              { id: 'rank', label: 'diamond 1', hover: 'top 0.5%', icon: <Gamepad2 size={11} strokeWidth={2.5} /> },
-              { id: 'coconut', label: 'coconut', hover: 'a vibe', icon: <Sparkles size={11} strokeWidth={2.5} /> },
+              { id: 'interior', label: 'interior design', icon: <Compass size={11} strokeWidth={2.5} /> },
+              { id: 'psychology', label: 'psychology', icon: <Brain size={11} strokeWidth={2.5} /> },
+              { id: 'rank', label: 'diamond 1', icon: <Gamepad2 size={11} strokeWidth={2.5} /> },
+              { id: 'coconut', label: 'coconut', icon: <Sparkles size={11} strokeWidth={2.5} /> },
             ]
           ).map((tag, i, arr) => (
-            <motion.div
+            <motion.span
               key={tag.id}
               variants={{
                 hidden: { opacity: 0, y: 10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
               }}
-              style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}
+              style={{
+                fontFamily: 'var(--font-figtree)',
+                fontWeight: 300,
+                fontSize: 'clamp(9px, 1.1vw, 12px)',
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                color: 'var(--text-soft)',
+                transition: 'color 400ms ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+              }}
             >
-              <motion.span
-                whileHover={{ y: -2, color: 'var(--accent-primary)' }}
-                style={{
-                  fontFamily: 'var(--font-figtree)',
-                  fontWeight: 300,
-                  fontSize: 'clamp(9px, 1.1vw, 12px)',
-                  letterSpacing: '0.22em',
-                  textTransform: 'uppercase',
-                  color: 'var(--text-soft)',
-                  transition: 'color 400ms ease',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  position: 'relative',
-                  cursor: 'pointer',
-                }}
-                title={tag.hover} // Native tooltip fallback
-              >
-                <span style={{ color: 'var(--badge-secondary-text)', opacity: 0.8 }}>{tag.icon}</span>
-                {tag.label}
-              </motion.span>
-              {i < arr.length - 1 && <span style={{ marginLeft: '6px', marginRight: '6px', opacity: 0.4, color: 'var(--text-soft)' }}> &middot; </span>}
-            </motion.div>
+              <span style={{ color: 'var(--badge-secondary-text)', opacity: 0.8 }}>{tag.icon}</span>
+              {tag.label}{i < arr.length - 1 && <span style={{ marginLeft: '4px', marginRight: '4px', opacity: 0.4 }}> &middot;</span>}
+            </motion.span>
           ))}
         </motion.div>
       </div>

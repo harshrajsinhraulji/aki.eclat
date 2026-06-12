@@ -973,58 +973,10 @@ section[id] {
    LetsTalk (#0A0306) ← CINEMATIC CLOSE
 ──────────────────────────────────────────────────── */
 
-/* Universe (dark) → InfiniteCloset (dark): no bridge needed — same colour */
-/* InfiniteCloset (dark) → ArtWords (blush): bridge to blush */
-#closet::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(to bottom, transparent, #FFF5F8);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* PlushieGang (blush) → ConfessionsTeaser (deep blush): subtle deepening */
-#plushies::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(to bottom, transparent, #FFF0F5);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* ConfessionsTeaser → LetsTalk (dark): deep pink blush → near-black */
-#confessions-teaser::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(to bottom, transparent, #0A0306);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* LetsTalk (Contact) → Footer: stays dark, slight fade */
-#contact::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
-  background: linear-gradient(to bottom, transparent, #0A0306);
-  pointer-events: none;
-  z-index: 2;
-}
+/* ────────────────────────────────────────────────────
+   SECTION TRANSITIONS (Theme bridges)
+   Removed hardcoded ::after gradients to allow dynamic ThemeContext shifting without visual artifacts.
+──────────────────────────────────────────────────── */
 
 /* ══ MOBILE TOUCH IMPROVEMENTS ═══════════════════════
    Larger tap targets, better snap scroll, improved spacing.
